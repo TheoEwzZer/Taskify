@@ -50,6 +50,7 @@ export const DatePicker: ({
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
+          weekStartsOn={1}
           selected={value}
           onSelect={(date: Date | undefined): void => {
             onChange(date as Date);
