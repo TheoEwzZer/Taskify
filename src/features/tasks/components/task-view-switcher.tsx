@@ -12,6 +12,7 @@ import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { columns } from "./columns";
 import { DataFilters } from "./data-filters";
+import { DataKanban } from "./data-kanban";
 import { DataTable } from "./data-table";
 
 export const TaskViewSwitcher: () => ReactElement = () => {
@@ -90,7 +91,7 @@ export const TaskViewSwitcher: () => ReactElement = () => {
               value="kanban"
               className="mt-0"
             >
-              {JSON.stringify(tasks)}
+              <DataKanban data={tasks?.documents ?? []} />
             </TabsContent>
             <TabsContent
               value="calendar"
