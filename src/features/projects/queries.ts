@@ -23,6 +23,10 @@ export const getProject: ({
     projectId
   );
 
+  if (!project) {
+    throw new Error("Not found");
+  }
+
   const member: Models.Document = await getMember({
     databases,
     userId: user.$id,

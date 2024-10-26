@@ -114,6 +114,10 @@ const app = new Hono()
         projectId
       );
 
+      if (!existingProject) {
+        return c.json({ error: "Not found" }, 404);
+      }
+
       const member: Models.Document = await getMember({
         databases,
         workspaceId: existingProject.workspaceId,
@@ -167,6 +171,10 @@ const app = new Hono()
       PROJECTS_ID,
       projectId
     );
+
+    if (!existingProject) {
+      return c.json({ error: "Not found" }, 404);
+    }
 
     const member: Models.Document = await getMember({
       databases,

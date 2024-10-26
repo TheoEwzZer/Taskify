@@ -71,6 +71,10 @@ const app = new Hono()
       memberId
     );
 
+    if (!memberToDelete) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
     const allMembersInWorkspace: Models.DocumentList<Models.Document> =
       await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
         Query.equal("workspaceId", memberToDelete.workspaceId),
@@ -115,6 +119,10 @@ const app = new Hono()
         MEMBERS_ID,
         memberId
       );
+
+      if (!memberToUpdate) {
+        return c.json({ error: "Not found" }, 404);
+      }
 
       const allMembersInWorkspace: Models.DocumentList<Models.Document> =
         await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [

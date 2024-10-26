@@ -62,6 +62,10 @@ export const getWorkspace: ({
     workspaceId
   );
 
+  if (!workspace) {
+    throw new Error("Not found");
+  }
+
   return workspace;
 };
 
@@ -73,9 +77,7 @@ export const getWorkspaceInfo: ({
   workspaceId,
 }: GetWorkspaceInfoProps) => Promise<{
   name: string;
-} | null> = async ({
-  workspaceId,
-}: GetWorkspaceInfoProps) => {
+} | null> = async ({ workspaceId }: GetWorkspaceInfoProps) => {
   const { databases } = await createSessionClient();
 
   const workspace: Workspace = await databases.getDocument<Workspace>(
@@ -83,6 +85,10 @@ export const getWorkspaceInfo: ({
     WORKSPACES_ID,
     workspaceId
   );
+
+  if (!workspace) {
+    return null;
+  }
 
   return {
     name: workspace.name,

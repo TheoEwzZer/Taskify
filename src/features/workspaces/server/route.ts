@@ -222,6 +222,10 @@ const app = new Hono()
         workspaceId
       );
 
+      if (!workspace) {
+        return c.json({ error: "Not found" }, 404);
+      }
+
       if (workspace.inviteCode !== code) {
         return c.json({ error: "Invalid invite code" }, 400);
       }
