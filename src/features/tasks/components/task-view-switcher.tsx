@@ -1,10 +1,11 @@
 "use client";
 
 import { DottedSeparator } from "@/components/dotted-separator";
+import { PageLoader } from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { Loader, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { ReactElement, useCallback } from "react";
 import { useBulkUpdateTask } from "../api/use-bulk-update-task";
@@ -18,7 +19,13 @@ import { DataKanban } from "./kanban/data-kanban";
 import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 
-export const TaskViewSwitcher: () => ReactElement = () => {
+interface TaskViewSwitcherProps {
+  hideProjectFilter?: boolean;
+}
+
+export const TaskViewSwitcher: ({
+  hideProjectFilter,
+}: TaskViewSwitcherProps) => ReactElement = ({ hideProjectFilter }) => {
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
@@ -85,17 +92,15 @@ export const TaskViewSwitcher: () => ReactElement = () => {
             className="w-full lg:w-auto"
             onClick={open}
           >
-            <PlusIcon className="mr-2 size-4" />
+            <PlusIcon />
             New
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <DataFilters />
+        <DataFilters hideProjectFilter={hideProjectFilter} />
         <DottedSeparator className="my-4" />
         {isLoadingTasks ? (
-          <div className="flex h-[200px] w-full flex-col items-center justify-center rounded-lg border">
-            <Loader className="size-6 animate-spin text-muted-foreground" />
-          </div>
+          <PageLoader />
         ) : (
           <>
             <TabsContent

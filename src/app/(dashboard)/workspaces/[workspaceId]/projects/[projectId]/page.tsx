@@ -46,13 +46,13 @@ export default async function ProjectIdPage({
             <Link
               href={`/workspaces/${initialValues?.workspaceId}/projects/${initialValues?.$id}/settings`}
             >
-              <PencilIcon className="mr-2 size-4" />
+              <PencilIcon />
               Edit Project
             </Link>
           </Button>
         </div>
       </div>
-      <TaskViewSwitcher />
+      <TaskViewSwitcher hideProjectFilter />
     </div>
   );
 }
