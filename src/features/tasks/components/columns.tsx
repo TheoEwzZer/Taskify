@@ -63,7 +63,7 @@ export const columns: ColumnDef<Task>[] = [
       const { project } = row.original;
 
       if (!project) {
-        return <p>None</p>;
+        return <p className="line-clamp-1">No Project</p>;
       }
 
       return (
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Task>[] = [
       const { assignee } = row.original;
 
       if (!assignee) {
-        return <p>None</p>;
+        return <p className="line-clamp-1">Unassigned</p>;
       }
 
       return (
