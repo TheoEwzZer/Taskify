@@ -23,7 +23,7 @@ export default async function ProjectIdSettingsPage({
   });
 
   return (
-    <div className="w-full md:max-w-2xl">
+    <div className="w-full lg:max-w-2xl">
       <EditProjectForm initialValues={initialValues} />
     </div>
   );

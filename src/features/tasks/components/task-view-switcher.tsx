@@ -38,22 +38,22 @@ export const TaskViewSwitcher: () => ReactElement = () => {
       className="w-full flex-1 rounded-lg border"
     >
       <div className="flex h-full flex-col overflow-auto p-4">
-        <div className="flex flex-col items-center justify-between gap-y-2 md:flex-row">
-          <TabsList className="w-full md:w-auto">
+        <div className="flex flex-col items-center justify-between gap-y-2 lg:flex-row">
+          <TabsList className="w-full lg:w-auto">
             <TabsTrigger
-              className="h-8 w-full md:w-auto"
+              className="h-8 w-full lg:w-auto"
               value="table"
             >
               Table
             </TabsTrigger>
             <TabsTrigger
-              className="h-8 w-full md:w-auto"
+              className="h-8 w-full lg:w-auto"
               value="kanban"
             >
               Kanban
             </TabsTrigger>
             <TabsTrigger
-              className="h-8 w-full md:w-auto"
+              className="h-8 w-full lg:w-auto"
               value="calendar"
             >
               Calendar
@@ -61,7 +61,7 @@ export const TaskViewSwitcher: () => ReactElement = () => {
           </TabsList>
           <Button
             size="sm"
-            className="w-full md:w-auto"
+            className="w-full lg:w-auto"
             onClick={open}
           >
             <PlusIcon className="mr-2 size-4" />

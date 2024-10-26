@@ -31,7 +31,7 @@ const WorkspaceIdJoinPage: ({
   }
 
   return (
-    <div className="w-full md:max-w-2xl">
+    <div className="w-full lg:max-w-2xl">
       <JoinWorkspaceForm initialValues={initialValues} />
     </div>
   );

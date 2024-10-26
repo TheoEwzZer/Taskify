@@ -83,12 +83,12 @@ export const DataFilters: ({
   }
 
   return (
-    <div className="flex flex-col gap-2 md:flex-row">
+    <div className="flex flex-col gap-2 lg:flex-row">
       <Select
         defaultValue={status ?? undefined}
         onValueChange={(value: string): void => onStatusChange(value)}
       >
-        <SelectTrigger className="h-8 w-full md:w-auto">
+        <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
             <ListChecksIcon className="mr-2 size-4" />
             <SelectValue placeholder="All statuses" />
@@ -108,7 +108,7 @@ export const DataFilters: ({
         defaultValue={assigneeId ?? undefined}
         onValueChange={(value: string): void => onAssigneeChange(value)}
       >
-        <SelectTrigger className="h-8 w-full md:w-auto">
+        <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
             <UserIcon className="mr-2 size-4" />
             <SelectValue placeholder="All assignees" />
@@ -133,7 +133,7 @@ export const DataFilters: ({
         defaultValue={projectId ?? undefined}
         onValueChange={(value: string): void => onProjectChange(value)}
       >
-        <SelectTrigger className="h-8 w-full md:w-auto">
+        <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
             <FolderIcon className="mr-2 size-4" />
             <SelectValue placeholder="All projects" />
@@ -156,7 +156,7 @@ export const DataFilters: ({
       </Select>
       <DatePicker
         placeholder="Due date"
-        className="h-8 w-full md:w-auto"
+        className="h-8 w-full lg:w-auto"
         value={dueDate ? new Date(dueDate) : undefined}
         onChange={(date: Date): Promise<URLSearchParams> =>
           setFilters({ dueDate: date ? date.toISOString() : null })

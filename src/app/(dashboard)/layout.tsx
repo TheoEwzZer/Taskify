@@ -31,7 +31,7 @@ const DashboardLayout: ({ children }: DashboardLayoutProps) => ReactElement = ({
               <SidebarTrigger className="-ml-1" />
               <Separator
                 orientation="vertical"
-                className="mr-2 hidden h-12 md:block"
+                className="mr-2 hidden h-12 lg:block"
               />
               <Navbar />
             </header>

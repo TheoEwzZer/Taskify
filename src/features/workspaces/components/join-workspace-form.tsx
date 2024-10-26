@@ -64,9 +64,9 @@ export const JoinWorkspaceForm: ({
         <DottedSeparator />
       </div>
       <CardContent className="p-7">
-        <div className="flex flex-col items-center justify-between gap-2 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-2 lg:flex-row">
           <Button
-            className="w-full md:w-fit"
+            className="w-full lg:w-fit"
             variant="secondary"
             type="button"
             asChild
@@ -76,7 +76,7 @@ export const JoinWorkspaceForm: ({
             <Link href="/">Cancel</Link>
           </Button>
           <Button
-            className="w-full md:w-fit"
+            className="w-full lg:w-fit"
             type="button"
             size="lg"
             onClick={onSubmit}

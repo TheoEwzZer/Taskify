@@ -48,7 +48,7 @@ export const SignUpCard: () => ReactElement = () => {
   };
 
   return (
-    <Card className="h-full w-full border-none shadow-none md:w-[487px]">
+    <Card className="h-full w-full border-none shadow-none lg:w-[487px]">
       <CardHeader className="flex items-center justify-center p-7 text-center">
         <CardTitle className="text-2xl">Sign Up</CardTitle>
       </CardHeader>

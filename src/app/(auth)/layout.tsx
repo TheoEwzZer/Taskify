@@ -35,7 +35,7 @@ const AuthLayout: ({ children }: AuthLayoutProps) => ReactElement = ({
             </Link>
           </Button>
         </nav>
-        <div className="flex flex-col items-center justify-center pt-4 md:pt-14">
+        <div className="flex flex-col items-center justify-center pt-4 lg:pt-14">
           {children}
         </div>
       </div>
