@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { RiAddCircleFill } from "react-icons/ri";
 import {
@@ -104,67 +105,59 @@ export const Projects: () => ReactElement = () => {
         </SidebarGroupAction>
         <SidebarGroupContent>
           <SidebarMenu>
-            {data?.documents.map(
-              (project: {
-                [x: string]: any;
-                $id: string;
-                $collectionId: string;
-                $databaseId: string;
-                $createdAt: string;
-                $updatedAt: string;
-                $permissions: string[];
-              }) => {
-                const href: string = `/workspaces/${workspaceId}/projects/${project.$id}`;
-                const isActive: boolean = pathname === href;
+            {data?.documents.map((project: Models.Document): ReactElement => {
+              const href: string = `/workspaces/${workspaceId}/projects/${project.$id}`;
+              const isActive: boolean = pathname === href;
 
-                return (
-                  <SidebarMenuItem key={project.$id}>
-                    <SidebarMenuButton
-                      asChild
-                      className={cn(
-                        "flex h-8 cursor-pointer items-center gap-2.5 rounded-md text-neutral-500 transition hover:opacity-75",
-                        isActive &&
-                          "bg-white text-primary shadow-sm hover:opacity-100"
-                      )}
+              return (
+                <SidebarMenuItem key={project.$id}>
+                  <SidebarMenuButton
+                    asChild
+                    className={cn(
+                      "flex h-8 cursor-pointer items-center gap-2.5 rounded-md text-neutral-500 transition hover:opacity-75",
+                      isActive &&
+                        "bg-white text-primary shadow-sm hover:opacity-100"
+                    )}
+                  >
+                    <Link href={href}>
+                      <ProjectAvatar
+                        image={project.imageUrl}
+                        name={project.name}
+                      />
+                      <span className="truncate">{project.name}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <SidebarMenuAction>
+                        <MoreHorizontal />
+                      </SidebarMenuAction>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      side="right"
+                      align="start"
                     >
-                      <Link href={href}>
-                        <ProjectAvatar
-                          image={project.imageUrl}
-                          name={project.name}
-                        />
-                        <span className="truncate">{project.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <SidebarMenuAction>
-                          <MoreHorizontal />
-                        </SidebarMenuAction>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        side="right"
-                        align="start"
+                      <DropdownMenuItem
+                        asChild
+                        disabled={isDeletingProject}
                       >
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
-                          >
-                            Edit Project
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(): Promise<void> =>
-                            handleDelete(project.$id)
-                          }
+                        <Link
+                          href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
                         >
-                          <span>Delete Project</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </SidebarMenuItem>
-                );
-              }
-            )}
+                          Edit Project
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(): Promise<void> => handleDelete(project.$id)}
+                        disabled={isDeletingProject}
+                      >
+                        <span>Delete Project</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

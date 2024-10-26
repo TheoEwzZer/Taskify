@@ -10,7 +10,9 @@ import { ReactElement } from "react";
 import { useGetTasks } from "../api/use-get-tasks";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useTaskFilters } from "../hooks/use-task-filters";
+import { columns } from "./columns";
 import { DataFilters } from "./data-filters";
+import { DataTable } from "./data-table";
 
 export const TaskViewSwitcher: () => ReactElement = () => {
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
@@ -79,7 +81,10 @@ export const TaskViewSwitcher: () => ReactElement = () => {
               value="table"
               className="mt-0"
             >
-              {JSON.stringify(tasks)}
+              <DataTable
+                columns={columns}
+                data={tasks?.documents ?? []}
+              />
             </TabsContent>
             <TabsContent
               value="kanban"

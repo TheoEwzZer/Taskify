@@ -1,6 +1,5 @@
 import { client } from "@/lib/rpc";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { Models } from "node-appwrite";
+import { useQuery } from "@tanstack/react-query";
 import { TaskStatus } from "../types";
 
 interface UseGetTasksProps {
@@ -12,20 +11,7 @@ interface UseGetTasksProps {
   dueDate?: string | null;
 }
 
-export const useGetTasks: ({
-  workspaceId,
-  projectId,
-  status,
-  search,
-  assigneeId,
-  dueDate,
-}: UseGetTasksProps) => UseQueryResult<
-  {
-    total: number;
-    documents: Models.Document[];
-  },
-  Error
-> = ({
+export const useGetTasks = ({
   workspaceId,
   projectId,
   status,

@@ -1,4 +1,4 @@
-import { DATABASE_ID, MEMBERS_ID, TASKS_ID } from "@/config";
+import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 import { getMember } from "@/features/members/util";
 import { Project } from "@/features/projects/types";
 import { createAdminClient } from "@/lib/appwrite";
@@ -8,7 +8,7 @@ import { Hono } from "hono";
 import { ID, Models, Query } from "node-appwrite";
 import { z } from "zod";
 import { createTaskSchema } from "../schemas";
-import { TaskStatus } from "../types";
+import { Task, TaskStatus } from "../types";
 
 const app = new Hono()
   .get(
@@ -73,20 +73,20 @@ const app = new Hono()
         query.push(Query.search("name", search));
       }
 
-      const tasks: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(DATABASE_ID, TASKS_ID, query);
+      const tasks: Models.DocumentList<Task> =
+        await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, query);
 
       const projectIds: string[] = tasks.documents.map(
-        (task: Models.Document): string => task.projectId
+        (task: Task): string => task.projectId
       );
       const assigneeIds: string[] = tasks.documents.map(
-        (task: Models.Document): string => task.assigneeId
+        (task: Task): string => task.assigneeId
       );
 
       const projects: Models.DocumentList<Project> =
         await databases.listDocuments<Project>(
           DATABASE_ID,
-          TASKS_ID,
+          PROJECTS_ID,
           projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
         );
 
@@ -97,16 +97,12 @@ const app = new Hono()
           assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
         );
 
-      const assignees: {
-        name: string;
-        email: string;
-        $id: string;
-        $collectionId: string;
-        $databaseId: string;
-        $createdAt: string;
-        $updatedAt: string;
-        $permissions: string[];
-      }[] = await Promise.all(
+      const assignees: Array<
+        Models.Document & {
+          name: string;
+          email: string;
+        }
+      > = await Promise.all(
         members.documents.map(async (member: Models.Document) => {
           const user: Models.User<Models.Preferences> = await users.get(
             member.userId
@@ -120,31 +116,16 @@ const app = new Hono()
         })
       );
 
-      const populatedTasks: {
-        project: Project | undefined;
-        assignee: Models.Document | undefined;
-        $id: string;
-        $collectionId: string;
-        $databaseId: string;
-        $createdAt: string;
-        $updatedAt: string;
-        $permissions: string[];
-      }[] = tasks.documents.map((task: Models.Document) => {
+      const populatedTasks: Task[] = tasks.documents.map((task: Task) => {
         const project: Project | undefined = projects.documents.find(
           (project: Project): boolean => project.$id === task.projectId
         );
 
         const assignee:
-          | {
+          | (Models.Document & {
               name: string;
               email: string;
-              $id: string;
-              $collectionId: string;
-              $databaseId: string;
-              $createdAt: string;
-              $updatedAt: string;
-              $permissions: string[];
-            }
+            })
           | undefined = assignees.find(
           (assignee: Models.Document): boolean =>
             assignee.$id === task.assigneeId
