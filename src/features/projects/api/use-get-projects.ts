@@ -1,5 +1,6 @@
 import { client } from "@/lib/rpc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { Models } from "node-appwrite";
 
 interface UseGetProjectsProps {
   workspaceId: string;
@@ -10,15 +11,7 @@ export const useGetProjects: ({
 }: UseGetProjectsProps) => UseQueryResult<
   {
     total: number;
-    documents: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }[];
+    documents: Models.Document[];
   },
   Error
 > = ({ workspaceId }: UseGetProjectsProps) => {

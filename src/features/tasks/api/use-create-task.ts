@@ -8,6 +8,7 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
+import { Models } from "node-appwrite";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<typeof client.api.tasks.$post, 200>;
@@ -30,21 +31,8 @@ export const useCreateTask: () => UseMutationResult<
             401,
             "json"
           >
-        | ClientResponse<
-            {
-              data: {
-                [x: string]: any;
-                $id: string;
-                $collectionId: string;
-                $databaseId: string;
-                $createdAt: string;
-                $updatedAt: string;
-                $permissions: string[];
-              };
-            },
-            StatusCode,
-            "json"
-          > = await client.api.tasks.$post({ json });
+        | ClientResponse<{ data: Models.Document }, StatusCode, "json"> =
+        await client.api.tasks.$post({ json });
 
       if (!response.ok) {
         throw new Error("Failed to create task");

@@ -18,6 +18,7 @@ import { MemberRole } from "@/features/members/type";
 import { useConfirm } from "@/hooks/use-confirm";
 import { ArrowLeftIcon, MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
+import { Models } from "node-appwrite";
 import { Fragment, ReactElement } from "react";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 
@@ -86,15 +87,9 @@ export const Memberslist: () => ReactElement = () => {
       <CardContent className="p-7">
         {data?.documents.map(
           (
-            member: {
+            member: Models.Document & {
               name: string;
               email: string;
-              $id: string;
-              $collectionId: string;
-              $databaseId: string;
-              $createdAt: string;
-              $updatedAt: string;
-              $permissions: string[];
             },
             index: number
           ): ReactElement => (

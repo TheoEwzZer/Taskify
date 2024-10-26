@@ -3,6 +3,7 @@ import { useGetMembers } from "@/features/members/api/use-get-member";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
+import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { CreateTaskForm } from "./create-task-form";
 
@@ -28,21 +29,11 @@ export const CreateTaskFormWrapper: (
         name: any;
         imageUrl: any;
       }[]
-    | undefined = projects?.documents.map(
-    (project: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }) => ({
-      id: project.$id,
-      name: project.name,
-      imageUrl: project.imageUrl,
-    })
-  );
+    | undefined = projects?.documents.map((project: Models.Document) => ({
+    id: project.$id,
+    name: project.name,
+    imageUrl: project.imageUrl,
+  }));
 
   const memberOptions:
     | {
@@ -50,16 +41,12 @@ export const CreateTaskFormWrapper: (
         name: string;
       }[]
     | undefined = members?.documents.map(
-    (member: {
-      name: string;
-      email: string;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }) => ({
+    (
+      member: Models.Document & {
+        name: string;
+        email: string;
+      }
+    ) => ({
       id: member.$id,
       name: member.name,
     })

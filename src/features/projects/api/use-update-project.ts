@@ -10,6 +10,7 @@ import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
+import { Models } from "node-appwrite";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
@@ -38,24 +39,11 @@ export const useUpdateProject: () => UseMutationResult<
             401,
             "json"
           >
-        | ClientResponse<
-            {
-              data: {
-                [x: string]: any;
-                $id: string;
-                $collectionId: string;
-                $databaseId: string;
-                $createdAt: string;
-                $updatedAt: string;
-                $permissions: string[];
-              };
-            },
-            StatusCode,
-            "json"
-          > = await client.api.projects[":projectId"]["$patch"]({
-        form,
-        param,
-      });
+        | ClientResponse<{ data: Models.Document }, StatusCode, "json"> =
+        await client.api.projects[":projectId"]["$patch"]({
+          form,
+          param,
+        });
 
       if (!response.ok) {
         throw new Error("Failed to update project");

@@ -2,19 +2,12 @@ import { client } from "@/lib/rpc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
+import { Models } from "node-appwrite";
 
 export const useGetWorkspaces: () => UseQueryResult<
   {
     total: number;
-    documents: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }[];
+    documents: Models.Document[];
   } | null,
   Error
 > = () => {
@@ -25,15 +18,7 @@ export const useGetWorkspaces: () => UseQueryResult<
         {
           data: {
             total: number;
-            documents: {
-              [x: string]: any;
-              $id: string;
-              $collectionId: string;
-              $databaseId: string;
-              $createdAt: string;
-              $updatedAt: string;
-              $permissions: string[];
-            }[];
+            documents: Models.Document[];
           };
         },
         StatusCode,

@@ -11,6 +11,7 @@ import { useGetMembers } from "@/features/members/api/use-get-member";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { FolderIcon, ListChecksIcon, UserIcon } from "lucide-react";
+import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
@@ -40,20 +41,10 @@ export const DataFilters: ({
         value: string;
         label: string;
       }[]
-    | undefined = projects?.documents.map(
-    (project: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }) => ({
-      value: project.$id,
-      label: project.name,
-    })
-  );
+    | undefined = projects?.documents.map((project: Models.Document) => ({
+    value: project.$id,
+    label: project.name,
+  }));
 
   const memberOptions:
     | {
@@ -61,16 +52,12 @@ export const DataFilters: ({
         label: string;
       }[]
     | undefined = members?.documents.map(
-    (member: {
-      name: string;
-      email: string;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }) => ({
+    (
+      member: Models.Document & {
+        name: string;
+        email: string;
+      }
+    ) => ({
       value: member.$id,
       label: member.name,
     })

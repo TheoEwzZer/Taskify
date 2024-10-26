@@ -7,6 +7,7 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
+import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import {
   DropdownMenu,
@@ -24,33 +25,14 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
   const { data: workspaces } = useGetWorkspaces();
   const { open } = useCreateWorkspaceModal();
 
-  const onSelect: (workspaceId: string) => void = (
-    workspaceId: string
-  ) => {
+  const onSelect: (workspaceId: string) => void = (workspaceId: string) => {
     router.push(`/workspaces/${workspaceId}`);
   };
 
-  const currentWorkspace:
-    | {
-        [x: string]: any;
-        $id: string;
-        $collectionId: string;
-        $databaseId: string;
-        $createdAt: string;
-        $updatedAt: string;
-        $permissions: string[];
-      }
-    | undefined = workspaces?.documents.find(
-    (workspace: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }): boolean => workspace.$id === workspaceId
-  );
+  const currentWorkspace: Models.Document | undefined =
+    workspaces?.documents.find(
+      (workspace: Models.Document): boolean => workspace.$id === workspaceId
+    );
 
   return (
     <SidebarMenu>
@@ -87,15 +69,7 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
               Workspaces
             </DropdownMenuLabel>
             {workspaces?.documents.map(
-              (workspace: {
-                [x: string]: any;
-                $id: string;
-                $collectionId: string;
-                $databaseId: string;
-                $createdAt: string;
-                $updatedAt: string;
-                $permissions: string[];
-              }): ReactElement => (
+              (workspace: Models.Document): ReactElement => (
                 <DropdownMenuItem
                   key={workspace.$id}
                   onClick={(): void => onSelect(workspace.$id)}

@@ -34,16 +34,12 @@ const app = new Hono()
           Query.equal("workspaceId", workspaceId),
         ]);
 
-      const populatedMembers: {
-        name: string;
-        email: string;
-        $id: string;
-        $collectionId: string;
-        $databaseId: string;
-        $createdAt: string;
-        $updatedAt: string;
-        $permissions: string[];
-      }[] = await Promise.all(
+      const populatedMembers: Array<
+        Models.Document & {
+          name: string;
+          email: string;
+        }
+      > = await Promise.all(
         members.documents.map(async (member: Models.Document) => {
           const user: Models.User<Models.Preferences> = await users.get(
             member.userId
