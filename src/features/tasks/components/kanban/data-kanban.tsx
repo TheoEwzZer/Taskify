@@ -1,6 +1,6 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { ReactElement, useCallback, useEffect, useState } from "react";
-import { Task, TaskStatus } from "../types";
+import { Task, TaskStatus } from "../../types";
 import { KanbanColumn } from "./kanban-column";
 
 interface DataKanbanProps {

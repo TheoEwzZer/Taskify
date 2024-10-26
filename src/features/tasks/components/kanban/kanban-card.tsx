@@ -3,9 +3,9 @@ import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { MoreHorizontal } from "lucide-react";
 import { ReactElement } from "react";
-import { Task } from "../types";
-import { TaskActions } from "./task-actions";
-import { TaskDate } from "./task-date";
+import { Task } from "../../types";
+import { TaskActions } from "../task-actions";
+import { TaskDate } from "../task-date";
 
 interface KanbanCardProps {
   task: Task;

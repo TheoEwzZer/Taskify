@@ -1,6 +1,6 @@
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import { ReactElement } from "react";
-import { Task } from "../types";
+import { Task } from "../../types";
 import { KanbanCard } from "./kanban-card";
 
 interface KanbanTaskProps {

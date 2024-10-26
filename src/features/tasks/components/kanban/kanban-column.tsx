@@ -1,6 +1,6 @@
 import { Droppable, DroppableProvided } from "@hello-pangea/dnd";
 import { ReactElement } from "react";
-import { Task, TaskStatus } from "../types";
+import { Task, TaskStatus } from "../../types";
 import { KanbanColumnHeader } from "./kanban-column-header";
 import { KanbanTask } from "./kanban-task";
 

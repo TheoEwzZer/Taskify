@@ -8,9 +8,9 @@ import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { ArrowUpDown, MoreVertical } from "lucide-react";
 import { ReactElement } from "react";
-import { Task } from "../types";
-import { TaskActions } from "./task-actions";
-import { TaskDate } from "./task-date";
+import { Task } from "../../types";
+import { TaskActions } from "../task-actions";
+import { TaskDate } from "../task-date";
 
 const dateSort: (rowA: any, rowB: any, columnId: string) => number = (
   rowA,

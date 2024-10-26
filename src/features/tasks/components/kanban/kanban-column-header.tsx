@@ -10,8 +10,8 @@ import {
   PlusIcon,
 } from "lucide-react";
 import { ReactElement, ReactNode } from "react";
-import { useCreateTaskModal } from "../hooks/use-create-task-modal";
-import { TaskStatus } from "../types";
+import { useCreateTaskModal } from "../../hooks/use-create-task-modal";
+import { TaskStatus } from "../../types";
 
 interface KanbanColumnHeaderProps {
   board: TaskStatus;
