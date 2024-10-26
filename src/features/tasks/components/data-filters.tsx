@@ -90,7 +90,7 @@ export const DataFilters: ({
       >
         <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
-            <ListChecksIcon className="mr-2 size-4" />
+            <ListChecksIcon />
             <SelectValue placeholder="All statuses" />
           </div>
         </SelectTrigger>
@@ -110,7 +110,7 @@ export const DataFilters: ({
       >
         <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
-            <UserIcon className="mr-2 size-4" />
+            <UserIcon />
             <SelectValue placeholder="All assignees" />
           </div>
         </SelectTrigger>
@@ -129,31 +129,33 @@ export const DataFilters: ({
           )}
         </SelectContent>
       </Select>
-      <Select
-        defaultValue={projectId ?? undefined}
-        onValueChange={(value: string): void => onProjectChange(value)}
-      >
-        <SelectTrigger className="h-8 w-full lg:w-auto">
-          <div className="flex items-center pr-2">
-            <FolderIcon className="mr-2 size-4" />
-            <SelectValue placeholder="All projects" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All projects</SelectItem>
-          <SelectSeparator />
-          {projectOptions?.map(
-            (project: { value: string; label: string }): ReactElement => (
-              <SelectItem
-                key={project.value}
-                value={project.value}
-              >
-                {project.label}
-              </SelectItem>
-            )
-          )}
-        </SelectContent>
-      </Select>
+      {!hideProjectFilter && (
+        <Select
+          defaultValue={projectId ?? undefined}
+          onValueChange={(value: string): void => onProjectChange(value)}
+        >
+          <SelectTrigger className="h-8 w-full lg:w-auto">
+            <div className="flex items-center pr-2">
+              <FolderIcon />
+              <SelectValue placeholder="All projects" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All projects</SelectItem>
+            <SelectSeparator />
+            {projectOptions?.map(
+              (project: { value: string; label: string }): ReactElement => (
+                <SelectItem
+                  key={project.value}
+                  value={project.value}
+                >
+                  {project.label}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+      )}
       <DatePicker
         placeholder="Due date"
         className="h-8 w-full lg:w-auto"

@@ -21,7 +21,7 @@ export const CustomToolbar: ({
       <ChevronLeftIcon className="size-4" />
     </Button>
     <div className="flex h-8 w-full items-center justify-center rounded-md border border-input px-3 py-2 lg:w-auto">
-      <CalendarIcon className="mr-2 size-4" />
+      <CalendarIcon />
       <p className="text-sm">{format(date, "MMMM yyyy")}</p>
     </div>
     <Button

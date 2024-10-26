@@ -68,7 +68,7 @@ export const TaskActions: ({
             disabled={false}
             className="p-[10px] font-medium"
           >
-            <ExternalLinkIcon className="mr-2 size-4 stroke-2" />
+            <ExternalLinkIcon className="stroke-2" />
             Task Details
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -76,7 +76,7 @@ export const TaskActions: ({
             disabled={false}
             className="p-[10px] font-medium"
           >
-            <ExternalLinkIcon className="mr-2 size-4 stroke-2" />
+            <ExternalLinkIcon className="stroke-2" />
             Open Project
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -86,7 +86,7 @@ export const TaskActions: ({
             disabled={false}
             className="p-[10px] font-medium"
           >
-            <PencilIcon className="mr-2 size-4 stroke-2" />
+            <PencilIcon className="stroke-2" />
             Edit Task
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -94,7 +94,7 @@ export const TaskActions: ({
             disabled={isPending}
             className="p-[10px] font-medium text-amber-700 focus:text-amber-700"
           >
-            <TrashIcon className="mr-2 size-4 stroke-2" />
+            <TrashIcon className="stroke-2" />
             Delete Task
           </DropdownMenuItem>
         </DropdownMenuContent>

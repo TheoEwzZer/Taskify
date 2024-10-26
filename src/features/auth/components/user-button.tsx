@@ -68,7 +68,7 @@ export const UserButton: () => ReactElement | null = () => {
           onClick={(): void => logout()}
           className="h-10 cursor-pointer items-center justify-center font-medium text-amber-700"
         >
-          <LogOut className="mr-2 size-4" />
+          <LogOut />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

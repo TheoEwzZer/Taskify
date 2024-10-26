@@ -75,7 +75,7 @@ export const Memberslist: () => ReactElement = () => {
           size="sm"
         >
           <Link href={`/workspaces/${workspaceId}`}>
-            <ArrowLeftIcon className="mr-2 size-4" />
+            <ArrowLeftIcon />
             Back
           </Link>
         </Button>
