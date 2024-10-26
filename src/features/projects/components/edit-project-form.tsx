@@ -75,7 +75,7 @@ export const EditProjectForm: ({
     deleteProject(
       { param: { projectId: initialValues.$id } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           window.location.href = `/workspaces/${initialValues.workspaceId}`;
         },
       }
@@ -93,7 +93,7 @@ export const EditProjectForm: ({
     mutate(
       { form: finalValues, param: { projectId: initialValues.$id } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           form.reset();
         },
       }

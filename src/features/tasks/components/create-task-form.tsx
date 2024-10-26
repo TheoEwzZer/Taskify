@@ -67,7 +67,7 @@ export const CreateTaskForm: ({
     mutate(
       { json: { ...values, workspaceId } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           form.reset();
           onCancel?.();
         },

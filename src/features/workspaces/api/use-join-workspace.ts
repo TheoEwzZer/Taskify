@@ -6,6 +6,7 @@ import {
 import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
+import { Models } from "node-appwrite";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
@@ -38,12 +39,12 @@ export const useJoinWorkspace: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data }: { data: Models.Document }): void => {
       toast.success("Joined workspace successfully");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to join workspace");
     },
   });

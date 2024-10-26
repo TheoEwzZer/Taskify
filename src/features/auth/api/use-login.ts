@@ -34,12 +34,12 @@ export const useLogin: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (): void => {
       toast.success("Logged in successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to log in");
     },
   });

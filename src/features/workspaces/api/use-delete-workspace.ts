@@ -46,12 +46,12 @@ export const useDeleteWorkspace: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data }: { data: { $id: string } }): void => {
       toast.success("Workspace deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to delete workspace");
     },
   });

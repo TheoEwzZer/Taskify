@@ -58,7 +58,7 @@ export const Memberslist: () => ReactElement = () => {
     deleteMember(
       { param: { memberId } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           window.location.reload();
         },
       }

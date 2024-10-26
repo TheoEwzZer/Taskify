@@ -40,11 +40,11 @@ export const useCreateTask: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (): void => {
       toast.success("Task created successfully");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to create task");
     },
   });

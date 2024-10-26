@@ -10,6 +10,7 @@ import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
+import { Models } from "node-appwrite";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<
@@ -51,13 +52,13 @@ export const useResetInviteCode: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data }: { data: Models.Document }): void => {
       toast.success("Invite code reset successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to reset invite code");
     },
   });

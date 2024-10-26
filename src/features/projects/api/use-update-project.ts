@@ -36,7 +36,7 @@ export const useUpdateProject: () => UseMutationResult<
             {
               error: string;
             },
-            401,
+            401 | 404,
             "json"
           >
         | ClientResponse<{ data: Models.Document }, StatusCode, "json"> =
@@ -51,13 +51,13 @@ export const useUpdateProject: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data }: { data: Models.Document }): void => {
       toast.success("Project updated successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["project", data.$id] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to update project");
     },
   });

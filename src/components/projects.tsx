@@ -57,7 +57,7 @@ export const Projects: () => ReactElement = () => {
     deleteProject(
       { param: { projectId: projectId } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           window.location.href = `/workspaces/${workspaceId}`;
         },
       }

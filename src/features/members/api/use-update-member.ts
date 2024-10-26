@@ -54,11 +54,11 @@ export const useUpdateMember: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (): void => {
       toast.success("Member updated successfully");
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to update member");
     },
   });

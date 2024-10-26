@@ -26,17 +26,13 @@ export const useDeleteMember: () => UseMutationResult<
 > = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async ({
-      param,
-    }: {
-      param: { memberId: string };
-    }) => {
+    mutationFn: async ({ param }: { param: { memberId: string } }) => {
       const response:
         | ClientResponse<
             {
               error: string;
             },
-            400 | 401,
+            400 | 401 | 404,
             "json"
           >
         | ClientResponse<
@@ -57,11 +53,11 @@ export const useDeleteMember: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (): void => {
       toast.success("Member deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to delete member");
     },
   });

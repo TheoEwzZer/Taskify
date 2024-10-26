@@ -32,10 +32,10 @@ export const useDeleteProject: () => UseMutationResult<
             {
               error: string;
             },
-            401,
+            401 | 404,
             "json"
           >
-        | ClientResponse<ResponseType, StatusCode, "json"> =
+        | ClientResponse<{ data: { $id: string } }, StatusCode, "json"> =
         await client.api.projects[":projectId"]["$delete"]({
           param,
         });
@@ -46,12 +46,12 @@ export const useDeleteProject: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
+    onSuccess: ({ data }: { data: { $id: string } }): void => {
       toast.success("Project deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["project", data.$id] });
     },
-    onError: () => {
+    onError: (): void => {
       toast.error("Failed to delete project");
     },
   });

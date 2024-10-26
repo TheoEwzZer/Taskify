@@ -84,30 +84,29 @@ export const EditWorkspaceForm: ({
     deleteWorkspace(
       { param: { workspaceId: initialValues.$id } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           window.location.href = "/";
         },
       }
     );
   };
 
-  const handleResetInviteCode: () => Promise<void> =
-    async () => {
-      const ok: unknown = await confirmResetInviteCode();
+  const handleResetInviteCode: () => Promise<void> = async () => {
+    const ok: unknown = await confirmResetInviteCode();
 
-      if (!ok) {
-        return;
+    if (!ok) {
+      return;
+    }
+
+    resetInviteCode(
+      { param: { workspaceId: initialValues.$id } },
+      {
+        onSuccess: (): void => {
+          router.refresh();
+        },
       }
-
-      resetInviteCode(
-        { param: { workspaceId: initialValues.$id } },
-        {
-          onSuccess: () => {
-            router.refresh();
-          },
-        }
-      );
-    };
+    );
+  };
 
   const onSubmit: (values: z.infer<typeof updateWorkspaceSchema>) => void = (
     values: z.infer<typeof updateWorkspaceSchema>
@@ -120,7 +119,7 @@ export const EditWorkspaceForm: ({
     mutate(
       { form: finalValues, param: { workspaceId: initialValues.$id } },
       {
-        onSuccess: () => {
+        onSuccess: (): void => {
           form.reset();
         },
       }
