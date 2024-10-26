@@ -12,10 +12,11 @@ import { useGetTasks } from "../api/use-get-tasks";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
-import { columns } from "./columns";
+import { DataCalendar } from "./calendar/data-calendar";
 import { DataFilters } from "./data-filters";
-import { DataKanban } from "./data-kanban";
-import { DataTable } from "./data-table";
+import { DataKanban } from "./kanban/data-kanban";
+import { columns } from "./table/columns";
+import { DataTable } from "./table/data-table";
 
 export const TaskViewSwitcher: () => ReactElement = () => {
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
@@ -117,9 +118,9 @@ export const TaskViewSwitcher: () => ReactElement = () => {
             </TabsContent>
             <TabsContent
               value="calendar"
-              className="mt-0"
+              className="mt-0 h-full pb-4"
             >
-              {JSON.stringify(tasks)}
+              <DataCalendar data={tasks?.documents ?? []} />
             </TabsContent>
           </>
         )}
