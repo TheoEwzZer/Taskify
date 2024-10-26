@@ -6,7 +6,7 @@ import { Workspace } from "./types";
 
 export const getWorkspaces: () => Promise<
   Models.DocumentList<Models.Document>
-> = async (): Promise<Models.DocumentList<Models.Document>> => {
+> = async () => {
   const { databases, account } = await createSessionClient();
 
   const user: Models.User<Models.Preferences> = await account.get();
@@ -41,7 +41,7 @@ export const getWorkspace: ({
   workspaceId,
 }: GetWorkspaceProps) => Promise<Workspace> = async ({
   workspaceId,
-}: GetWorkspaceProps): Promise<Workspace> => {
+}: GetWorkspaceProps) => {
   const { databases, account } = await createSessionClient();
 
   const user: Models.User<Models.Preferences> = await account.get();
@@ -75,9 +75,7 @@ export const getWorkspaceInfo: ({
   name: string;
 } | null> = async ({
   workspaceId,
-}: GetWorkspaceInfoProps): Promise<{
-  name: string;
-} | null> => {
+}: GetWorkspaceInfoProps) => {
   const { databases } = await createSessionClient();
 
   const workspace: Workspace = await databases.getDocument<Workspace>(

@@ -46,12 +46,12 @@ export const useDeleteProject: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }): void => {
+    onSuccess: ({ data }) => {
       toast.success("Project deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["project", data.$id] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to delete project");
     },
   });

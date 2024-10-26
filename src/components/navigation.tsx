@@ -63,7 +63,7 @@ const routes: Route[] = [
   },
 ];
 
-export const Navigation: () => ReactElement = (): ReactElement => {
+export const Navigation: () => ReactElement = () => {
   const workspaceId: string = useWorkspaceId();
   const pathname: string = usePathname();
 
@@ -71,7 +71,7 @@ export const Navigation: () => ReactElement = (): ReactElement => {
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          {routes.map((route: Route): ReactElement => {
+          {routes.map((route: Route) => {
             const fullHref: string = `/workspaces/${workspaceId}${route.href}`;
             const isActive: boolean = pathname === fullHref;
             const Icon:

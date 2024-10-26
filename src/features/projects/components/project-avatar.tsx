@@ -20,7 +20,7 @@ export const ProjectAvatar: ({
   name,
   className,
   fallbackClassName,
-}: ProjectAvatarProps): ReactElement => {
+}: ProjectAvatarProps) => {
   if (image) {
     return (
       <div

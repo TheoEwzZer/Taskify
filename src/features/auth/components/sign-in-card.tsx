@@ -22,7 +22,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { useLogin } from "../api/use-login";
 import { loginSchema } from "../schemas";
 
-export const SignInCard: () => ReactElement = (): ReactElement => {
+export const SignInCard: () => ReactElement = () => {
   const { mutate, isPending } = useLogin();
 
   const form: UseFormReturn<
@@ -42,7 +42,7 @@ export const SignInCard: () => ReactElement = (): ReactElement => {
 
   const onSubmit: (values: z.infer<typeof loginSchema>) => void = (
     values: z.infer<typeof loginSchema>
-  ): void => {
+  ) => {
     mutate({ json: values });
   };
 

@@ -12,7 +12,7 @@ interface AuthLayoutProps {
 
 const AuthLayout: ({ children }: AuthLayoutProps) => ReactElement = ({
   children,
-}: AuthLayoutProps): ReactElement => {
+}: AuthLayoutProps) => {
   const pathname: string = usePathname();
   const isSignIn: boolean = pathname === "/sign-in";
 

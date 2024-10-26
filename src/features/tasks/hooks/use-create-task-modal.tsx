@@ -22,9 +22,9 @@ export const useCreateTaskModal: () => {
     parseAsBoolean.withDefault(false).withOptions({ clearOnDefault: true })
   );
 
-  const open: () => Promise<URLSearchParams> = (): Promise<URLSearchParams> =>
+  const open: () => Promise<URLSearchParams> = () =>
     setIsOpen(true);
-  const close: () => Promise<URLSearchParams> = (): Promise<URLSearchParams> =>
+  const close: () => Promise<URLSearchParams> = () =>
     setIsOpen(false);
 
   return { isOpen, open, close, setIsOpen };

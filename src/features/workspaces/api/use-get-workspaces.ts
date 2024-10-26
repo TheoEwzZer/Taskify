@@ -17,21 +17,7 @@ export const useGetWorkspaces: () => UseQueryResult<
     }[];
   } | null,
   Error
-> = (): UseQueryResult<
-  {
-    total: number;
-    documents: {
-      [x: string]: any;
-      $id: string;
-      $collectionId: string;
-      $databaseId: string;
-      $createdAt: string;
-      $updatedAt: string;
-      $permissions: string[];
-    }[];
-  } | null,
-  Error
-> => {
+> = () => {
   return useQuery({
     queryKey: ["workspaces"],
     queryFn: async () => {

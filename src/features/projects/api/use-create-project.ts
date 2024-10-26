@@ -52,11 +52,11 @@ export const useCreateProject: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: (): void => {
+    onSuccess: () => {
       toast.success("Project created successfully");
       queryClient.invalidateQueries({ queryKey: ["projects"] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to create project");
     },
   });

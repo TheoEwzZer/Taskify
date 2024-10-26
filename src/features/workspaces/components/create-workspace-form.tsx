@@ -33,7 +33,7 @@ export const CreateWorkspaceForm: ({
   onCancel,
 }: CreateWorkspaceFormProps) => ReactElement = ({
   onCancel,
-}: CreateWorkspaceFormProps): ReactElement => {
+}: CreateWorkspaceFormProps) => {
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useCreateWorkspace();
 
@@ -52,7 +52,7 @@ export const CreateWorkspaceForm: ({
 
   const onSubmit: (values: z.infer<typeof createWorkspaceSchema>) => void = (
     values: z.infer<typeof createWorkspaceSchema>
-  ): void => {
+  ) => {
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
@@ -61,7 +61,7 @@ export const CreateWorkspaceForm: ({
     mutate(
       { form: finalValues },
       {
-        onSuccess: ({ data }): void => {
+        onSuccess: ({ data }) => {
           form.reset();
           router.push(`/workspaces/${data.$id}`);
         },
@@ -71,7 +71,7 @@ export const CreateWorkspaceForm: ({
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
     e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ) => {
     const file: File | undefined = e.target.files?.[0];
 
     if (file) {
@@ -155,7 +155,7 @@ export const CreateWorkspaceForm: ({
                             variant="destructive"
                             className="mt-2 w-fit"
                             disabled={isPending}
-                            onClick={(): void => {
+                            onClick={() => {
                               field.onChange(null);
                               if (inputRef.current) {
                                 inputRef.current.value = "";

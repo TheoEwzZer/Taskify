@@ -46,7 +46,7 @@ export const CreateTaskForm: ({
   onCancel,
   projectOptions,
   memberOptions,
-}: CreateTaskFormProps): ReactElement => {
+}: CreateTaskFormProps) => {
   const workspaceId: string = useWorkspaceId();
   const { mutate, isPending } = useCreateTask();
 
@@ -63,11 +63,11 @@ export const CreateTaskForm: ({
 
   const onSubmit: (values: z.infer<typeof createTaskSchema>) => void = (
     values: z.infer<typeof createTaskSchema>
-  ): void => {
+  ) => {
     mutate(
       { json: { ...values, workspaceId } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           form.reset();
           onCancel?.();
         },

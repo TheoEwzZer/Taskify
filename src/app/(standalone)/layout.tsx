@@ -11,7 +11,7 @@ const StandaloneLayout: ({
   children,
 }: StandaloneLayoutProps) => ReactElement = ({
   children,
-}: StandaloneLayoutProps): ReactElement => {
+}: StandaloneLayoutProps) => {
   return (
     <main className="min-h-screen bg-neutral-100">
       <div className="mx-auto max-w-screen-2xl p-4">

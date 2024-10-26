@@ -11,7 +11,7 @@ export function useIsMobile(): boolean {
     const mql: MediaQueryList = window.matchMedia(
       `(max-width: ${MOBILE_BREAKPOINT - 1}px)`
     );
-    const onChange: () => void = (): void => {
+    const onChange: () => void = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     };
     mql.addEventListener("change", onChange);

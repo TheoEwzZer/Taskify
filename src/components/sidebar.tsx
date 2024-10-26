@@ -13,7 +13,7 @@ import { Navigation } from "./navigation";
 import { Projects } from "./projects";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 
-export const Sidebar: () => ReactElement = (): ReactElement => {
+export const Sidebar: () => ReactElement = () => {
   return (
     <SidebarComponent
       variant="inset"

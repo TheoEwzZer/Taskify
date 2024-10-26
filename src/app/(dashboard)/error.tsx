@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { ReactElement } from "react";
 
-const ErrorPage: () => ReactElement = (): ReactElement => {
+const ErrorPage: () => ReactElement = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-y-2">
       <AlertTriangle className="size-6 text-muted-foreground" />

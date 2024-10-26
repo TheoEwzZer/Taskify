@@ -30,7 +30,7 @@ import {
   SidebarMenuSkeleton,
 } from "./ui/sidebar";
 
-export const Projects: () => ReactElement = (): ReactElement => {
+export const Projects: () => ReactElement = () => {
   const workspaceId: string = useWorkspaceId();
   const { data, isLoading } = useGetProjects({ workspaceId });
   const pathname: string = usePathname();
@@ -46,7 +46,7 @@ export const Projects: () => ReactElement = (): ReactElement => {
 
   const handleDelete: (projectId: string) => Promise<void> = async (
     projectId: string
-  ): Promise<void> => {
+  ) => {
     const ok: unknown = await confirmDelete();
 
     if (!ok) {
@@ -56,7 +56,7 @@ export const Projects: () => ReactElement = (): ReactElement => {
     deleteProject(
       { param: { projectId: projectId } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           window.location.href = `/workspaces/${workspaceId}`;
         },
       }
@@ -113,7 +113,7 @@ export const Projects: () => ReactElement = (): ReactElement => {
                 $createdAt: string;
                 $updatedAt: string;
                 $permissions: string[];
-              }): ReactElement => {
+              }) => {
                 const href: string = `/workspaces/${workspaceId}/projects/${project.$id}`;
                 const isActive: boolean = pathname === href;
 

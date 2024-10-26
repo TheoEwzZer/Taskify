@@ -18,7 +18,7 @@ import {
 } from "./ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 
-export const WorkspaceSwitcher: () => ReactElement = (): ReactElement => {
+export const WorkspaceSwitcher: () => ReactElement = () => {
   const workspaceId: string = useWorkspaceId();
   const router: AppRouterInstance = useRouter();
   const { data: workspaces } = useGetWorkspaces();
@@ -26,7 +26,7 @@ export const WorkspaceSwitcher: () => ReactElement = (): ReactElement => {
 
   const onSelect: (workspaceId: string) => void = (
     workspaceId: string
-  ): void => {
+  ) => {
     router.push(`/workspaces/${workspaceId}`);
   };
 

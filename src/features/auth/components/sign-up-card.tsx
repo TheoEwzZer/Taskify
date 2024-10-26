@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useRegister } from "../api/use-register";
 import { registerSchema } from "../schemas";
 
-export const SignUpCard: () => ReactElement = (): ReactElement => {
+export const SignUpCard: () => ReactElement = () => {
   const { mutate, isPending } = useRegister();
 
   const form: UseFormReturn<
@@ -43,7 +43,7 @@ export const SignUpCard: () => ReactElement = (): ReactElement => {
 
   const onSubmit: (values: z.infer<typeof registerSchema>) => void = (
     values: z.infer<typeof registerSchema>
-  ): void => {
+  ) => {
     mutate({ json: values });
   };
 

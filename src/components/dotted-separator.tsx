@@ -24,7 +24,7 @@ export const DottedSeparator: ({
   dotSize = "2px",
   gapSize = "6px",
   direction = "horizontal",
-}: DottedSeparatorProps): ReactElement => {
+}: DottedSeparatorProps) => {
   const isHorizontal: boolean = direction === "horizontal";
 
   return (

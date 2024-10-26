@@ -5,7 +5,7 @@ import { ReactElement } from "react";
 import { useCreateProjectModal } from "../hooks/use-create-project-modal";
 import { CreateProjectForm } from "./create-project-form";
 
-export const CreateProjectModal: () => ReactElement = (): ReactElement => {
+export const CreateProjectModal: () => ReactElement = () => {
   const { isOpen, setIsOpen, close } = useCreateProjectModal();
 
   return (

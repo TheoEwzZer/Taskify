@@ -17,7 +17,7 @@ export const WorkspaceAvatar: ({
   image,
   name,
   className,
-}: WorkspaceAvatarProps): ReactElement => {
+}: WorkspaceAvatarProps) => {
   if (image) {
     return (
       <div

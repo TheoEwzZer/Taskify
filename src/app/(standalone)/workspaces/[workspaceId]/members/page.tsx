@@ -4,19 +4,18 @@ import { redirect } from "next/navigation";
 import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 
-const WorkspaceIdMembersProps: () => Promise<ReactElement> =
-  async (): Promise<ReactElement> => {
-    const user: Models.User<Models.Preferences> | null = await getCurrent();
+const WorkspaceIdMembersProps: () => Promise<ReactElement> = async () => {
+  const user: Models.User<Models.Preferences> | null = await getCurrent();
 
-    if (!user) {
-      redirect("/sign-in");
-    }
+  if (!user) {
+    redirect("/sign-in");
+  }
 
-    return (
-      <div className="w-full md:max-w-2xl">
-        <Memberslist />
-      </div>
-    );
-  };
+  return (
+    <div className="w-full md:max-w-2xl">
+      <Memberslist />
+    </div>
+  );
+};
 
 export default WorkspaceIdMembersProps;

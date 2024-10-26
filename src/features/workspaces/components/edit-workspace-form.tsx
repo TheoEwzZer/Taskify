@@ -41,7 +41,7 @@ export const EditWorkspaceForm: ({
 }: EditWorkspaceFormProps) => ReactElement = ({
   onCancel,
   initialValues,
-}: EditWorkspaceFormProps): ReactElement => {
+}: EditWorkspaceFormProps) => {
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useUpdateWorkspace();
   const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
@@ -74,7 +74,7 @@ export const EditWorkspaceForm: ({
     },
   });
 
-  const handleDelete: () => Promise<void> = async (): Promise<void> => {
+  const handleDelete: () => Promise<void> = async () => {
     const ok: unknown = await confirmDelete();
 
     if (!ok) {
@@ -84,7 +84,7 @@ export const EditWorkspaceForm: ({
     deleteWorkspace(
       { param: { workspaceId: initialValues.$id } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           window.location.href = "/";
         },
       }
@@ -92,7 +92,7 @@ export const EditWorkspaceForm: ({
   };
 
   const handleResetInviteCode: () => Promise<void> =
-    async (): Promise<void> => {
+    async () => {
       const ok: unknown = await confirmResetInviteCode();
 
       if (!ok) {
@@ -102,7 +102,7 @@ export const EditWorkspaceForm: ({
       resetInviteCode(
         { param: { workspaceId: initialValues.$id } },
         {
-          onSuccess: (): void => {
+          onSuccess: () => {
             router.refresh();
           },
         }
@@ -111,7 +111,7 @@ export const EditWorkspaceForm: ({
 
   const onSubmit: (values: z.infer<typeof updateWorkspaceSchema>) => void = (
     values: z.infer<typeof updateWorkspaceSchema>
-  ): void => {
+  ) => {
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
@@ -120,7 +120,7 @@ export const EditWorkspaceForm: ({
     mutate(
       { form: finalValues, param: { workspaceId: initialValues.$id } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           form.reset();
         },
       }
@@ -129,7 +129,7 @@ export const EditWorkspaceForm: ({
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
     e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ) => {
     const file: File | undefined = e.target.files?.[0];
 
     if (file) {
@@ -139,7 +139,7 @@ export const EditWorkspaceForm: ({
 
   const fullInviteLink: string = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
 
-  const handleCopyInviteLink: () => void = (): void => {
+  const handleCopyInviteLink: () => void = () => {
     navigator.clipboard
       .writeText(fullInviteLink)
       .then((): string | number =>
@@ -237,7 +237,7 @@ export const EditWorkspaceForm: ({
                               variant="destructive"
                               className="mt-2 w-fit"
                               disabled={isPending}
-                              onClick={(): void => {
+                              onClick={() => {
                                 field.onChange(null);
                                 if (inputRef.current) {
                                   inputRef.current.value = "";

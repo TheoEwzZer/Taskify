@@ -13,7 +13,7 @@ export const ResponsiveModal: (props: ResponsiveModalProps) => ReactElement = ({
   children,
   open,
   onOpenChange,
-}: ResponsiveModalProps): ReactElement => {
+}: ResponsiveModalProps) => {
   const isMobile: boolean = useIsMobile();
 
   if (!isMobile) {

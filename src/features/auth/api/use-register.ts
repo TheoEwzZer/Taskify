@@ -34,12 +34,12 @@ export const useRegister: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: (): void => {
+    onSuccess: () => {
       toast.success("Registered successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to register");
     },
   });

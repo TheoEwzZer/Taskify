@@ -17,34 +17,34 @@ export const useConfirm: (
   title: string,
   message: string,
   variant: ButtonProps["variant"] = "primary"
-): [() => ReactElement, () => Promise<unknown>] => {
+) => {
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
 
-  const confirm: () => Promise<boolean> = (): Promise<boolean> => {
+  const confirm: () => Promise<boolean> = () => {
     return new Promise<boolean>(
-      (resolve: (value: boolean | PromiseLike<boolean>) => void): void => {
+      (resolve: (value: boolean | PromiseLike<boolean>) => void) => {
         setPromise({ resolve });
       }
     );
   };
 
-  const handleClose: () => void = (): void => {
+  const handleClose: () => void = () => {
     setPromise(null);
   };
 
-  const handleConfirm: () => void = (): void => {
+  const handleConfirm: () => void = () => {
     promise?.resolve(true);
     setPromise(null);
   };
 
-  const handleCancel: () => void = (): void => {
+  const handleCancel: () => void = () => {
     promise?.resolve(false);
     setPromise(null);
   };
 
-  const ConfirmationDialog: () => ReactElement = (): ReactElement => (
+  const ConfirmationDialog: () => ReactElement = () => (
     <ResponsiveModal
       open={promise != null}
       onOpenChange={handleClose}

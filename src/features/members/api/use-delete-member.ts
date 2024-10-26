@@ -30,7 +30,7 @@ export const useDeleteMember: () => UseMutationResult<
       param,
     }: {
       param: { memberId: string };
-    }): Promise<{ data: { $id: string } }> => {
+    }) => {
       const response:
         | ClientResponse<
             {
@@ -57,11 +57,11 @@ export const useDeleteMember: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: (): void => {
+    onSuccess: () => {
       toast.success("Member deleted successfully");
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to delete member");
     },
   });

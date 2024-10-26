@@ -34,7 +34,7 @@ export const CreateProjectForm: ({
   onCancel,
 }: CreateProjectFormProps) => ReactElement = ({
   onCancel,
-}: CreateProjectFormProps): ReactElement => {
+}: CreateProjectFormProps) => {
   const workspaceId: string = useWorkspaceId();
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useCreateProject();
@@ -54,7 +54,7 @@ export const CreateProjectForm: ({
 
   const onSubmit: (values: z.infer<typeof createProjectSchema>) => void = (
     values: z.infer<typeof createProjectSchema>
-  ): void => {
+  ) => {
     const finalValues = {
       ...values,
       workspaceId,
@@ -64,7 +64,7 @@ export const CreateProjectForm: ({
     mutate(
       { form: finalValues },
       {
-        onSuccess: ({ data }): void => {
+        onSuccess: ({ data }) => {
           form.reset();
           router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
         },
@@ -74,7 +74,7 @@ export const CreateProjectForm: ({
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
     e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ) => {
     const file: File | undefined = e.target.files?.[0];
 
     if (file) {
@@ -158,7 +158,7 @@ export const CreateProjectForm: ({
                             variant="destructive"
                             className="mt-2 w-fit"
                             disabled={isPending}
-                            onClick={(): void => {
+                            onClick={() => {
                               field.onChange(null);
                               if (inputRef.current) {
                                 inputRef.current.value = "";

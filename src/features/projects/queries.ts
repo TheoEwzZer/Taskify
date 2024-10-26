@@ -12,7 +12,7 @@ export const getProject: ({
   projectId,
 }: GetProjectProps) => Promise<Project> = async ({
   projectId,
-}: GetProjectProps): Promise<Project> => {
+}: GetProjectProps) => {
   const { databases, account } = await createSessionClient();
 
   const user: Models.User<Models.Preferences> = await account.get();

@@ -63,13 +63,13 @@ export const useUpdateProject: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }): void => {
+    onSuccess: ({ data }) => {
       toast.success("Project updated successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["project", data.$id] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to update project");
     },
   });

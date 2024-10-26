@@ -16,7 +16,7 @@ export const MemberAvatar: ({
   name,
   className,
   fallbackClassName,
-}: MemberAvatarProps): ReactElement => {
+}: MemberAvatarProps) => {
   return (
     <Avatar
       className={cn(

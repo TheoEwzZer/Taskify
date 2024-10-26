@@ -77,7 +77,7 @@ const SidebarProvider = React.forwardRef<
     const open: boolean = openProp ?? _open;
     const setOpen: (value: boolean | ((value: boolean) => boolean)) => void =
       React.useCallback(
-        (value: boolean | ((value: boolean) => boolean)): void => {
+        (value: boolean | ((value: boolean) => boolean)) => {
           if (setOpenProp) {
             return setOpenProp?.(
               typeof value === "function" ? value(open) : value
@@ -93,7 +93,7 @@ const SidebarProvider = React.forwardRef<
       );
 
     // Helper to toggle the sidebar.
-    const toggleSidebar: () => void = React.useCallback((): void => {
+    const toggleSidebar: () => void = React.useCallback(() => {
       return isMobile
         ? setOpenMobile((open: boolean): boolean => !open)
         : setOpen((open: boolean): boolean => !open);
@@ -103,7 +103,7 @@ const SidebarProvider = React.forwardRef<
     React.useEffect((): (() => void) => {
       const handleKeyDown: (event: KeyboardEvent) => void = (
         event: KeyboardEvent
-      ): void => {
+      ) => {
         if (
           event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
           (event.metaKey || event.ctrlKey)
@@ -281,9 +281,7 @@ const SidebarTrigger = React.forwardRef<
       variant="ghost"
       size="icon"
       className={cn("h-7 w-7", className)}
-      onClick={(
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-      ): void => {
+      onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         onClick?.(event);
         toggleSidebar();
       }}

@@ -14,7 +14,7 @@ import { useCurrent } from "../api/use-current";
 import { useLogout } from "../api/use-logout";
 
 export const UserButton: () => ReactElement | null =
-  (): ReactElement | null => {
+  () => {
     const { data: user, isLoading } = useCurrent();
     const { mutate: logout } = useLogout();
 

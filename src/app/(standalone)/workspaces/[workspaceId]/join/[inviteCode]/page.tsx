@@ -15,7 +15,7 @@ const WorkspaceIdJoinPage: ({
   params,
 }: WorkspaceIdJoinPageProps) => Promise<ReactElement> = async ({
   params,
-}: WorkspaceIdJoinPageProps): Promise<ReactElement> => {
+}: WorkspaceIdJoinPageProps) => {
   const user: Models.User<Models.Preferences> | null = await getCurrent();
 
   if (!user) {

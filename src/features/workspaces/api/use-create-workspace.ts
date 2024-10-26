@@ -26,11 +26,11 @@ export const useCreateWorkspace: () => UseMutationResult<
         await client.api.workspaces.$post({ form });
       return await response.json();
     },
-    onSuccess: (): void => {
+    onSuccess: () => {
       toast.success("Workspace created successfully");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to create workspace");
     },
   });

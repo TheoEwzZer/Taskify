@@ -15,7 +15,7 @@ export const getMember: ({
   databases,
   workspaceId,
   userId,
-}: GetMemberProps): Promise<Models.Document> => {
+}: GetMemberProps) => {
   const members: Models.DocumentList<Models.Document> =
     await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
       Query.equal("workspaceId", workspaceId),

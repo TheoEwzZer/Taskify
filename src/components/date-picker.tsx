@@ -30,7 +30,7 @@ export const DatePicker: ({
   onChange,
   className,
   placeholder = "Select date",
-}: DatePickerProps): React.ReactElement => {
+}: DatePickerProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -52,7 +52,7 @@ export const DatePicker: ({
           mode="single"
           weekStartsOn={1}
           selected={value}
-          onSelect={(date: Date | undefined): void => {
+          onSelect={(date: Date | undefined) => {
             onChange(date as Date);
           }}
         />

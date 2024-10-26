@@ -17,7 +17,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: ({ children }: DashboardLayoutProps) => ReactElement = ({
   children,
-}: DashboardLayoutProps): ReactElement => {
+}: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen">
       <SidebarProvider>

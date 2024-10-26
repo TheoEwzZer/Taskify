@@ -16,7 +16,7 @@ const WorkspaceSettingsPage: ({
   params,
 }: WorkspaceIdSettingsPageProps) => Promise<ReactElement> = async ({
   params,
-}: WorkspaceIdSettingsPageProps): Promise<ReactElement> => {
+}: WorkspaceIdSettingsPageProps) => {
   const user: Models.User<Models.Preferences> | null = await getCurrent();
 
   if (!user) {

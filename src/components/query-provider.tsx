@@ -36,9 +36,7 @@ interface QueryProviderProps {
 
 export const QueryProvider: ({
   children,
-}: QueryProviderProps) => ReactElement = ({
-  children,
-}: QueryProviderProps): ReactElement => {
+}: QueryProviderProps) => ReactElement = ({ children }: QueryProviderProps) => {
   const queryClient = getQueryClient();
 
   return (

@@ -21,7 +21,7 @@ import Link from "next/link";
 import { Fragment, ReactElement } from "react";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 
-export const Memberslist: () => ReactElement = (): ReactElement => {
+export const Memberslist: () => ReactElement = () => {
   const workspaceId: string = useWorkspaceId();
   const [ConfimDialog, confirm] = useConfirm(
     "Remove member",
@@ -38,7 +38,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
   const handleUpdateMember: (memberId: string, role: MemberRole) => void = (
     memberId: string,
     role: MemberRole
-  ): void => {
+  ) => {
     updateMember({
       json: { role },
       param: { memberId },
@@ -47,7 +47,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
 
   const handleDeleteMember: (memberId: string) => Promise<void> = async (
     memberId: string
-  ): Promise<void> => {
+  ) => {
     const ok: unknown = await confirm();
 
     if (!ok) {
@@ -57,7 +57,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
     deleteMember(
       { param: { memberId } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           window.location.reload();
         },
       }
@@ -127,7 +127,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
                   >
                     <DropdownMenuItem
                       className="font-medium"
-                      onClick={(): void => {
+                      onClick={() => {
                         handleUpdateMember(member.$id, MemberRole.ADMIN);
                       }}
                       disabled={isUpdatingMember}
@@ -136,7 +136,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="font-medium"
-                      onClick={(): void => {
+                      onClick={() => {
                         handleUpdateMember(member.$id, MemberRole.MEMBER);
                       }}
                       disabled={isUpdatingMember}
@@ -145,7 +145,7 @@ export const Memberslist: () => ReactElement = (): ReactElement => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="font-medium text-amber-700"
-                      onClick={(): void => {
+                      onClick={() => {
                         handleDeleteMember(member.$id);
                       }}
                       disabled={isDeletingMember}

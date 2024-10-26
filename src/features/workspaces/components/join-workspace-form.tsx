@@ -27,13 +27,13 @@ export const JoinWorkspaceForm: ({
   initialValues,
 }: JoinWorkspaceFormProps) => ReactElement = ({
   initialValues,
-}: JoinWorkspaceFormProps): ReactElement => {
+}: JoinWorkspaceFormProps) => {
   const router: AppRouterInstance = useRouter();
   const workspaceId: string = useWorkspaceId();
   const inviteCode: string = useInviteCode();
   const { mutate, isPending } = useJoinWorkspace();
 
-  const onSubmit: () => void = (): void => {
+  const onSubmit: () => void = () => {
     mutate(
       {
         param: {
@@ -44,7 +44,7 @@ export const JoinWorkspaceForm: ({
         },
       },
       {
-        onSuccess: ({ data }: { data: { $id: string } }): void => {
+        onSuccess: ({ data }: { data: { $id: string } }) => {
           router.push(`/workspaces/${data.$id}`);
         },
       }

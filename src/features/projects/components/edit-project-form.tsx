@@ -39,7 +39,7 @@ export const EditProjectForm: ({
 }: EditProjectFormProps) => ReactElement = ({
   onCancel,
   initialValues,
-}: EditProjectFormProps): ReactElement => {
+}: EditProjectFormProps) => {
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useUpdateProject();
   const { mutate: deleteProject, isPending: isDeletingProject } =
@@ -65,7 +65,7 @@ export const EditProjectForm: ({
     },
   });
 
-  const handleDelete: () => Promise<void> = async (): Promise<void> => {
+  const handleDelete: () => Promise<void> = async () => {
     const ok: unknown = await confirmDelete();
 
     if (!ok) {
@@ -75,7 +75,7 @@ export const EditProjectForm: ({
     deleteProject(
       { param: { projectId: initialValues.$id } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           window.location.href = `/workspaces/${initialValues.workspaceId}`;
         },
       }
@@ -84,7 +84,7 @@ export const EditProjectForm: ({
 
   const onSubmit: (values: z.infer<typeof updateProjectSchema>) => void = (
     values: z.infer<typeof updateProjectSchema>
-  ): void => {
+  ) => {
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
@@ -93,7 +93,7 @@ export const EditProjectForm: ({
     mutate(
       { form: finalValues, param: { projectId: initialValues.$id } },
       {
-        onSuccess: (): void => {
+        onSuccess: () => {
           form.reset();
         },
       }
@@ -102,7 +102,7 @@ export const EditProjectForm: ({
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
     e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ) => {
     const file: File | undefined = e.target.files?.[0];
 
     if (file) {
@@ -202,7 +202,7 @@ export const EditProjectForm: ({
                               variant="destructive"
                               className="mt-2 w-fit"
                               disabled={isPending}
-                              onClick={(): void => {
+                              onClick={() => {
                                 field.onChange(null);
                                 if (inputRef.current) {
                                   inputRef.current.value = "";

@@ -50,13 +50,13 @@ export const useUpdateWorkspace: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }): void => {
+    onSuccess: ({ data }) => {
       toast.success("Workspace updated successfully");
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });
     },
-    onError: (): void => {
+    onError: () => {
       toast.error("Failed to update workspace");
     },
   });

@@ -12,9 +12,7 @@ interface CreateTaskFormWrapperProps {
 
 export const CreateTaskFormWrapper: (
   props: CreateTaskFormWrapperProps
-) => ReactElement = ({
-  onCancel,
-}: CreateTaskFormWrapperProps): ReactElement => {
+) => ReactElement = ({ onCancel }: CreateTaskFormWrapperProps) => {
   const workspaceId: string = useWorkspaceId();
 
   const { data: projects, isLoading: isLoadingProjects } = useGetProjects({

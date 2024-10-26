@@ -5,7 +5,7 @@ import { ReactElement } from "react";
 import { useCreateWorkspaceModal } from "../hooks/use-create-workspace-modal";
 import { CreateWorkspaceForm } from "./create-workspace-form";
 
-export const CreateWorkspaceModal: () => ReactElement = (): ReactElement => {
+export const CreateWorkspaceModal: () => ReactElement = () => {
   const { isOpen, setIsOpen, close } = useCreateWorkspaceModal();
 
   return (
