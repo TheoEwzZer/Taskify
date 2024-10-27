@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -126,6 +127,7 @@ export const SignUpCard: () => ReactElement = () => {
       </div>
       <CardContent className="flex flex-col gap-y-4 p-7">
         <Button
+          onClick={(): Promise<never> => signUpWithGoogle()}
           disabled={isPending}
           variant="secondary"
           size="lg"
@@ -135,6 +137,7 @@ export const SignUpCard: () => ReactElement = () => {
           Login with Google
         </Button>
         <Button
+          onClick={(): Promise<never> => signUpWithGithub()}
           disabled={isPending}
           variant="secondary"
           size="lg"

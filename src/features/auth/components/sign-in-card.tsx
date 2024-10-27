@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -109,6 +110,7 @@ export const SignInCard: () => ReactElement = () => {
       </div>
       <CardContent className="flex flex-col gap-y-4 p-7">
         <Button
+          onClick={(): Promise<never> => signUpWithGoogle()}
           disabled={isPending}
           variant="secondary"
           size="lg"
@@ -118,6 +120,7 @@ export const SignInCard: () => ReactElement = () => {
           Login with Google
         </Button>
         <Button
+          onClick={(): Promise<never> => signUpWithGithub()}
           disabled={isPending}
           variant="secondary"
           size="lg"
