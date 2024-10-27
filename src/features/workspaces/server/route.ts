@@ -208,7 +208,32 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    // TODO: Delete members, projects and tasks
+    const tasks: Models.DocumentList<Task> =
+      await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
+        Query.equal("workspaceId", workspaceId),
+      ]);
+
+    for (const task of tasks.documents) {
+      await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id);
+    }
+
+    const members: Models.DocumentList<Member> =
+      await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
+        Query.equal("workspaceId", workspaceId),
+      ]);
+
+    for (const member of members.documents) {
+      await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id);
+    }
+
+    const projects: Models.DocumentList<Workspace> =
+      await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
+        Query.equal("workspaceId", workspaceId),
+      ]);
+
+    for (const project of projects.documents) {
+      await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, project.$id);
+    }
 
     await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
 
