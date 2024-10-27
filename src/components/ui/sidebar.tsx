@@ -278,9 +278,13 @@ const SidebarTrigger = React.forwardRef<
   let IconComponent;
 
   if (isMobile) {
-    IconComponent = <PanelLeftOpen />;
+    IconComponent = <PanelLeftOpen className="!size-6" />;
   } else {
-    IconComponent = open ? <PanelLeftClose /> : <PanelLeftOpen />;
+    IconComponent = open ? (
+      <PanelLeftClose className="!size-6" />
+    ) : (
+      <PanelLeftOpen className="!size-6" />
+    );
   }
 
   return (
