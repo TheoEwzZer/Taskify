@@ -51,8 +51,6 @@ const app = new Hono()
     ) => {
       const { email, password } = c.req.valid("json");
 
-      console.log(email, password);
-
       const { account } = await createAdminClient();
 
       const session = await account.createEmailPasswordSession(email, password);
@@ -94,8 +92,6 @@ const app = new Hono()
       >
     ) => {
       const { name, email, password } = c.req.valid("json");
-
-      console.log(name, email, password);
 
       const { account } = await createAdminClient();
 

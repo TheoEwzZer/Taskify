@@ -92,7 +92,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    if (allMembersInWorkspace.documents.length === 1) {
+    if (allMembersInWorkspace.total === 1) {
       return c.json({ error: "Cannot delete the last member" }, 400);
     }
     await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, memberId);
