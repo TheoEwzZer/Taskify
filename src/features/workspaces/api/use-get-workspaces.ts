@@ -2,25 +2,20 @@ import { client } from "@/lib/rpc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
-import { Models } from "node-appwrite";
+import { Workspace } from "../types";
 
 export const useGetWorkspaces: () => UseQueryResult<
-  {
-    total: number;
-    documents: Models.Document[];
-  } | null,
+  { total: number; documents: Workspace[] } | null,
   Error
 > = () => {
   return useQuery({
     queryKey: ["workspaces"],
-    queryFn: async () => {
+    queryFn: async (): Promise<{
+      total: number;
+      documents: Workspace[];
+    }> => {
       const response: ClientResponse<
-        {
-          data: {
-            total: number;
-            documents: Models.Document[];
-          };
-        },
+        { data: { total: number; documents: Workspace[] } },
         StatusCode,
         "json"
       > = await client.api.workspaces.$get();

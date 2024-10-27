@@ -28,25 +28,12 @@ export const useUpdateMember: () => UseMutationResult<
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ param, json }) => {
       const response:
-        | ClientResponse<
-            {
-              error: string;
-            },
-            400 | 401,
-            "json"
-          >
-        | ClientResponse<
-            {
-              data: {
-                $id: string;
-              };
-            },
-            StatusCode,
-            "json"
-          > = await client.api.members[":memberId"]["$patch"]({
-        param,
-        json,
-      });
+        | ClientResponse<{ error: string }, 400 | 401 | 404, "json">
+        | ClientResponse<ResponseType, StatusCode, "json"> =
+        await client.api.members[":memberId"]["$patch"]({
+          param,
+          json,
+        });
 
       if (!response.ok) {
         throw new Error("Failed to update member");

@@ -5,7 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { Models, Query } from "node-appwrite";
 import { z } from "zod";
-import { MemberRole } from "../members/type";
+import { Member, MemberRole } from "../members/types";
 import { getMember } from "../members/util";
 
 const app = new Hono()
@@ -19,7 +19,7 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
       const { workspaceId } = c.req.valid("query");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -29,18 +29,13 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const members: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+      const members: Models.DocumentList<Member> =
+        await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
           Query.equal("workspaceId", workspaceId),
         ]);
 
-      const populatedMembers: Array<
-        Models.Document & {
-          name: string;
-          email: string;
-        }
-      > = await Promise.all(
-        members.documents.map(async (member: Models.Document) => {
+      const populatedMembers: Member[] = await Promise.all(
+        members.documents.map(async (member: Member) => {
           const user: Models.User<Models.Preferences> = await users.get(
             member.userId
           );
@@ -65,7 +60,7 @@ const app = new Hono()
     const user: Models.User<Models.Preferences> = c.get("user");
     const databases = c.get("databases");
 
-    const memberToDelete: Models.Document = await databases.getDocument(
+    const memberToDelete: Member = await databases.getDocument<Member>(
       DATABASE_ID,
       MEMBERS_ID,
       memberId
@@ -75,12 +70,12 @@ const app = new Hono()
       return c.json({ error: "Not found" }, 404);
     }
 
-    const allMembersInWorkspace: Models.DocumentList<Models.Document> =
-      await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+    const allMembersInWorkspace: Models.DocumentList<Member> =
+      await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
         Query.equal("workspaceId", memberToDelete.workspaceId),
       ]);
 
-    const member: Models.Document = await getMember({
+    const member: Member = await getMember({
       databases,
       workspaceId: memberToDelete.workspaceId,
       userId: user.$id,
@@ -114,7 +109,7 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
       const databases = c.get("databases");
 
-      const memberToUpdate: Models.Document = await databases.getDocument(
+      const memberToUpdate: Member = await databases.getDocument<Member>(
         DATABASE_ID,
         MEMBERS_ID,
         memberId
@@ -124,12 +119,12 @@ const app = new Hono()
         return c.json({ error: "Not found" }, 404);
       }
 
-      const allMembersInWorkspace: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+      const allMembersInWorkspace: Models.DocumentList<Member> =
+        await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
           Query.equal("workspaceId", memberToUpdate.workspaceId),
         ]);
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId: memberToUpdate.workspaceId,
         userId: user.$id,

@@ -28,14 +28,8 @@ export const useDeleteProject: () => UseMutationResult<
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ param }) => {
       const response:
-        | ClientResponse<
-            {
-              error: string;
-            },
-            401 | 404,
-            "json"
-          >
-        | ClientResponse<{ data: { $id: string } }, StatusCode, "json"> =
+        | ClientResponse<{ error: string }, 401 | 404, "json">
+        | ClientResponse<ResponseType, StatusCode, "json"> =
         await client.api.projects[":projectId"]["$delete"]({
           param,
         });

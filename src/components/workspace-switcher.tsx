@@ -4,10 +4,10 @@ import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import { WorkspaceAvatar } from "@/features/workspaces/components/workspace-avatar";
 import { useCreateWorkspaceModal } from "@/features/workspaces/hooks/use-create-workspace-modal";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { Workspace } from "@/features/workspaces/types";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import {
   DropdownMenu,
@@ -29,10 +29,9 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
     router.push(`/workspaces/${workspaceId}`);
   };
 
-  const currentWorkspace: Models.Document | undefined =
-    workspaces?.documents.find(
-      (workspace: Models.Document): boolean => workspace.$id === workspaceId
-    );
+  const currentWorkspace: Workspace | undefined = workspaces?.documents.find(
+    (workspace: Workspace): boolean => workspace.$id === workspaceId
+  );
 
   return (
     <SidebarMenu>
@@ -69,7 +68,7 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
               Workspaces
             </DropdownMenuLabel>
             {workspaces?.documents.map(
-              (workspace: Models.Document): ReactElement => (
+              (workspace: Workspace): ReactElement => (
                 <DropdownMenuItem
                   key={workspace.$id}
                   onClick={(): void => onSelect(workspace.$id)}

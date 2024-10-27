@@ -1,23 +1,18 @@
 import { MemberAvatar } from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { TaskStatus } from "../../types";
 
 interface EventCardProps {
   title: string;
   project: Project | undefined;
-  assignee:
-    | (Models.Document & {
-        name: string;
-        email: string;
-      })
-    | undefined;
+  assignee: Member | undefined;
   status: TaskStatus;
   id: string;
 }

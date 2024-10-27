@@ -1,4 +1,5 @@
 import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID } from "@/config";
+import { Member } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { zValidator } from "@hono/zod-validator";
@@ -20,7 +21,7 @@ const app = new Hono()
 
       const { name, image, workspaceId } = c.req.valid("form");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -49,7 +50,7 @@ const app = new Hono()
         uploadedImageUrl = image;
       }
 
-      const project: Models.Document = await databases.createDocument(
+      const project: Project = await databases.createDocument<Project>(
         DATABASE_ID,
         PROJECTS_ID,
         ID.unique(),
@@ -77,7 +78,7 @@ const app = new Hono()
         return c.json({ error: "Missing workspaceId" }, 400);
       }
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -87,8 +88,8 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const projects: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(DATABASE_ID, PROJECTS_ID, [
+      const projects: Models.DocumentList<Project> =
+        await databases.listDocuments<Project>(DATABASE_ID, PROJECTS_ID, [
           Query.equal("workspaceId", workspaceId),
           Query.orderDesc("$createdAt"),
         ]);
@@ -96,6 +97,34 @@ const app = new Hono()
       return c.json({ data: projects });
     }
   )
+  .get("/:projectId", sessionMiddleware, async (c) => {
+    const user: Models.User<Models.Preferences> = c.get("user");
+    const databases = c.get("databases");
+
+    const { projectId } = c.req.param();
+
+    const project: Project = await databases.getDocument<Project>(
+      DATABASE_ID,
+      PROJECTS_ID,
+      projectId
+    );
+
+    if (!project) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
+    const member: Member = await getMember({
+      databases,
+      workspaceId: project.workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    return c.json({ data: project });
+  })
   .patch(
     "/:projectId",
     zValidator("form", updateProjectSchema),
@@ -118,7 +147,7 @@ const app = new Hono()
         return c.json({ error: "Not found" }, 404);
       }
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId: existingProject.workspaceId,
         userId: user.$id,
@@ -147,7 +176,7 @@ const app = new Hono()
         uploadedImageUrl = image;
       }
 
-      const project: Models.Document = await databases.updateDocument(
+      const project: Project = await databases.updateDocument<Project>(
         DATABASE_ID,
         PROJECTS_ID,
         projectId,
@@ -176,7 +205,7 @@ const app = new Hono()
       return c.json({ error: "Not found" }, 404);
     }
 
-    const member: Models.Document = await getMember({
+    const member: Member = await getMember({
       databases,
       workspaceId: existingProject.workspaceId,
       userId: user.$id,

@@ -1,4 +1,5 @@
 import { Models } from "node-appwrite";
+import { Member } from "../members/types";
 import { Project } from "../projects/types";
 
 export enum TaskStatus {
@@ -11,12 +12,7 @@ export enum TaskStatus {
 
 export type Task = Models.Document & {
   project: Project | undefined;
-  assignee:
-    | (Models.Document & {
-        name: string;
-        email: string;
-      })
-    | undefined;
+  assignee: Member | undefined;
   name: string;
   status: TaskStatus;
   workspaceId: string;

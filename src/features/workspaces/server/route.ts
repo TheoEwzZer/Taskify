@@ -4,7 +4,7 @@ import {
   MEMBERS_ID,
   WORKSPACES_ID,
 } from "@/config";
-import { MemberRole } from "@/features/members/type";
+import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { generateInviteCode } from "@/lib/utils";
@@ -20,8 +20,8 @@ const app = new Hono()
     const user: Models.User<Models.Preferences> = c.get("user");
     const databases = c.get("databases");
 
-    const members: Models.DocumentList<Models.Document> =
-      await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+    const members: Models.DocumentList<Member> =
+      await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
         Query.equal("userId", user.$id),
       ]);
 
@@ -29,17 +29,60 @@ const app = new Hono()
       return c.json({ data: { documents: [], total: 0 } });
     }
 
-    const workspacesIds: any[] = members.documents.map(
-      (member: Models.Document): any => member.workspaceId
+    const workspacesIds: string[] = members.documents.map(
+      (member: Member): string => member.workspaceId
     );
 
-    const workspaces: Models.DocumentList<Models.Document> =
-      await databases.listDocuments(DATABASE_ID, WORKSPACES_ID, [
+    const workspaces: Models.DocumentList<Workspace> =
+      await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
         Query.orderDesc("$createdAt"),
         Query.contains("$id", workspacesIds),
       ]);
 
     return c.json({ data: workspaces });
+  })
+  .get("/:workspaceId", sessionMiddleware, async (c) => {
+    const { workspaceId } = c.req.param();
+    const databases = c.get("databases");
+    const user: Models.User<Models.Preferences> = c.get("user");
+
+    const member: Member = await getMember({
+      databases,
+      workspaceId,
+      userId: user.$id,
+    });
+
+    if (!member) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const workspace: Workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    if (!workspace) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
+    return c.json({ data: workspace });
+  })
+  .get("/:workspaceId/info", sessionMiddleware, async (c) => {
+    const { workspaceId } = c.req.param();
+    const databases = c.get("databases");
+
+    const workspace: Workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    if (!workspace) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
+    return c.json({ data: { name: workspace.name } });
   })
   .post(
     "/",
@@ -71,7 +114,7 @@ const app = new Hono()
         uploadedImageUrl = image;
       }
 
-      const workspace: Models.Document = await databases.createDocument(
+      const workspace: Workspace = await databases.createDocument<Workspace>(
         DATABASE_ID,
         WORKSPACES_ID,
         ID.unique(),
@@ -104,7 +147,7 @@ const app = new Hono()
       const { workspaceId } = c.req.param();
       const { name, image } = c.req.valid("form");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -133,7 +176,7 @@ const app = new Hono()
         uploadedImageUrl = image;
       }
 
-      const workspace: Models.Document = await databases.updateDocument(
+      const workspace: Workspace = await databases.updateDocument<Workspace>(
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
@@ -152,7 +195,7 @@ const app = new Hono()
 
     const { workspaceId } = c.req.param();
 
-    const member: Models.Document = await getMember({
+    const member: Member = await getMember({
       databases,
       workspaceId,
       userId: user.$id,
@@ -174,7 +217,7 @@ const app = new Hono()
 
     const { workspaceId } = c.req.param();
 
-    const member: Models.Document = await getMember({
+    const member: Member = await getMember({
       databases,
       workspaceId,
       userId: user.$id,
@@ -184,7 +227,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const workspace: Models.Document = await databases.updateDocument(
+    const workspace: Workspace = await databases.updateDocument<Workspace>(
       DATABASE_ID,
       WORKSPACES_ID,
       workspaceId,
@@ -206,7 +249,7 @@ const app = new Hono()
       const databases = c.get("databases");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,

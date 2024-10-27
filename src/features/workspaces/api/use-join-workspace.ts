@@ -6,8 +6,10 @@ import {
 import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
-import { Models } from "node-appwrite";
+import { ClientResponse } from "hono/client";
+import { StatusCode } from "hono/utils/http-status";
 import { toast } from "sonner";
+import { Workspace } from "../types";
 
 type ResponseType = InferResponseType<
   (typeof client.api.workspaces)[":workspaceId"]["join"]["$post"],
@@ -26,12 +28,13 @@ export const useJoinWorkspace: () => UseMutationResult<
   const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ param, json }) => {
-      const response = await client.api.workspaces[":workspaceId"]["join"][
-        "$post"
-      ]({
-        param,
-        json,
-      });
+      const response:
+        | ClientResponse<{ error: string }, 400 | 404, "json">
+        | ClientResponse<ResponseType, StatusCode, "json"> =
+        await client.api.workspaces[":workspaceId"]["join"]["$post"]({
+          param,
+          json,
+        });
 
       if (!response.ok) {
         throw new Error("Failed to join workspace");
@@ -39,7 +42,7 @@ export const useJoinWorkspace: () => UseMutationResult<
 
       return await response.json();
     },
-    onSuccess: ({ data }: { data: Models.Document }): void => {
+    onSuccess: ({ data }: { data: Workspace }): void => {
       toast.success("Joined workspace successfully");
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       queryClient.invalidateQueries({ queryKey: ["workspace", data.$id] });

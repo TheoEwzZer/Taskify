@@ -8,10 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetMembers } from "@/features/members/api/use-get-member";
+import { Member } from "@/features/members/types";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
+import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { FolderIcon, ListChecksIcon, UserIcon } from "lucide-react";
-import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
@@ -41,7 +42,7 @@ export const DataFilters: ({
         value: string;
         label: string;
       }[]
-    | undefined = projects?.documents.map((project: Models.Document) => ({
+    | undefined = projects?.documents.map((project: Project) => ({
     value: project.$id,
     label: project.name,
   }));
@@ -51,17 +52,10 @@ export const DataFilters: ({
         value: string;
         label: string;
       }[]
-    | undefined = members?.documents.map(
-    (
-      member: Models.Document & {
-        name: string;
-        email: string;
-      }
-    ) => ({
-      value: member.$id,
-      label: member.name,
-    })
-  );
+    | undefined = members?.documents.map((member: Member) => ({
+    value: member.$id,
+    label: member.name,
+  }));
 
   const [{ status, assigneeId, projectId, dueDate }, setFilters] =
     useTaskFilters();

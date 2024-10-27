@@ -8,7 +8,6 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
-import { Models } from "node-appwrite";
 import { toast } from "sonner";
 
 type ResponseType = InferResponseType<typeof client.api.projects.$post, 200>;
@@ -24,14 +23,8 @@ export const useCreateProject: () => UseMutationResult<
   return useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ form }) => {
       const response:
-        | ClientResponse<
-            {
-              error: string;
-            },
-            401,
-            "json"
-          >
-        | ClientResponse<{ data: Models.Document }, StatusCode, "json"> =
+        | ClientResponse<{ error: string }, 401, "json">
+        | ClientResponse<ResponseType, StatusCode, "json"> =
         await client.api.projects.$post({ form });
 
       if (!response.ok) {

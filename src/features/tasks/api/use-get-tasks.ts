@@ -1,6 +1,8 @@
 import { client } from "@/lib/rpc";
-import { useQuery } from "@tanstack/react-query";
-import { TaskStatus } from "../types";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { ClientResponse } from "hono/client";
+import { StatusCode } from "hono/utils/http-status";
+import { Task, TaskStatus } from "../types";
 
 interface UseGetTasksProps {
   workspaceId: string;
@@ -11,14 +13,17 @@ interface UseGetTasksProps {
   dueDate?: string | null;
 }
 
-export const useGetTasks = ({
+export const useGetTasks: ({
   workspaceId,
   projectId,
   status,
   search,
   assigneeId,
   dueDate,
-}: UseGetTasksProps) => {
+}: UseGetTasksProps) => UseQueryResult<
+  { documents: Task[]; total: number },
+  Error
+> = ({ workspaceId, projectId, status, search, assigneeId, dueDate }) => {
   return useQuery({
     queryKey: [
       "tasks",
@@ -29,8 +34,14 @@ export const useGetTasks = ({
       assigneeId,
       dueDate,
     ],
-    queryFn: async () => {
-      const response = await client.api.tasks.$get({
+    queryFn: async (): Promise<{ documents: Task[]; total: number }> => {
+      const response:
+        | ClientResponse<{ error: string }, 401, "json">
+        | ClientResponse<
+            { data: { documents: Task[]; total: number } },
+            StatusCode,
+            "json"
+          > = await client.api.tasks.$get({
         query: {
           workspaceId,
           projectId: projectId ?? undefined,

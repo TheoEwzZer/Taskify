@@ -1,6 +1,8 @@
 import { client } from "@/lib/rpc";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { Models } from "node-appwrite";
+import { ClientResponse } from "hono/client";
+import { StatusCode } from "hono/utils/http-status";
+import { Project } from "../types";
 
 interface UseGetProjectsProps {
   workspaceId: string;
@@ -11,14 +13,20 @@ export const useGetProjects: ({
 }: UseGetProjectsProps) => UseQueryResult<
   {
     total: number;
-    documents: Models.Document[];
+    documents: Project[];
   },
   Error
-> = ({ workspaceId }: UseGetProjectsProps) => {
+> = ({ workspaceId }) => {
   return useQuery({
     queryKey: ["projects", workspaceId],
-    queryFn: async () => {
-      const response = await client.api.projects.$get({
+    queryFn: async (): Promise<{ total: number; documents: Project[] }> => {
+      const response:
+        | ClientResponse<{ error: string }, 400 | 401, "json">
+        | ClientResponse<
+            { data: { total: number; documents: Project[] } },
+            StatusCode,
+            "json"
+          > = await client.api.projects.$get({
         query: { workspaceId },
       });
 

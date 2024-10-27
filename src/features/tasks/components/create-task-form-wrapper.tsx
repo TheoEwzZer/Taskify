@@ -1,9 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetMembers } from "@/features/members/api/use-get-member";
+import { Member } from "@/features/members/types";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
+import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
-import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { CreateTaskForm } from "./create-task-form";
 
@@ -29,7 +30,7 @@ export const CreateTaskFormWrapper: (
         name: any;
         imageUrl: any;
       }[]
-    | undefined = projects?.documents.map((project: Models.Document) => ({
+    | undefined = projects?.documents.map((project: Project) => ({
     id: project.$id,
     name: project.name,
     imageUrl: project.imageUrl,
@@ -40,17 +41,10 @@ export const CreateTaskFormWrapper: (
         id: string;
         name: string;
       }[]
-    | undefined = members?.documents.map(
-    (
-      member: Models.Document & {
-        name: string;
-        email: string;
-      }
-    ) => ({
-      id: member.$id,
-      name: member.name,
-    })
-  );
+    | undefined = members?.documents.map((member: Member) => ({
+    id: member.$id,
+    name: member.name,
+  }));
 
   const isLoading: boolean = isLoadingProjects || isLoadingMembers;
 

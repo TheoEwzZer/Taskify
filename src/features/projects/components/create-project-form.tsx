@@ -20,12 +20,12 @@ import { ImageIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Models } from "node-appwrite";
 import { ReactElement, RefObject, useRef } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useCreateProject } from "../api/use-create-project";
 import { createProjectSchema } from "../schemas";
+import { Project } from "../types";
 
 interface CreateProjectFormProps {
   onCancel?: () => void;
@@ -65,7 +65,7 @@ export const CreateProjectForm: ({
     mutate(
       { form: finalValues },
       {
-        onSuccess: ({ data }: { data: Models.Document }): void => {
+        onSuccess: ({ data }: { data: Project }): void => {
           form.reset();
           router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
         },

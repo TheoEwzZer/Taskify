@@ -98,14 +98,7 @@ export const EditWorkspaceForm: ({
       return;
     }
 
-    resetInviteCode(
-      { param: { workspaceId: initialValues.$id } },
-      {
-        onSuccess: (): void => {
-          router.refresh();
-        },
-      }
-    );
+    resetInviteCode({ param: { workspaceId: initialValues.$id } });
   };
 
   const onSubmit: (values: z.infer<typeof updateWorkspaceSchema>) => void = (
@@ -116,14 +109,7 @@ export const EditWorkspaceForm: ({
       image: values.image instanceof File ? values.image : "",
     };
 
-    mutate(
-      { form: finalValues, param: { workspaceId: initialValues.$id } },
-      {
-        onSuccess: (): void => {
-          form.reset();
-        },
-      }
-    );
+    mutate({ form: finalValues, param: { workspaceId: initialValues.$id } });
   };
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (

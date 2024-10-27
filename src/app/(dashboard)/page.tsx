@@ -1,5 +1,6 @@
 import { getCurrent } from "@/features/auth/queries";
 import { getWorkspaces } from "@/features/workspaces/queries";
+import { Workspace } from "@/features/workspaces/types";
 import { redirect } from "next/navigation";
 import { Models } from "node-appwrite";
 import { ReactElement } from "react";
@@ -11,8 +12,7 @@ export default async function Home(): Promise<ReactElement> {
     redirect("/sign-in");
   }
 
-  const workspaces: Models.DocumentList<Models.Document> =
-    await getWorkspaces();
+  const workspaces: Models.DocumentList<Workspace> = await getWorkspaces();
   if (workspaces.total === 0) {
     redirect("/workspaces/create");
   } else {

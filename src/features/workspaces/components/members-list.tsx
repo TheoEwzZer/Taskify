@@ -14,11 +14,10 @@ import { useDeleteMember } from "@/features/members/api/use-delete-member";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { useUpdateMember } from "@/features/members/api/use-update-member";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
-import { MemberRole } from "@/features/members/type";
+import { Member, MemberRole } from "@/features/members/types";
 import { useConfirm } from "@/hooks/use-confirm";
 import { ArrowLeftIcon, MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
-import { Models } from "node-appwrite";
 import { Fragment, ReactElement } from "react";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 
@@ -86,13 +85,7 @@ export const Memberslist: () => ReactElement = () => {
       </div>
       <CardContent className="p-7">
         {data?.documents.map(
-          (
-            member: Models.Document & {
-              name: string;
-              email: string;
-            },
-            index: number
-          ): ReactElement => (
+          (member: Member, index: number): ReactElement => (
             <Fragment key={member.$id}>
               <div className="flex flex-row items-center gap-x-4">
                 <MemberAvatar

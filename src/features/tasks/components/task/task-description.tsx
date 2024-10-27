@@ -19,10 +19,17 @@ export const TaskDescription: ({
   const { mutate, isPending } = useUpdateTask();
 
   const handleSave: () => void = (): void => {
-    mutate({
-      json: { description: value },
-      param: { taskId: task.$id },
-    });
+    mutate(
+      {
+        json: { description: value },
+        param: { taskId: task.$id },
+      },
+      {
+        onSuccess: (): void => {
+          setIsEditing(false);
+        },
+      }
+    );
   };
 
   return (

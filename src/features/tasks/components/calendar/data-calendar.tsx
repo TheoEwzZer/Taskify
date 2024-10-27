@@ -1,3 +1,4 @@
+import { Member } from "@/features/members/types";
 import { Project } from "@/features/projects/types";
 import {
   addMonths,
@@ -8,7 +9,6 @@ import {
   subMonths,
 } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { Models } from "node-appwrite";
 import { ReactElement, useState } from "react";
 import { Calendar, dateFnsLocalizer, DateLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -45,12 +45,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
     end: Date;
     title: string;
     project: Project | undefined;
-    assignee:
-      | (Models.Document & {
-          name: string;
-          email: string;
-        })
-      | undefined;
+    assignee: Member | undefined;
     status: TaskStatus;
     id: string;
   }[] = data.map((task: Task) => ({

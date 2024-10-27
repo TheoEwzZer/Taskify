@@ -9,7 +9,6 @@ import { client } from "@/lib/rpc";
 import { ClientResponse } from "hono/client";
 import { StatusCode } from "hono/utils/http-status";
 import { toast } from "sonner";
-import { Task } from "../types";
 
 type ResponseType = InferResponseType<
   (typeof client.api.tasks)["bulk-update"]["$post"],
@@ -30,7 +29,7 @@ export const useBulkUpdateTask: () => UseMutationResult<
     mutationFn: async ({ json }) => {
       const response:
         | ClientResponse<{ error: string }, 400 | 401, "json">
-        | ClientResponse<{ data: Task[] }, StatusCode, "json"> =
+        | ClientResponse<ResponseType, StatusCode, "json"> =
         await client.api.tasks["bulk-update"]["$post"]({ json });
 
       if (!response.ok) {

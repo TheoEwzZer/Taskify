@@ -1,4 +1,5 @@
 import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
+import { Member } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { Project } from "@/features/projects/types";
 import { createAdminClient } from "@/lib/appwrite";
@@ -26,7 +27,7 @@ const app = new Hono()
       return c.json({ error: "Not found" }, 404);
     }
 
-    const member: Models.Document = await getMember({
+    const member: Member = await getMember({
       databases,
       workspaceId: task.workspaceId,
       userId: user.$id,
@@ -62,7 +63,7 @@ const app = new Hono()
       const { workspaceId, projectId, assigneeId, status, search, dueDate } =
         c.req.valid("query");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -119,20 +120,15 @@ const app = new Hono()
           projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
         );
 
-      const members: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(
+      const members: Models.DocumentList<Member> =
+        await databases.listDocuments<Member>(
           DATABASE_ID,
           MEMBERS_ID,
           assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
         );
 
-      const assignees: Array<
-        Models.Document & {
-          name: string;
-          email: string;
-        }
-      > = await Promise.all(
-        members.documents.map(async (member: Models.Document) => {
+      const assignees: Member[] = await Promise.all(
+        members.documents.map(async (member: Member) => {
           const user: Models.User<Models.Preferences> = await users.get(
             member.userId
           );
@@ -150,14 +146,8 @@ const app = new Hono()
           (project: Project): boolean => project.$id === task.projectId
         );
 
-        const assignee:
-          | (Models.Document & {
-              name: string;
-              email: string;
-            })
-          | undefined = assignees.find(
-          (assignee: Models.Document): boolean =>
-            assignee.$id === task.assigneeId
+        const assignee: Member | undefined = assignees.find(
+          (assignee: Member): boolean => assignee.$id === task.assigneeId
         );
 
         return {
@@ -185,7 +175,7 @@ const app = new Hono()
       const { name, status, workspaceId, projectId, dueDate, assigneeId } =
         c.req.valid("json");
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
@@ -195,8 +185,8 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const highestPositiontask: Models.DocumentList<Models.Document> =
-        await databases.listDocuments(DATABASE_ID, TASKS_ID, [
+      const highestPositionTask: Models.DocumentList<Task> =
+        await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
           Query.equal("status", status),
           Query.equal("workspaceId", workspaceId),
           Query.orderAsc("position"),
@@ -204,11 +194,11 @@ const app = new Hono()
         ]);
 
       const newPosition: number =
-        highestPositiontask.documents.length > 0
-          ? highestPositiontask.documents[0].position + 1000
+        highestPositionTask.documents.length > 0
+          ? highestPositionTask.documents[0].position + 1000
           : 1000;
 
-      const task: Models.Document = await databases.createDocument(
+      const task: Task = await databases.createDocument<Task>(
         DATABASE_ID,
         TASKS_ID,
         ID.unique(),
@@ -237,13 +227,13 @@ const app = new Hono()
         c.req.valid("json");
       const { taskId } = c.req.param();
 
-      const existingTask: Models.Document = await databases.getDocument(
+      const existingTask: Task = await databases.getDocument<Task>(
         DATABASE_ID,
         TASKS_ID,
         taskId
       );
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId: existingTask.workspaceId,
         userId: user.$id,
@@ -253,7 +243,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const task: Models.Document = await databases.updateDocument(
+      const task: Task = await databases.updateDocument<Task>(
         DATABASE_ID,
         TASKS_ID,
         taskId,
@@ -286,7 +276,7 @@ const app = new Hono()
       return c.json({ error: "Not found" }, 404);
     }
 
-    const currentMember: Models.Document = await getMember({
+    const currentMember: Member = await getMember({
       databases,
       workspaceId: task.workspaceId,
       userId: currentUser.$id,
@@ -302,7 +292,7 @@ const app = new Hono()
       task.projectId
     );
 
-    const member: Models.Document = await databases.getDocument(
+    const member: Member = await databases.getDocument<Member>(
       DATABASE_ID,
       MEMBERS_ID,
       task.assigneeId
@@ -312,10 +302,7 @@ const app = new Hono()
       member.userId
     );
 
-    const assignee: Models.Document & {
-      name: string;
-      email: string;
-    } = {
+    const assignee: Member = {
       ...member,
       name: user.name,
       email: user.email,
@@ -381,7 +368,7 @@ const app = new Hono()
         return c.json({ error: "Invalid workspace ID" }, 400);
       }
 
-      const member: Models.Document = await getMember({
+      const member: Member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,

@@ -4,13 +4,13 @@ import { useDeleteProject } from "@/features/projects/api/use-delete-project";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
+import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useConfirm } from "@/hooks/use-confirm";
 import { cn } from "@/lib/utils";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 import { RiAddCircleFill } from "react-icons/ri";
 import {
@@ -105,7 +105,7 @@ export const Projects: () => ReactElement = () => {
         </SidebarGroupAction>
         <SidebarGroupContent>
           <SidebarMenu>
-            {data?.documents.map((project: Models.Document): ReactElement => {
+            {data?.documents.map((project: Project): ReactElement => {
               const href: string = `/workspaces/${workspaceId}/projects/${project.$id}`;
               const isActive: boolean = pathname === href;
 
