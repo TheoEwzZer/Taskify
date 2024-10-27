@@ -49,7 +49,7 @@ const app = new Hono()
 
       return c.json({
         data: {
-          ...member,
+          ...members,
           documents: populatedMembers,
         },
       });
