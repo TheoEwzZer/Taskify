@@ -11,6 +11,7 @@ interface UseGetTasksProps {
   search?: string | null;
   assigneeId?: string | null;
   dueDate?: string | null;
+  onlyAssigned?: string | null;
 }
 
 export const useGetTasks: ({
@@ -20,10 +21,19 @@ export const useGetTasks: ({
   search,
   assigneeId,
   dueDate,
+  onlyAssigned,
 }: UseGetTasksProps) => UseQueryResult<
   { documents: Task[]; total: number },
   Error
-> = ({ workspaceId, projectId, status, search, assigneeId, dueDate }) => {
+> = ({
+  workspaceId,
+  projectId,
+  status,
+  search,
+  assigneeId,
+  dueDate,
+  onlyAssigned,
+}) => {
   return useQuery({
     queryKey: [
       "tasks",
@@ -33,6 +43,7 @@ export const useGetTasks: ({
       search,
       assigneeId,
       dueDate,
+      onlyAssigned,
     ],
     queryFn: async (): Promise<{ documents: Task[]; total: number }> => {
       const response:
@@ -49,6 +60,7 @@ export const useGetTasks: ({
           search: search ?? undefined,
           assigneeId: assigneeId ?? undefined,
           dueDate: dueDate ?? undefined,
+          onlyAssigned: onlyAssigned ?? undefined,
         },
       });
 

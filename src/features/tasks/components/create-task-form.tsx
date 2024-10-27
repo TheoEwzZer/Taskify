@@ -31,6 +31,7 @@ import { z } from "zod";
 import { useCreateTask } from "../api/use-create-task";
 import { createTaskSchema } from "../schemas";
 import { TaskStatus } from "../types";
+import { statusIconMap } from "./kanban/kanban-column-header";
 
 interface CreateTaskFormProps {
   onCancel?: () => void;
@@ -172,16 +173,30 @@ export const CreateTaskForm: ({
                       <FormMessage />
                       <SelectContent>
                         <SelectItem value={TaskStatus.BACKLOG}>
-                          Backlog
+                          <div className="flex items-center gap-x-2">
+                            {statusIconMap[TaskStatus.BACKLOG]} Backlog
+                          </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_PROGRESS}>
-                          In Progress
+                          <div className="flex items-center gap-x-2">
+                            {statusIconMap[TaskStatus.IN_PROGRESS]} In Progress
+                          </div>
                         </SelectItem>
                         <SelectItem value={TaskStatus.IN_REVIEW}>
-                          In Review
+                          <div className="flex items-center gap-x-2">
+                            {statusIconMap[TaskStatus.IN_REVIEW]} In Review
+                          </div>
                         </SelectItem>
-                        <SelectItem value={TaskStatus.TODO}>Todo</SelectItem>
-                        <SelectItem value={TaskStatus.DONE}>Done</SelectItem>
+                        <SelectItem value={TaskStatus.TODO}>
+                          <div className="flex items-center gap-x-2">
+                            {statusIconMap[TaskStatus.TODO]} To Do
+                          </div>
+                        </SelectItem>
+                        <SelectItem value={TaskStatus.DONE}>
+                          <div className="flex items-center gap-x-2">
+                            {statusIconMap[TaskStatus.DONE]} Done
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>

@@ -4,6 +4,7 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { PageLoader } from "@/components/page-loader";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { PlusIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
@@ -20,28 +21,38 @@ import { columns } from "./table/columns";
 import { DataTable } from "./table/data-table";
 
 interface TaskViewSwitcherProps {
+  onlyAssigned?: string;
   hideProjectFilter?: boolean;
+  hideAssigneeFilter?: boolean;
 }
 
 export const TaskViewSwitcher: ({
+  onlyAssigned,
   hideProjectFilter,
-}: TaskViewSwitcherProps) => ReactElement = ({ hideProjectFilter }) => {
+  hideAssigneeFilter,
+}: TaskViewSwitcherProps) => ReactElement = ({
+  onlyAssigned = "false",
+  hideProjectFilter,
+  hideAssigneeFilter,
+}) => {
   const [{ status, assigneeId, projectId, dueDate }] = useTaskFilters();
   const [view, setView] = useQueryState("task-view", {
     defaultValue: "table",
   });
 
   const workspaceId: string = useWorkspaceId();
+  const paramProjectId: string = useProjectId();
   const { open } = useCreateTaskModal();
 
   const { mutate: bulkUpdate } = useBulkUpdateTask();
 
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
     workspaceId,
-    projectId,
+    projectId: paramProjectId || projectId,
     status,
     assigneeId,
     dueDate,
+    onlyAssigned,
   });
 
   const onKanbanChange: (
@@ -51,7 +62,7 @@ export const TaskViewSwitcher: ({
       position: number;
     }[]
   ) => void = useCallback(
-    (tasks: { $id: string; status: TaskStatus; position: number }[]) => {
+    (tasks: { $id: string; status: TaskStatus; position: number }[]): void => {
       bulkUpdate({
         json: { tasks },
       });
@@ -97,7 +108,10 @@ export const TaskViewSwitcher: ({
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <DataFilters hideProjectFilter={hideProjectFilter} />
+        <DataFilters
+          hideProjectFilter={hideProjectFilter}
+          hideAssigneeFilter={hideAssigneeFilter}
+        />
         <DottedSeparator className="my-4" />
         {isLoadingTasks ? (
           <PageLoader />

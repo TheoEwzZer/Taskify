@@ -10,9 +10,13 @@ const TasksPage: () => Promise<ReactElement> = async () => {
   if (!user) {
     redirect("/sign-in");
   }
+
   return (
     <div className="flex h-full flex-col">
-      <TaskViewSwitcher />
+      <TaskViewSwitcher
+        onlyAssigned="true"
+        hideAssigneeFilter
+      />
     </div>
   );
 };

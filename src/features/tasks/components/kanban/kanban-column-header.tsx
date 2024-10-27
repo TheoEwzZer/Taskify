@@ -18,7 +18,7 @@ interface KanbanColumnHeaderProps {
   taskCount: number;
 }
 
-const statusIconMap: Record<TaskStatus, ReactNode> = {
+export const statusIconMap: Record<TaskStatus, ReactNode> = {
   [TaskStatus.BACKLOG]: (
     <CircleDashedIcon className="size-[18px] text-pink-400" />
   ),

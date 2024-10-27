@@ -16,7 +16,6 @@ import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 
 import { AUTH_COOKIE } from "@/features/auth/constants";
-import { Context, MiddlewareHandler, Next } from "hono";
 
 export type AdditionalContext = {
   Variables: {
@@ -28,25 +27,8 @@ export type AdditionalContext = {
   };
 };
 
-export const sessionMiddleware: MiddlewareHandler<
-  {
-    Bindings: any;
-    Variables: AdditionalContext["Variables"];
-  },
-  string,
-  {}
-> = createMiddleware<AdditionalContext>(
-  async (
-    c: Context<
-      {
-        Bindings: any;
-        Variables: AdditionalContext["Variables"];
-      },
-      string,
-      {}
-    >,
-    next: Next
-  ) => {
+export const sessionMiddleware = createMiddleware<AdditionalContext>(
+  async (c, next) => {
     const client = new Client()
       .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
       .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);

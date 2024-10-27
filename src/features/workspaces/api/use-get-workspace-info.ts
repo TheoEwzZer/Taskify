@@ -13,7 +13,7 @@ export const useGetWorkspaceInfo: ({
   workspaceId,
 }) => {
   return useQuery({
-    queryKey: ["workspace"],
+    queryKey: ["workspace", workspaceId],
     queryFn: async (): Promise<{ name: string }> => {
       const response:
         | ClientResponse<{ error: string }, 404, "json">

@@ -53,6 +53,7 @@ const app = new Hono()
         status: z.nativeEnum(TaskStatus).nullish(),
         search: z.string().nullish(),
         dueDate: z.string().nullish(),
+        onlyAssigned: z.string().nullish(),
       })
     ),
     async (c) => {
@@ -60,8 +61,15 @@ const app = new Hono()
       const databases = c.get("databases");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { workspaceId, projectId, assigneeId, status, search, dueDate } =
-        c.req.valid("query");
+      const {
+        workspaceId,
+        projectId,
+        assigneeId,
+        status,
+        search,
+        dueDate,
+        onlyAssigned,
+      } = c.req.valid("query");
 
       const member: Member = await getMember({
         databases,
@@ -86,7 +94,9 @@ const app = new Hono()
         query.push(Query.equal("status", status));
       }
 
-      if (assigneeId) {
+      if (onlyAssigned && onlyAssigned == "true") {
+        query.push(Query.equal("assigneeId", member.$id));
+      } else if (assigneeId) {
         query.push(Query.equal("assigneeId", assigneeId));
       }
 

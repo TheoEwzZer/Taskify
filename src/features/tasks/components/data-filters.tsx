@@ -19,12 +19,15 @@ import { TaskStatus } from "../types";
 
 interface DataFiltersProps {
   hideProjectFilter?: boolean;
+  hideAssigneeFilter?: boolean;
 }
 
 export const DataFilters: ({
   hideProjectFilter,
+  hideAssigneeFilter,
 }: DataFiltersProps) => ReactElement | null = ({
   hideProjectFilter,
+  hideAssigneeFilter,
 }: DataFiltersProps) => {
   const workspaceId: string = useWorkspaceId();
 
@@ -84,7 +87,7 @@ export const DataFilters: ({
       >
         <SelectTrigger className="h-8 w-full lg:w-auto">
           <div className="flex items-center pr-2">
-            <ListChecksIcon />
+            <ListChecksIcon className="mr-2 size-4" />
             <SelectValue placeholder="All statuses" />
           </div>
         </SelectTrigger>
@@ -98,31 +101,33 @@ export const DataFilters: ({
           <SelectItem value={TaskStatus.DONE}>Done</SelectItem>
         </SelectContent>
       </Select>
-      <Select
-        defaultValue={assigneeId ?? undefined}
-        onValueChange={(value: string): void => onAssigneeChange(value)}
-      >
-        <SelectTrigger className="h-8 w-full lg:w-auto">
-          <div className="flex items-center pr-2">
-            <UserIcon />
-            <SelectValue placeholder="All assignees" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All assignees</SelectItem>
-          <SelectSeparator />
-          {memberOptions?.map(
-            (member: { value: string; label: string }): ReactElement => (
-              <SelectItem
-                key={member.value}
-                value={member.value}
-              >
-                {member.label}
-              </SelectItem>
-            )
-          )}
-        </SelectContent>
-      </Select>
+      {!hideAssigneeFilter && (
+        <Select
+          defaultValue={assigneeId ?? undefined}
+          onValueChange={(value: string): void => onAssigneeChange(value)}
+        >
+          <SelectTrigger className="h-8 w-full lg:w-auto">
+            <div className="flex items-center pr-2">
+              <UserIcon className="mr-2 size-4" />
+              <SelectValue placeholder="All assignees" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All assignees</SelectItem>
+            <SelectSeparator />
+            {memberOptions?.map(
+              (member: { value: string; label: string }): ReactElement => (
+                <SelectItem
+                  key={member.value}
+                  value={member.value}
+                >
+                  {member.label}
+                </SelectItem>
+              )
+            )}
+          </SelectContent>
+        </Select>
+      )}
       {!hideProjectFilter && (
         <Select
           defaultValue={projectId ?? undefined}
@@ -130,7 +135,7 @@ export const DataFilters: ({
         >
           <SelectTrigger className="h-8 w-full lg:w-auto">
             <div className="flex items-center pr-2">
-              <FolderIcon />
+              <FolderIcon className="mr-2 size-4" />
               <SelectValue placeholder="All projects" />
             </div>
           </SelectTrigger>

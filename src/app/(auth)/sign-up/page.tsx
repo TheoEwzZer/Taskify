@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Models } from "node-appwrite";
 import { ReactElement } from "react";
 
-export const SignUpPage: () => Promise<ReactElement> = async () => {
+const SignUpPage: () => Promise<ReactElement> = async () => {
   const user: Models.User<Models.Preferences> | null = await getCurrent();
 
   if (user) {
