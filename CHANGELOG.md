@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/TheoEwzZer/Taskify/compare/v1.0.0...v1.1.0) (2024-10-28)
+
+
+### Features
+
+* add description field to CreateTaskForm and EditTaskForm components ([70e8c0b](https://github.com/TheoEwzZer/Taskify/commit/70e8c0bd954407780387f18e35bbbef2e48cf921))
+* add profil editing feature ([10a9378](https://github.com/TheoEwzZer/Taskify/commit/10a9378469d5f7562088b30d605ba91861760499))
+* assignee is now optional ([37decb5](https://github.com/TheoEwzZer/Taskify/commit/37decb5858ffbf9a2569d4cd30095679e18ad28b))
+* compare with week instead of month in analytics ([5a876c6](https://github.com/TheoEwzZer/Taskify/commit/5a876c66521719b99cef04dc2e04df8ae491ea06))
+
+
+### Bug Fixes
+
+* fix `Assigned Tasks` analytics not working ([5f6dbfc](https://github.com/TheoEwzZer/Taskify/commit/5f6dbfc46e8b11fce8022daccec592bd749b1488))
+
 ## 1.0.0 (2024-10-28)
 
 
