@@ -24,6 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "min-h-screen antialiased")}>
+        <link
+          rel="icon"
+          href="/icon.svg"
+        />
         <Toaster />
         <QueryProvider>{children}</QueryProvider>
       </body>
