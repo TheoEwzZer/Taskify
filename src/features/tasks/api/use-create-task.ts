@@ -35,6 +35,8 @@ export const useCreateTask: () => UseMutationResult<
     },
     onSuccess: (): void => {
       toast.success("Task created successfully");
+      queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: (): void => {

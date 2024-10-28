@@ -40,6 +40,8 @@ export const useBulkUpdateTask: () => UseMutationResult<
     },
     onSuccess: (): void => {
       toast.success("Tasks updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: (): void => {

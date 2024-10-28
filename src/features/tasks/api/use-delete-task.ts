@@ -53,6 +53,8 @@ export const useDeleteTask: () => UseMutationResult<
     },
     onSuccess: ({ data }: { data: { $id: string } }): void => {
       toast.success("Task deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
+      queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["task", data.$id] });
     },
