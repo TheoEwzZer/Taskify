@@ -65,7 +65,7 @@ export const TaskBreadcrumbs: ({
         <BreadcrumbList>
           <BreadcrumbItem>
             <ProjectAvatar
-              image={project.image}
+              image={project.imageUrl}
               name={project.name}
               className="size-6 lg:size-8"
             />

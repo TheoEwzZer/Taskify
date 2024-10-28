@@ -182,7 +182,7 @@ export const ProjectList: ({
                         className="size-12"
                         fallbackClassName="text-lg"
                         name={project.name}
-                        image={project.image}
+                        image={project.imageUrl}
                       />
                       <p className="truncate text-lg font-medium">
                         {project.name}
