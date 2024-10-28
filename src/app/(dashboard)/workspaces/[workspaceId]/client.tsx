@@ -101,14 +101,14 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="flex flex-col gap-y-4">
-          {data.map(
+        <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {data.slice(0, 10).map(
             (task: Task): ReactElement => (
               <li key={task.$id}>
                 <Link href={`/workspaces/${workspaceId}/tasks/${task.$id}`}>
                   <Card className="rounded-lg shadow-none transition hover:opacity-75">
                     <CardContent className="p-4">
-                      <p className="truncate text-lg font-medium">
+                      <p className="line-clamp-6 text-lg font-medium">
                         {task.name}
                       </p>
                       <div className="flex items-center gap-x-2">
@@ -116,7 +116,7 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
                         <div className="size-1 rounded-full bg-neutral-300" />
                         <div className="flex items-center text-sm text-muted-foreground">
                           <CalendarIcon className="mr-1 size-3" />
-                          <span className="truncate">
+                          <span className="line-clamp-6">
                             {formatDistanceToNow(new Date(task.dueDate))}
                           </span>
                         </div>
