@@ -74,7 +74,7 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
                   onClick={(): void => onSelect(workspace.$id)}
                   className="cursor-pointer gap-2 p-2"
                 >
-                  <div className="flex items-center justify-center rounded-sm border">
+                  <div className="flex size-10 items-center justify-center rounded-md border">
                     <WorkspaceAvatar
                       name={workspace.name}
                       image={workspace.imageUrl}
