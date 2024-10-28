@@ -11,7 +11,7 @@ import { Task, TaskStatus } from "@/features/tasks/types";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { generateInviteCode } from "@/lib/utils";
 import { zValidator } from "@hono/zod-validator";
-import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+import { endOfWeek, startOfWeek, subWeeks } from "date-fns";
 import { Hono } from "hono";
 import { ID, Models, Query } from "node-appwrite";
 import { z } from "zod";
@@ -327,10 +327,10 @@ const app = new Hono()
     }
 
     const now = new Date();
-    const thisMonthStart: Date = startOfMonth(now);
-    const thisMonthEnd: Date = endOfMonth(now);
-    const lastMonthStart: Date = startOfMonth(subMonths(now, 1));
-    const lastMonthEnd: Date = endOfMonth(subMonths(now, 1));
+    const thisWeekStart: Date = startOfWeek(now);
+    const thisWeekEnd: Date = endOfWeek(now);
+    const lastWeekStart: Date = startOfWeek(subWeeks(now, 1));
+    const lastWeekEnd: Date = endOfWeek(subWeeks(now, 1));
 
     const getTasks: (
       queries: string[]
@@ -342,94 +342,94 @@ const app = new Hono()
       );
     };
 
-    const thisMonthTasks: Models.DocumentList<Task> = await getTasks([
+    const thisWeekTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
-      Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
-    const lastMonthTasks: Models.DocumentList<Task> = await getTasks([
+    const lastWeekTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
-      Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
     ]);
 
-    const taskCount: number = thisMonthTasks.total;
-    const taskDifference: number = taskCount - lastMonthTasks.total;
+    const taskCount: number = thisWeekTasks.total;
+    const taskDifference: number = taskCount - lastWeekTasks.total;
 
-    const thisMonthAssignedTasks: Models.DocumentList<Task> = await getTasks([
-      Query.equal("workspaceId", workspaceId),
-      Query.equal("assigneeId", member.$id),
-      Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
-    ]);
-
-    const lastMonthAssignedTasks: Models.DocumentList<Task> = await getTasks([
+    const thisWeekAssignedTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.equal("assigneeId", member.$id),
-      Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
-    const assignedTaskCount: number = thisMonthAssignedTasks.total;
+    const lastWeekAssignedTasks: Models.DocumentList<Task> = await getTasks([
+      Query.equal("workspaceId", workspaceId),
+      Query.equal("assigneeId", member.$id),
+      Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+    ]);
+
+    const assignedTaskCount: number = thisWeekAssignedTasks.total;
     const assignedTaskDifference: number =
-      assignedTaskCount - lastMonthAssignedTasks.total;
+      assignedTaskCount - lastWeekAssignedTasks.total;
 
-    const thisMonthIncompleteTasks: Models.DocumentList<Task> = await getTasks([
+    const thisWeekIncompleteTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.notEqual("status", TaskStatus.DONE),
-      Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
-    const lastMonthIncompleteTasks: Models.DocumentList<Task> = await getTasks([
+    const lastWeekIncompleteTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.notEqual("status", TaskStatus.DONE),
-      Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
     ]);
 
-    const incompleteTaskCount: number = thisMonthIncompleteTasks.total;
+    const incompleteTaskCount: number = thisWeekIncompleteTasks.total;
     const incompleteTaskDifference: number =
-      incompleteTaskCount - lastMonthIncompleteTasks.total;
+      incompleteTaskCount - lastWeekIncompleteTasks.total;
 
-    const thisMonthCompletedTasks: Models.DocumentList<Task> = await getTasks([
+    const thisWeekCompletedTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.equal("status", TaskStatus.DONE),
-      Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
-    const lastMonthCompletedTasks: Models.DocumentList<Task> = await getTasks([
+    const lastWeekCompletedTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.equal("status", TaskStatus.DONE),
-      Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
     ]);
 
-    const completedTaskCount: number = thisMonthCompletedTasks.total;
+    const completedTaskCount: number = thisWeekCompletedTasks.total;
     const completedTaskDifference: number =
-      completedTaskCount - lastMonthCompletedTasks.total;
+      completedTaskCount - lastWeekCompletedTasks.total;
 
-    const thisMonthOverdueTasks: Models.DocumentList<Task> = await getTasks([
+    const thisWeekOverdueTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.notEqual("status", TaskStatus.DONE),
       Query.lessThan("dueDate", new Date().toISOString()),
-      Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", thisMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
-    const lastMonthOverdueTasks: Models.DocumentList<Task> = await getTasks([
+    const lastWeekOverdueTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
       Query.notEqual("status", TaskStatus.DONE),
       Query.lessThan("dueDate", new Date().toISOString()),
-      Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
-      Query.lessThanEqual("$createdAt", lastMonthEnd.toISOString()),
+      Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
+      Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
     ]);
 
-    const overdueTaskCount: number = thisMonthOverdueTasks.total;
+    const overdueTaskCount: number = thisWeekOverdueTasks.total;
     const overdueTaskDifference: number =
-      overdueTaskCount - lastMonthOverdueTasks.total;
+      overdueTaskCount - lastWeekOverdueTasks.total;
 
     return c.json({
       data: {
