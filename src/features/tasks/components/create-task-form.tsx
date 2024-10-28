@@ -20,6 +20,7 @@ import {
   SelectSeparator,
   SelectTrigger,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
@@ -255,6 +256,23 @@ export const CreateTaskForm: ({
                   )}
                 />
               )}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter Task description"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <DottedSeparator className="py-7" />
             <div className="flex items-center justify-between">

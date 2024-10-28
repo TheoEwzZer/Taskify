@@ -20,8 +20,10 @@ import {
   SelectSeparator,
   SelectTrigger,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
@@ -52,6 +54,7 @@ export const EditTaskForm: ({
   memberOptions,
   initialValues,
 }) => {
+  const projectId: string = useProjectId();
   const { mutate, isPending } = useUpdateTask();
 
   const form: UseFormReturn<
@@ -67,6 +70,7 @@ export const EditTaskForm: ({
       dueDate: initialValues.dueDate
         ? new Date(initialValues.dueDate)
         : undefined,
+      assigneeId: initialValues.assigneeId ?? "none",
     },
   });
 
@@ -217,42 +221,61 @@ export const EditTaskForm: ({
                   </FormItem>
                 )}
               />
+              {!projectId && (
+                <FormField
+                  control={form.control}
+                  name="projectId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project</FormLabel>
+                      <Select
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select project" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <FormMessage />
+                        <SelectContent>
+                          {projectOptions.map(
+                            (project): ReactElement => (
+                              <SelectItem
+                                key={project.id}
+                                value={project.id}
+                              >
+                                <div className="flex items-center gap-x-2">
+                                  <ProjectAvatar
+                                    name={project.name}
+                                    image={project.imageUrl}
+                                    className="size-6"
+                                  />
+                                  {project.name}
+                                </div>
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              )}
               <FormField
                 control={form.control}
-                name="projectId"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Project</FormLabel>
-                    <Select
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select project" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <FormMessage />
-                      <SelectContent>
-                        {projectOptions.map(
-                          (project): ReactElement => (
-                            <SelectItem
-                              key={project.id}
-                              value={project.id}
-                            >
-                              <div className="flex items-center gap-x-2">
-                                <ProjectAvatar
-                                  name={project.name}
-                                  image={project.imageUrl}
-                                  className="size-6"
-                                />
-                                {project.name}
-                              </div>
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter Task description"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

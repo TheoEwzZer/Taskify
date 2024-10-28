@@ -22,7 +22,7 @@ export const ResponsiveModal: (props: ResponsiveModalProps) => ReactElement = ({
         open={open}
         onOpenChange={onOpenChange}
       >
-        <DialogContent className="hide-scrollbar max-h-[85vh] w-full overflow-y-auto border-none p-0 sm:max-w-lg">
+        <DialogContent className="hide-scrollbar max-h-[90vh] w-full overflow-y-auto border-none p-0 sm:max-w-lg">
           {children}
         </DialogContent>
       </Dialog>
@@ -35,7 +35,7 @@ export const ResponsiveModal: (props: ResponsiveModalProps) => ReactElement = ({
       onOpenChange={onOpenChange}
     >
       <DrawerContent>
-        <div className="hide-scrollbar max-h-[85vh] overflow-y-auto">
+        <div className="hide-scrollbar max-h-[90vh] overflow-y-auto">
           {children}
         </div>
       </DrawerContent>

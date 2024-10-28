@@ -180,8 +180,15 @@ const app = new Hono()
     async (c) => {
       const user: Models.User<Models.Preferences> = c.get("user");
       const databases = c.get("databases");
-      const { name, status, workspaceId, projectId, dueDate, assigneeId } =
-        c.req.valid("json");
+      const {
+        name,
+        status,
+        workspaceId,
+        projectId,
+        dueDate,
+        assigneeId,
+        description,
+      } = c.req.valid("json");
 
       const member: Member = await getMember({
         databases,
@@ -218,6 +225,7 @@ const app = new Hono()
           dueDate,
           assigneeId,
           position: newPosition,
+          description,
         }
       );
 
