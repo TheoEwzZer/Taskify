@@ -30,7 +30,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
         {task.assignee && (
           <>
             <MemberAvatar
-              name={task.assignee.name}
+              member={task.assignee}
               fallbackClassName="text-[10px]"
             />
             <div className="size-1 rounded-full bg-neutral-300" />

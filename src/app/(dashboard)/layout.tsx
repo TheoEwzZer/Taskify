@@ -1,3 +1,4 @@
+import { EditProfilModal } from "@/features/profil/components/edit-profil-modal";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -26,6 +27,7 @@ const DashboardLayout: ({ children }: DashboardLayoutProps) => ReactElement = ({
         <CreateProjectModal />
         <CreateTaskModal />
         <EditTaskModal />
+        <EditProfilModal />
         <Sidebar />
         <SidebarInset>
           <main className="flex h-full w-full flex-col">

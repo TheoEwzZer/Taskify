@@ -91,7 +91,7 @@ export const Memberslist: () => ReactElement = () => {
                 <MemberAvatar
                   className="size-10"
                   fallbackClassName="text-lg"
-                  name={member.name}
+                  member={member}
                 />
                 <div className="flex flex-col">
                   <p className="text-sm font-medium">{member.name}</p>

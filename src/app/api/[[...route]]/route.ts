@@ -1,4 +1,5 @@
 import auth from "@/features/auth/server/route";
+import profil from "@/features/profil/server/route";
 import projects from "@/features/projects/server/route";
 import tasks from "@/features/tasks/server/route";
 import members from "@/features/workspaces/route";
@@ -15,7 +16,8 @@ const routes = app
   .route("/workspaces", workspaces)
   .route("/members", members)
   .route("/projects", projects)
-  .route("/tasks", tasks);
+  .route("/tasks", tasks)
+  .route("/profil", profil);
 
 export const GET: (
   req: Request,

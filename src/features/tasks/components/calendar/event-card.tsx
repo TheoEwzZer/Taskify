@@ -69,7 +69,7 @@ export const EventCard: ({
       >
         <p>{title}</p>
         <div className="flex items-center gap-x-1">
-          {assignee && <MemberAvatar name={assignee.name} />}
+          {assignee && <MemberAvatar member={assignee} />}
           {project && (
             <>
               <div className="size-1 rounded-full bg-neutral-300" />

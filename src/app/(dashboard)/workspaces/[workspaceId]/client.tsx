@@ -238,7 +238,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
                     <MemberAvatar
                       className="size-12"
                       fallbackClassName="text-lg"
-                      name={member.name}
+                      member={member}
                     />
                     <div className="flex flex-col items-center overflow-hidden">
                       <p className="line-clamp-1 text-lg font-medium">

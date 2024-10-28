@@ -31,27 +31,9 @@ export const EditTaskFormWrapper: ({
     workspaceId,
   });
 
-  const projectOptions:
-    | {
-        id: string;
-        name: any;
-        imageUrl: any;
-      }[]
-    | undefined = projects?.documents.map((project: Project) => ({
-    id: project.$id,
-    name: project.name,
-    imageUrl: project.imageUrl,
-  }));
+  const projectOptions: Project[] | undefined = projects?.documents;
 
-  const memberOptions:
-    | {
-        id: string;
-        name: string;
-      }[]
-    | undefined = members?.documents.map((member: Member) => ({
-    id: member.$id,
-    name: member.name,
-  }));
+  const memberOptions: Member[] | undefined = members?.documents;
 
   const isLoading: boolean =
     isLoadingProjects || isLoadingMembers || isLoadingTask;

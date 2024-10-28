@@ -22,8 +22,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
+import { Project } from "@/features/projects/types";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
@@ -38,8 +40,8 @@ import { statusIconMap } from "./kanban/kanban-column-header";
 
 interface EditTaskFormProps {
   onCancel?: () => void;
-  projectOptions: { id: string; name: string; imageUrl: string }[];
-  memberOptions: { id: string; name: string }[];
+  projectOptions: Project[];
+  memberOptions: Member[];
   initialValues: Task;
 }
 
@@ -154,14 +156,14 @@ export const EditTaskForm: ({
                         </SelectItem>
                         <SelectSeparator />
                         {memberOptions.map(
-                          (member): ReactElement => (
+                          (member: Member): ReactElement => (
                             <SelectItem
-                              key={member.id}
-                              value={member.id}
+                              key={member.$id}
+                              value={member.$id}
                             >
                               <div className="flex items-center gap-x-2">
                                 <MemberAvatar
-                                  name={member.name}
+                                  member={member}
                                   className="size-6"
                                 />
                                 {member.name}
@@ -240,10 +242,10 @@ export const EditTaskForm: ({
                         <FormMessage />
                         <SelectContent>
                           {projectOptions.map(
-                            (project): ReactElement => (
+                            (project: Project): ReactElement => (
                               <SelectItem
-                                key={project.id}
-                                value={project.id}
+                                key={project.$id}
+                                value={project.$id}
                               >
                                 <div className="flex items-center gap-x-2">
                                   <ProjectAvatar

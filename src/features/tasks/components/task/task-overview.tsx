@@ -37,7 +37,7 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
           {task.assignee && (
             <OverviewProperty label="Assignee">
               <MemberAvatar
-                name={task.assignee.name}
+                member={task.assignee}
                 className="size-6"
               />
               <p className="text-sm font-medium">{task.assignee.name}</p>

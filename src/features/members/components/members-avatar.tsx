@@ -1,19 +1,20 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { ReactElement } from "react";
+import { Member } from "../types";
 
 interface MemberAvatarProps {
-  name: string;
+  member: Member;
   className?: string;
   fallbackClassName?: string;
 }
 
 export const MemberAvatar: ({
-  name,
+  member,
   className,
   fallbackClassName,
 }: MemberAvatarProps) => ReactElement = ({
-  name,
+  member,
   className,
   fallbackClassName,
 }: MemberAvatarProps) => {
@@ -24,13 +25,19 @@ export const MemberAvatar: ({
         className
       )}
     >
+      {member.avatar && member.avatar != "none" && (
+        <AvatarImage
+          src={member.avatar}
+          alt={member.name}
+        />
+      )}
       <AvatarFallback
         className={cn(
           "flex items-center justify-center bg-neutral-200 font-medium text-neutral-500",
           fallbackClassName
         )}
       >
-        {name.charAt(0).toUpperCase()}
+        {member.name.charAt(0).toUpperCase()}
       </AvatarFallback>
     </Avatar>
   );

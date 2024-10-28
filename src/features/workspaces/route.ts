@@ -43,6 +43,7 @@ const app = new Hono()
             ...member,
             name: user.name || user.email,
             email: user.email,
+            avatar: user.prefs?.avatar,
           };
         })
       );

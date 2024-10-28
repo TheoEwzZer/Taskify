@@ -145,6 +145,7 @@ const app = new Hono()
             ...member,
             name: user.name || user.email,
             email: user.email,
+            avatar: user.prefs?.avatar,
           };
         })
       );
@@ -326,6 +327,7 @@ const app = new Hono()
           ...member,
           name: user.name || user.email,
           email: user.email,
+          avatar: user.prefs?.avatar,
         };
       } catch (error) {
         console.error("Failed to retrieve assignee:", error);
