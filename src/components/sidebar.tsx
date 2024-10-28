@@ -29,6 +29,7 @@ export const Sidebar: () => ReactElement = () => {
             alt="Logo"
             width={164}
             height={48}
+            className="mx-auto"
           />
         </Link>
         <DottedSeparator className="px-2" />
