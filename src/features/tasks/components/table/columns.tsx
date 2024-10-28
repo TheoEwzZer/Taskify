@@ -6,7 +6,7 @@ import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
-import { ArrowUpDown, MoreVertical } from "lucide-react";
+import { ArrowUpDown, MoreVertical, XIcon } from "lucide-react";
 import { ReactElement } from "react";
 import { Task } from "../../types";
 import { TaskActions } from "../task-actions";
@@ -97,7 +97,12 @@ export const columns: ColumnDef<Task>[] = [
       const { assignee } = row.original;
 
       if (!assignee) {
-        return <p className="line-clamp-1">Unassigned</p>;
+        return (
+          <div className="flex items-center gap-x-2 text-sm font-medium">
+            <XIcon className="size-6 rounded-full border border-neutral-300 transition" />
+            <p className="line-clamp-1">Unassigned</p>
+          </div>
+        );
       }
 
       return (

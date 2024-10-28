@@ -114,9 +114,12 @@ const app = new Hono()
       const projectIds: string[] = tasks.documents.map(
         (task: Task): string => task.projectId
       );
-      const assigneeIds: string[] = tasks.documents.map(
-        (task: Task): string => task.assigneeId
-      );
+      const assigneeIds: string[] = tasks.documents
+        .map((task: Task): string | undefined => task.assigneeId)
+        .filter(
+          (id: string | undefined): id is string =>
+            id !== undefined && id !== null && id !== "none"
+        );
 
       const projects: Models.DocumentList<Project> =
         await databases.listDocuments<Project>(
@@ -297,21 +300,29 @@ const app = new Hono()
       task.projectId
     );
 
-    const member: Member = await databases.getDocument<Member>(
-      DATABASE_ID,
-      MEMBERS_ID,
-      task.assigneeId
-    );
+    let assignee: Member | undefined = undefined;
 
-    const user: Models.User<Models.Preferences> = await users.get(
-      member.userId
-    );
+    if (task.assigneeId && task.assigneeId !== "none") {
+      try {
+        const member: Member = await databases.getDocument<Member>(
+          DATABASE_ID,
+          MEMBERS_ID,
+          task.assigneeId
+        );
 
-    const assignee: Member = {
-      ...member,
-      name: user.name || user.email,
-      email: user.email,
-    };
+        const user: Models.User<Models.Preferences> = await users.get(
+          member.userId
+        );
+
+        assignee = {
+          ...member,
+          name: user.name || user.email,
+          email: user.email,
+        };
+      } catch (error) {
+        console.error("Failed to retrieve assignee:", error);
+      }
+    }
 
     return c.json({
       data: {

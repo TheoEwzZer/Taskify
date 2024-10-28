@@ -17,6 +17,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
@@ -24,6 +25,7 @@ import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
+import { XIcon } from "lucide-react";
 import { ReactElement } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -130,7 +132,7 @@ export const EditTaskForm: ({
                   <FormItem>
                     <FormLabel>Assignee</FormLabel>
                     <Select
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? "none"}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
@@ -140,6 +142,13 @@ export const EditTaskForm: ({
                       </FormControl>
                       <FormMessage />
                       <SelectContent>
+                        <SelectItem value="none">
+                          <div className="flex items-center gap-x-2">
+                            <XIcon className="size-6 rounded-full border border-neutral-300 transition" />
+                            Unassigned
+                          </div>
+                        </SelectItem>
+                        <SelectSeparator />
                         {memberOptions.map(
                           (member): ReactElement => (
                             <SelectItem

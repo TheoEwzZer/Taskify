@@ -29,7 +29,12 @@ export const useGetTask: ({
 
       const { data } = await response.json();
 
-      return data;
+      const transformedData: Task = {
+        ...data,
+        assignee: data.assignee,
+      };
+
+      return transformedData;
     },
   });
 };

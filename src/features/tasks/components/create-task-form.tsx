@@ -17,14 +17,17 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
+import { XIcon } from "lucide-react";
 import { ReactElement } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -49,6 +52,7 @@ export const CreateTaskForm: ({
   memberOptions,
 }: CreateTaskFormProps) => {
   const workspaceId: string = useWorkspaceId();
+  const projectId: string = useProjectId();
   const { mutate, isPending } = useCreateTask();
 
   const form: UseFormReturn<
@@ -59,6 +63,7 @@ export const CreateTaskForm: ({
     resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
     defaultValues: {
       workspaceId,
+      projectId: projectId || undefined,
     },
   });
 
@@ -124,7 +129,7 @@ export const CreateTaskForm: ({
                   <FormItem>
                     <FormLabel>Assignee</FormLabel>
                     <Select
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? "none"}
                       onValueChange={field.onChange}
                     >
                       <FormControl>
@@ -134,6 +139,13 @@ export const CreateTaskForm: ({
                       </FormControl>
                       <FormMessage />
                       <SelectContent>
+                        <SelectItem value="none">
+                          <div className="flex items-center gap-x-2">
+                            <XIcon className="size-6 rounded-full border border-neutral-300 transition" />
+                            Unassigned
+                          </div>
+                        </SelectItem>
+                        <SelectSeparator />
                         {memberOptions.map(
                           (member): ReactElement => (
                             <SelectItem
@@ -202,45 +214,47 @@ export const CreateTaskForm: ({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="projectId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Project</FormLabel>
-                    <Select
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select project" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <FormMessage />
-                      <SelectContent>
-                        {projectOptions.map(
-                          (project): ReactElement => (
-                            <SelectItem
-                              key={project.id}
-                              value={project.id}
-                            >
-                              <div className="flex items-center gap-x-2">
-                                <ProjectAvatar
-                                  name={project.name}
-                                  image={project.imageUrl}
-                                  className="size-6"
-                                />
-                                {project.name}
-                              </div>
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              {!projectId && (
+                <FormField
+                  control={form.control}
+                  name="projectId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project</FormLabel>
+                      <Select
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select project" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <FormMessage />
+                        <SelectContent>
+                          {projectOptions.map(
+                            (project): ReactElement => (
+                              <SelectItem
+                                key={project.id}
+                                value={project.id}
+                              >
+                                <div className="flex items-center gap-x-2">
+                                  <ProjectAvatar
+                                    name={project.name}
+                                    image={project.imageUrl}
+                                    className="size-6"
+                                  />
+                                  {project.name}
+                                </div>
+                              </SelectItem>
+                            )
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             <DottedSeparator className="py-7" />
             <div className="flex items-center justify-between">
