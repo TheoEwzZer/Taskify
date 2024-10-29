@@ -1,23 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
   Table,
   TableBody,
   TableCell,
@@ -27,18 +10,26 @@ import {
 } from "@/components/ui/table";
 import {
   Cell,
-  Column,
+  ColumnDef,
   ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   Header,
   HeaderGroup,
   Row,
-  Table as TableCore,
+  SortingState,
+  Table as TableType,
+  useReactTable,
   VisibilityState,
-} from "@tanstack/table-core";
-import { ChevronDown } from "lucide-react";
-import { ChangeEvent, ReactElement, useState } from "react";
+} from "@tanstack/react-table";
+import { ReactElement, useState } from "react";
+import { DataTablePagination } from "./data-table-pagination";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,7 +44,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
-  const table: TableCore<TData> = useReactTable({
+  const table: TableType<TData> = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -61,8 +52,10 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
     state: {
       sorting,
       columnFilters,
@@ -71,49 +64,8 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter tasks..."
-          value={table.getColumn("name")?.getFilterValue() as string}
-          onChange={(event: ChangeEvent<HTMLInputElement>): void | undefined =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-auto"
-            >
-              Columns
-              <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column: Column<TData, unknown>): boolean =>
-                column.getCanHide()
-              )
-              .map((column: Column<TData, unknown>): ReactElement => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value: boolean): void =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    <div className="space-y-4">
+      <DataTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -172,24 +124,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={(): void => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={(): void => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }

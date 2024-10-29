@@ -6,11 +6,12 @@ import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
-import { ArrowUpDown, MoreVertical, XIcon } from "lucide-react";
+import { MoreVertical, XIcon } from "lucide-react";
 import { ReactElement } from "react";
 import { Task } from "../../types";
 import { TaskActions } from "../task-actions";
 import { TaskDate } from "../task-date";
+import { DataTableColumnHeader } from "./data-table-column-header";
 
 const dateSort: (rowA: any, rowB: any, columnId: string) => number = (
   rowA,
@@ -26,19 +27,12 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "name",
     enableHiding: false,
-    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={(): void =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-          Task Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => (
+      <DataTableColumnHeader
+        column={column}
+        title="Task Name"
+      />
+    ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { name } = row.original;
 
@@ -47,19 +41,12 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "project",
-    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={(): void =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-          Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => (
+      <DataTableColumnHeader
+        column={column}
+        title="Project"
+      />
+    ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { project } = row.original;
 
@@ -81,19 +68,12 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "assignee",
-    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={(): void =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-          Assignee
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => (
+      <DataTableColumnHeader
+        column={column}
+        title="Assignee"
+      />
+    ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { assignee } = row.original;
 
@@ -120,19 +100,12 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "dueDate",
-    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={(): void =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-          Due Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => (
+      <DataTableColumnHeader
+        column={column}
+        title="Due Date"
+      />
+    ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { dueDate } = row.original;
 
@@ -142,19 +115,12 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "status",
-    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={(): void =>
-            column.toggleSorting(column.getIsSorted() === "asc")
-          }
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: HeaderContext<Task, unknown>): ReactElement => (
+      <DataTableColumnHeader
+        column={column}
+        title="Status"
+      />
+    ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { status } = row.original;
 
