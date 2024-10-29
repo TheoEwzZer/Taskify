@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
 import { XIcon } from "lucide-react";
+import { useQueryState } from "nuqs";
 import { ReactElement } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -57,6 +58,7 @@ export const CreateTaskForm: ({
   const workspaceId: string = useWorkspaceId();
   const projectId: string = useProjectId();
   const { mutate, isPending } = useCreateTask();
+  const [statusParam] = useQueryState("task-status");
 
   const form: UseFormReturn<
     z.infer<typeof createTaskSchema>,
@@ -67,6 +69,7 @@ export const CreateTaskForm: ({
     defaultValues: {
       workspaceId,
       projectId: projectId || undefined,
+      status: (statusParam as TaskStatus) || undefined,
     },
   });
 

@@ -101,7 +101,7 @@ export const TaskViewSwitcher: ({
           <Button
             size="sm"
             className="w-full lg:w-auto"
-            onClick={open}
+            onClick={(): Promise<URLSearchParams> => open()}
           >
             <PlusIcon />
             New

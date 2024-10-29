@@ -55,7 +55,7 @@ export const KanbanColumnHeader: ({
         </Badge>
       </div>
       <Button
-        onClick={open}
+        onClick={(): Promise<URLSearchParams> => open(board)}
         size="icon"
         variant="ghost"
         className="size-5"

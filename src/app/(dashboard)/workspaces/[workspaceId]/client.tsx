@@ -95,7 +95,7 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
           <Button
             variant="muted"
             size="icon"
-            onClick={createTask}
+            onClick={(): Promise<URLSearchParams> => createTask()}
           >
             <PlusIcon className="size-4 text-neutral-400" />
           </Button>
