@@ -11,6 +11,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
   Table,
   TableBody,
   TableCell,
@@ -20,6 +27,7 @@ import {
 } from "@/components/ui/table";
 import {
   Cell,
+  Column,
   ColumnFiltersState,
   getFilteredRowModel,
   getSortedRowModel,
@@ -27,8 +35,10 @@ import {
   HeaderGroup,
   Row,
   Table as TableCore,
+  VisibilityState,
 } from "@tanstack/table-core";
-import { ReactElement, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { ChangeEvent, ReactElement, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,6 +51,7 @@ export function DataTable<TData, TValue>({
 }: Readonly<DataTableProps<TData, TValue>>): ReactElement {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const table: TableCore<TData> = useReactTable({
     data,
@@ -51,14 +62,58 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
   });
 
   return (
     <div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter tasks..."
+          value={table.getColumn("name")?.getFilterValue() as string}
+          onChange={(event: ChangeEvent<HTMLInputElement>): void | undefined =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="ml-auto"
+            >
+              Columns
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column: Column<TData, unknown>): boolean =>
+                column.getCanHide()
+              )
+              .map((column: Column<TData, unknown>): ReactElement => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value: boolean): void =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

@@ -25,6 +25,7 @@ const dateSort: (rowA: any, rowB: any, columnId: string) => number = (
 export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "name",
+    enableHiding: false,
     header: ({ column }: HeaderContext<Task, unknown>): ReactElement => {
       return (
         <Button
@@ -162,6 +163,7 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: "actions",
+    enableHiding: false,
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const id: string = row.original.$id;
       const { projectId } = row.original;
