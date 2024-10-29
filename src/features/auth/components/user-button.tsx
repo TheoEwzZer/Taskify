@@ -85,14 +85,14 @@ export const UserButton = (): ReactElement | null => {
           onClick={() => open()}
           className="h-10 cursor-pointer items-center justify-center font-medium"
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit className="h-4 w-4" />
           Edit Profile
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={(): void => logout()}
           className="h-10 cursor-pointer items-center justify-center font-medium text-amber-700"
         >
-          <LogOut className="mr-2 h-4 w-4" />
+          <LogOut className="h-4 w-4" />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
