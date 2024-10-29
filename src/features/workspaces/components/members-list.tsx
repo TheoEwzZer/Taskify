@@ -19,7 +19,9 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { ArrowLeftIcon, MoreVerticalIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment, ReactElement } from "react";
+import { useGetWorkspace } from "../api/use-get-workspace";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
+import { InviteMembersCard } from "./invite-members-card";
 
 export const Memberslist: () => ReactElement = () => {
   const workspaceId: string = useWorkspaceId();
@@ -34,6 +36,7 @@ export const Memberslist: () => ReactElement = () => {
     useDeleteMember();
   const { mutate: updateMember, isPending: isUpdatingMember } =
     useUpdateMember();
+  const { data: workspaceData } = useGetWorkspace({ workspaceId });
 
   const handleUpdateMember: (memberId: string, role: MemberRole) => void = (
     memberId: string,
@@ -150,6 +153,7 @@ export const Memberslist: () => ReactElement = () => {
           )
         )}
       </CardContent>
+      {workspaceData && <InviteMembersCard workspace={workspaceData} />}
     </Card>
   );
 };
