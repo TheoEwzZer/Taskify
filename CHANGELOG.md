@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.0](https://github.com/TheoEwzZer/Taskify/compare/v1.1.0...v1.2.0) (2024-10-29)
+
+
+### Features
+
+* add default task status ([a403347](https://github.com/TheoEwzZer/Taskify/commit/a403347b1135bd917d86d8cc8d4bde3d04bb9477))
+* add tasks filtering and visibility toggle ([bf5da84](https://github.com/TheoEwzZer/Taskify/commit/bf5da847f3a44414d0db2d03fb52aa106d416489))
+* refactor workspace invite functionality and add InviteMembersCard component ([8c24c23](https://github.com/TheoEwzZer/Taskify/commit/8c24c23712fb8bb1a68d5fb5fc38a9e08a9cd4cc))
+
 ## [1.1.0](https://github.com/TheoEwzZer/Taskify/compare/v1.0.0...v1.1.0) (2024-10-28)
 
 
