@@ -51,7 +51,6 @@ const app = new Hono()
         projectId: z.string().nullish(),
         assigneeId: z.string().nullish(),
         status: z.nativeEnum(TaskStatus).nullish(),
-        search: z.string().nullish(),
         dueDate: z.string().nullish(),
         onlyAssigned: z.string().nullish(),
       })
@@ -66,7 +65,6 @@ const app = new Hono()
         projectId,
         assigneeId,
         status,
-        search,
         dueDate,
         onlyAssigned,
       } = c.req.valid("query");
@@ -102,10 +100,6 @@ const app = new Hono()
 
       if (dueDate) {
         query.push(Query.equal("dueDate", dueDate));
-      }
-
-      if (search) {
-        query.push(Query.search("name", search));
       }
 
       const tasks: Models.DocumentList<Task> =

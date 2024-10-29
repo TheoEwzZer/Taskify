@@ -8,7 +8,6 @@ interface UseGetTasksProps {
   workspaceId: string;
   projectId?: string | null;
   status?: TaskStatus | null;
-  search?: string | null;
   assigneeId?: string | null;
   dueDate?: string | null;
   onlyAssigned?: string | null;
@@ -18,7 +17,6 @@ export const useGetTasks: ({
   workspaceId,
   projectId,
   status,
-  search,
   assigneeId,
   dueDate,
   onlyAssigned,
@@ -29,7 +27,6 @@ export const useGetTasks: ({
   workspaceId,
   projectId,
   status,
-  search,
   assigneeId,
   dueDate,
   onlyAssigned,
@@ -40,7 +37,6 @@ export const useGetTasks: ({
       workspaceId,
       projectId,
       status,
-      search,
       assigneeId,
       dueDate,
       onlyAssigned,
@@ -57,7 +53,6 @@ export const useGetTasks: ({
           workspaceId,
           projectId: projectId ?? undefined,
           status: status ?? undefined,
-          search: search ?? undefined,
           assigneeId: assigneeId ?? undefined,
           dueDate: dueDate ?? undefined,
           onlyAssigned: onlyAssigned ?? undefined,
