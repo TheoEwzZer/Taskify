@@ -30,6 +30,7 @@ import {
   CircleDotDashedIcon,
   CircleDotIcon,
   CircleIcon,
+  FolderIcon,
   ListChecksIcon,
   UserIcon,
 } from "lucide-react";
@@ -307,7 +308,7 @@ export const DataFilters: ({
               size="sm"
               className="h-8 border-dashed"
             >
-              <UserIcon className="h-4 w-4" />
+              <FolderIcon className="h-4 w-4" />
               Project
               {projectId && (
                 <>
