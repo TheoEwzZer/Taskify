@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { Badge } from "./ui/badge";
+import { Separator } from "./ui/separator";
 
 interface DatePickerProps {
   value: Date | undefined;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | undefined) => void;
   className?: string;
   placeholder?: string;
 }
@@ -36,15 +37,27 @@ export const DatePicker: ({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          size="lg"
-          className={cn(
-            "w-full justify-start px-3 text-left font-normal",
-            !value && "text-muted-foreground",
-            className
-          )}
+          size="sm"
+          className="h-8 border-dashed"
         >
           <CalendarIcon className="h-4 w-4" />
-          {value ? format(value, "PPP") : <span>{placeholder}</span>}
+          {placeholder}
+          {value && (
+            <>
+              <Separator
+                orientation="vertical"
+                className="mx-2 h-4"
+              />
+              <div className="flex space-x-1">
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm px-1 font-normal"
+                >
+                  {format(value, "PPP")}
+                </Badge>
+              </div>
+            </>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -52,7 +65,7 @@ export const DatePicker: ({
           mode="single"
           weekStartsOn={1}
           selected={value}
-          onSelect={(date: Date | undefined) => {
+          onSelect={(date: Date | undefined): void => {
             onChange(date as Date);
           }}
         />
