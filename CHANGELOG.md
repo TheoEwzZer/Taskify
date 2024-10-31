@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.4.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.3.0...taskify-v1.4.0) (2024-10-31)
+
+
+### ✨ Features
+
+* update DataFilters component to include MemberAvatar and ProjectAvatar for better visual representation ([d703245](https://github.com/TheoEwzZer/Taskify/commit/d70324531e1413e9003bd35038e8bc5897f74260))
+* update task filters and query to support multiple project, status, and assignee IDs ([3e1394e](https://github.com/TheoEwzZer/Taskify/commit/3e1394ec46562d45d3183ee2e1867c524f65e0be))
+
+
+### 🐛 Bug Fixes
+
+* add DatePickerFilters component and integrate it into DataFilters for enhanced date selection ([200f5df](https://github.com/TheoEwzZer/Taskify/commit/200f5df362a4ec978492c6189e839d15e67d76f0))
+* center align the DataFilters component's className for improved layout ([d063242](https://github.com/TheoEwzZer/Taskify/commit/d063242c11a0864fe364892200b5b462b9adc7f9))
+* replace UserIcon with FolderIcon in data filters component ([2d9f14e](https://github.com/TheoEwzZer/Taskify/commit/2d9f14e4d7203a753c9f5fb9133cf483a7a0b9a9))
+* simplify CommandDialogProps type definition and clean up CommandInput component ([86142d6](https://github.com/TheoEwzZer/Taskify/commit/86142d6a9f64b6aac70b2792e58eb93a1f26bc28))
+
+
+### ♻️ Code Refactoring
+
+* refactor code to use only one data picker ([d206463](https://github.com/TheoEwzZer/Taskify/commit/d206463229fe163f54179f2fd10c855ae8497610))
+
+
+### 💄 Styles
+
+* improve data filters ([bc67bd8](https://github.com/TheoEwzZer/Taskify/commit/bc67bd8827a6123a33c5912ff316d31717459db3))
+
 ## [1.3.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.2.0...taskify-v1.3.0) (2024-10-30)
 
 
