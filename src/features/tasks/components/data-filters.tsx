@@ -17,12 +17,13 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { useGetMembers } from "@/features/members/api/use-get-member";
+import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
+import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
-import { Cross2Icon } from "@radix-ui/react-icons";
 import {
   CheckIcon,
   CircleCheckIcon,
@@ -90,7 +91,7 @@ export const DataFilters: ({
     return null;
   }
 
-  const options: TaskStatusOption[] = [
+  const taskOptions: TaskStatusOption[] = [
     {
       value: TaskStatus.BACKLOG,
       label: "Backlog",
@@ -118,6 +119,14 @@ export const DataFilters: ({
     },
   ];
 
+  const foundProject: Project | undefined =
+    projectOptions &&
+    projectOptions.find((option: Project): boolean => option.$id === projectId);
+
+  const foundMember: Member | undefined =
+    memberOptions &&
+    memberOptions.find((option: Member): boolean => option.$id === assigneeId);
+
   return (
     <div className="flex flex-col gap-2 lg:flex-row">
       <Popover>
@@ -140,8 +149,16 @@ export const DataFilters: ({
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
                   >
+                    <div className="mr-2">
+                      {
+                        taskOptions.find(
+                          (option: TaskStatusOption): boolean =>
+                            option.value === status
+                        )?.icon
+                      }
+                    </div>
                     {
-                      options.find(
+                      taskOptions.find(
                         (option: TaskStatusOption): boolean =>
                           option.value === status
                       )?.label
@@ -161,7 +178,7 @@ export const DataFilters: ({
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                {options.map((option: TaskStatusOption): ReactElement => {
+                {taskOptions.map((option: TaskStatusOption): ReactElement => {
                   const isSelected: boolean = status === option.value;
                   return (
                     <CommandItem
@@ -232,6 +249,12 @@ export const DataFilters: ({
                       variant="secondary"
                       className="rounded-sm px-1 font-normal"
                     >
+                      {foundMember && (
+                        <MemberAvatar
+                          member={foundMember}
+                          className="mr-2"
+                        />
+                      )}
                       {
                         memberOptions.find(
                           (option: Member): boolean => option.$id === assigneeId
@@ -274,6 +297,12 @@ export const DataFilters: ({
                         >
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
+                        {foundMember && (
+                          <MemberAvatar
+                            member={option}
+                            className="mr-2"
+                          />
+                        )}
                         <span>{option.name}</span>
                       </CommandItem>
                     );
@@ -321,6 +350,13 @@ export const DataFilters: ({
                       variant="secondary"
                       className="rounded-sm px-1 font-normal"
                     >
+                      {foundProject && (
+                        <ProjectAvatar
+                          image={foundProject.imageUrl}
+                          name={foundProject.name}
+                          className="mr-2"
+                        />
+                      )}
                       {
                         projectOptions.find(
                           (option: Project): boolean => option.$id === projectId
@@ -363,6 +399,11 @@ export const DataFilters: ({
                         >
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
+                        <ProjectAvatar
+                          image={option.imageUrl}
+                          name={option.name}
+                          className="mr-2"
+                        />
                         <span>{option.name}</span>
                       </CommandItem>
                     );
@@ -414,7 +455,6 @@ export const DataFilters: ({
           className="h-8 px-2 lg:px-3"
         >
           Reset
-          <Cross2Icon className="h-4 w-4" />
         </Button>
       )}
     </div>
