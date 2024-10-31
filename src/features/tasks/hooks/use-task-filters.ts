@@ -1,4 +1,5 @@
 import {
+  parseAsArrayOf,
   parseAsString,
   parseAsStringEnum,
   ParserBuilder,
@@ -8,15 +9,15 @@ import {
 import { TaskStatus } from "../types";
 
 export const useTaskFilters: () => UseQueryStatesReturn<{
-  projectId: ParserBuilder<string>;
-  status: ParserBuilder<TaskStatus>;
-  assigneeId: ParserBuilder<string>;
+  projectId: ParserBuilder<string[]>;
+  status: ParserBuilder<TaskStatus[]>;
+  assigneeId: ParserBuilder<string[]>;
   dueDate: ParserBuilder<string>;
 }> = () => {
   return useQueryStates({
-    projectId: parseAsString,
-    status: parseAsStringEnum(Object.values(TaskStatus)),
-    assigneeId: parseAsString,
+    projectId: parseAsArrayOf(parseAsString),
+    status: parseAsArrayOf(parseAsStringEnum(Object.values(TaskStatus))),
+    assigneeId: parseAsArrayOf(parseAsString),
     dueDate: parseAsString,
   });
 };

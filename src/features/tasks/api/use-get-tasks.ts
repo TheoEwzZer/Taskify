@@ -6,9 +6,9 @@ import { Task, TaskStatus } from "../types";
 
 interface UseGetTasksProps {
   workspaceId: string;
-  projectId?: string | null;
-  status?: TaskStatus | null;
-  assigneeId?: string | null;
+  projectId?: string[] | null;
+  status?: TaskStatus[] | null;
+  assigneeId?: string[] | null;
   dueDate?: string | null;
   onlyAssigned?: string | null;
 }
@@ -23,14 +23,7 @@ export const useGetTasks: ({
 }: UseGetTasksProps) => UseQueryResult<
   { documents: Task[]; total: number },
   Error
-> = ({
-  workspaceId,
-  projectId,
-  status,
-  assigneeId,
-  dueDate,
-  onlyAssigned,
-}) => {
+> = ({ workspaceId, projectId, status, assigneeId, dueDate, onlyAssigned }) => {
   return useQuery({
     queryKey: [
       "tasks",

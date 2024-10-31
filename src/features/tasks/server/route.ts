@@ -48,9 +48,29 @@ const app = new Hono()
       "query",
       z.object({
         workspaceId: z.string(),
-        projectId: z.string().nullish(),
-        assigneeId: z.string().nullish(),
-        status: z.nativeEnum(TaskStatus).nullish(),
+        projectId: z
+          .union([z.string(), z.array(z.string())])
+          .nullish()
+          .transform(
+            (val: string | string[] | null | undefined): string[] | null =>
+              Array.isArray(val) ? val : val ? [val] : null
+          ),
+        assigneeId: z
+          .union([z.string(), z.array(z.string())])
+          .nullish()
+          .transform(
+            (val: string | string[] | null | undefined): string[] | null =>
+              Array.isArray(val) ? val : val ? [val] : null
+          ),
+        status: z
+          .union([z.nativeEnum(TaskStatus), z.array(z.nativeEnum(TaskStatus))])
+          .nullish()
+          .transform(
+            (
+              val: TaskStatus | TaskStatus[] | null | undefined
+            ): TaskStatus[] | null =>
+              Array.isArray(val) ? val : val ? [val] : null
+          ),
         dueDate: z.string().nullish(),
         onlyAssigned: z.string().nullish(),
       })
@@ -84,18 +104,18 @@ const app = new Hono()
         Query.orderDesc("$createdAt"),
       ];
 
-      if (projectId) {
-        query.push(Query.equal("projectId", projectId));
+      if (projectId && projectId.length > 0) {
+        query.push(Query.contains("projectId", projectId));
       }
 
-      if (status) {
-        query.push(Query.equal("status", status));
+      if (status && status.length > 0) {
+        query.push(Query.contains("status", status));
       }
 
       if (onlyAssigned && onlyAssigned == "true") {
         query.push(Query.equal("assigneeId", member.$id));
-      } else if (assigneeId) {
-        query.push(Query.equal("assigneeId", assigneeId));
+      } else if (assigneeId && assigneeId.length > 0) {
+        query.push(Query.contains("assigneeId", assigneeId));
       }
 
       if (dueDate) {

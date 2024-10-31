@@ -35,6 +35,7 @@ import {
   ListChecksIcon,
   UserIcon,
 } from "lucide-react";
+import { ParserBuilder, Values } from "nuqs";
 import { ReactElement, ReactNode } from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
@@ -75,16 +76,100 @@ export const DataFilters: ({
   const [{ status, assigneeId, projectId, dueDate }, setFilters] =
     useTaskFilters();
 
-  const onStatusChange: (value: string) => void = (value: string) => {
-    setFilters({ status: value === "all" ? null : (value as TaskStatus) });
+  const onStatusChange: (value: string) => void = (value) => {
+    if (value === "all") {
+      setFilters({ status: null });
+      return;
+    }
+    const newStatus = value as TaskStatus;
+    setFilters(
+      (
+        prev: Values<{
+          projectId: ParserBuilder<string[]>;
+          status: ParserBuilder<TaskStatus[]>;
+          assigneeId: ParserBuilder<string[]>;
+          dueDate: ParserBuilder<string>;
+        }>
+      ) => {
+        if (!prev.status) {
+          return { status: [newStatus] };
+        }
+        if (prev.status.includes(newStatus)) {
+          const updatedStatus: TaskStatus[] = prev.status.filter(
+            (s: TaskStatus): boolean => s !== newStatus
+          );
+          if (updatedStatus.length === 0) {
+            return { status: null };
+          }
+          return { status: updatedStatus };
+        }
+        return { status: [...prev.status, newStatus] };
+      }
+    );
   };
 
-  const onAssigneeChange: (value: string) => void = (value: string) => {
-    setFilters({ assigneeId: value === "all" ? null : value });
+  const onAssigneeChange: (value: string) => void = (value) => {
+    if (value === "all") {
+      setFilters({ assigneeId: null });
+      return;
+    }
+    const newAssigneeId = value as string;
+    setFilters(
+      (
+        prev: Values<{
+          projectId: ParserBuilder<string[]>;
+          status: ParserBuilder<TaskStatus[]>;
+          assigneeId: ParserBuilder<string[]>;
+          dueDate: ParserBuilder<string>;
+        }>
+      ) => {
+        if (!prev.assigneeId) {
+          return { assigneeId: [newAssigneeId] };
+        }
+        if (prev.assigneeId.includes(newAssigneeId)) {
+          const updatedStatus: string[] = prev.assigneeId.filter(
+            (s: string): boolean => s !== newAssigneeId
+          );
+          if (updatedStatus.length === 0) {
+            return { assigneeId: null };
+          }
+          return { assigneeId: updatedStatus };
+        }
+        return { assigneeId: [...prev.assigneeId, newAssigneeId] };
+      }
+    );
   };
 
-  const onProjectChange: (value: string) => void = (value: string) => {
-    setFilters({ projectId: value === "all" ? null : value });
+  const onProjectChange: (value: string) => void = (value) => {
+    if (value === "all") {
+      setFilters({ projectId: null });
+      return;
+    }
+    const newProjectId = value as string;
+    setFilters(
+      (
+        prev: Values<{
+          projectId: ParserBuilder<string[]>;
+          status: ParserBuilder<TaskStatus[]>;
+          assigneeId: ParserBuilder<string[]>;
+          dueDate: ParserBuilder<string>;
+        }>
+      ) => {
+        if (!prev.projectId) {
+          return { projectId: [newProjectId] };
+        }
+        if (prev.projectId.includes(newProjectId)) {
+          const updatedStatus: string[] = prev.projectId.filter(
+            (s: string): boolean => s !== newProjectId
+          );
+          if (updatedStatus.length === 0) {
+            return { projectId: null };
+          }
+          return { projectId: updatedStatus };
+        }
+        return { projectId: [...prev.projectId, newProjectId] };
+      }
+    );
   };
 
   if (isLoading) {
@@ -119,14 +204,6 @@ export const DataFilters: ({
     },
   ];
 
-  const foundProject: Project | undefined =
-    projectOptions &&
-    projectOptions.find((option: Project): boolean => option.$id === projectId);
-
-  const foundMember: Member | undefined =
-    memberOptions &&
-    memberOptions.find((option: Member): boolean => option.$id === assigneeId);
-
   return (
     <div className="flex flex-col gap-2 lg:flex-row">
       <Popover>
@@ -138,32 +215,44 @@ export const DataFilters: ({
           >
             <ListChecksIcon className="h-4 w-4" />
             Status
-            {status && (
+            {status && status.length > 0 && (
               <>
                 <Separator
                   orientation="vertical"
                   className="mx-2 h-4"
                 />
-                <div className="flex space-x-1">
-                  <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
-                  >
-                    <div className="mr-2">
-                      {
-                        taskOptions.find(
-                          (option: TaskStatusOption): boolean =>
-                            option.value === status
-                        )?.icon
-                      }
-                    </div>
-                    {
-                      taskOptions.find(
-                        (option: TaskStatusOption): boolean =>
-                          option.value === status
-                      )?.label
-                    }
-                  </Badge>
+                <Badge
+                  variant="secondary"
+                  className="rounded-sm px-1 font-normal lg:hidden"
+                >
+                  {status.length}
+                </Badge>
+                <div className="hidden space-x-1 lg:flex">
+                  {status.length > 2 ? (
+                    <Badge
+                      variant="secondary"
+                      className="rounded-sm px-1 font-normal"
+                    >
+                      {status.length} selected
+                    </Badge>
+                  ) : (
+                    taskOptions
+                      .filter((option: TaskStatusOption): boolean =>
+                        status.includes(option.value)
+                      )
+                      .map(
+                        (option: TaskStatusOption): ReactElement => (
+                          <Badge
+                            variant="secondary"
+                            key={option.value}
+                            className="rounded-sm px-1 font-normal"
+                          >
+                            <div className="mr-2">{option.icon}</div>
+                            {option.label}
+                          </Badge>
+                        )
+                      )
+                  )}
                 </div>
               </>
             )}
@@ -179,17 +268,13 @@ export const DataFilters: ({
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 {taskOptions.map((option: TaskStatusOption): ReactElement => {
-                  const isSelected: boolean = status === option.value;
+                  const isSelected: boolean =
+                    status?.includes(option.value) ?? false;
                   return (
                     <CommandItem
                       key={option.value}
                       onSelect={(): void => {
-                        onStatusChange(
-                          isSelected ? "all" : (option.value as string)
-                        );
-                        setFilters({
-                          status: isSelected ? null : option.value,
-                        });
+                        onStatusChange(option.value as string);
                       }}
                     >
                       <div
@@ -208,7 +293,7 @@ export const DataFilters: ({
                   );
                 })}
               </CommandGroup>
-              {status && (
+              {status && status.length > 0 && (
                 <>
                   <CommandSeparator />
                   <CommandGroup>
@@ -238,29 +323,47 @@ export const DataFilters: ({
             >
               <UserIcon className="h-4 w-4" />
               Assignee
-              {assigneeId && (
+              {assigneeId && assigneeId.length > 0 && (
                 <>
                   <Separator
                     orientation="vertical"
                     className="mx-2 h-4"
                   />
-                  <div className="flex space-x-1">
-                    <Badge
-                      variant="secondary"
-                      className="rounded-sm px-1 font-normal"
-                    >
-                      {foundMember && (
-                        <MemberAvatar
-                          member={foundMember}
-                          className="mr-2"
-                        />
-                      )}
-                      {
-                        memberOptions.find(
-                          (option: Member): boolean => option.$id === assigneeId
-                        )?.name
-                      }
-                    </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="rounded-sm px-1 font-normal lg:hidden"
+                  >
+                    {assigneeId.length}
+                  </Badge>
+                  <div className="hidden space-x-1 lg:flex">
+                    {assigneeId.length > 2 ? (
+                      <Badge
+                        variant="secondary"
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {assigneeId.length} selected
+                      </Badge>
+                    ) : (
+                      memberOptions
+                        .filter((option: Member): boolean =>
+                          assigneeId.includes(option.$id)
+                        )
+                        .map(
+                          (option: Member): ReactElement => (
+                            <Badge
+                              variant="secondary"
+                              key={option.$id}
+                              className="rounded-sm px-1 font-normal"
+                            >
+                              <MemberAvatar
+                                member={option}
+                                className="mr-2"
+                              />
+                              {option.name}
+                            </Badge>
+                          )
+                        )
+                    )}
                   </div>
                 </>
               )}
@@ -276,15 +379,13 @@ export const DataFilters: ({
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
                   {memberOptions.map((option: Member): ReactElement => {
-                    const isSelected: boolean = assigneeId === option.$id;
+                    const isSelected: boolean =
+                      assigneeId?.includes(option.$id) ?? false;
                     return (
                       <CommandItem
                         key={option.$id}
                         onSelect={(): void => {
                           onAssigneeChange(option.$id);
-                          setFilters({
-                            assigneeId: option.$id,
-                          });
                         }}
                       >
                         <div
@@ -297,18 +398,13 @@ export const DataFilters: ({
                         >
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
-                        {foundMember && (
-                          <MemberAvatar
-                            member={option}
-                            className="mr-2"
-                          />
-                        )}
+                        <MemberAvatar member={option} />
                         <span>{option.name}</span>
                       </CommandItem>
                     );
                   })}
                 </CommandGroup>
-                {assigneeId && (
+                {assigneeId && assigneeId.length > 0 && (
                   <>
                     <CommandSeparator />
                     <CommandGroup>
@@ -339,30 +435,48 @@ export const DataFilters: ({
             >
               <FolderIcon className="h-4 w-4" />
               Project
-              {projectId && (
+              {projectId && projectId.length > 0 && (
                 <>
                   <Separator
                     orientation="vertical"
                     className="mx-2 h-4"
                   />
-                  <div className="flex space-x-1">
-                    <Badge
-                      variant="secondary"
-                      className="rounded-sm px-1 font-normal"
-                    >
-                      {foundProject && (
-                        <ProjectAvatar
-                          image={foundProject.imageUrl}
-                          name={foundProject.name}
-                          className="mr-2"
-                        />
-                      )}
-                      {
-                        projectOptions.find(
-                          (option: Project): boolean => option.$id === projectId
-                        )?.name
-                      }
-                    </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="rounded-sm px-1 font-normal lg:hidden"
+                  >
+                    {projectId.length}
+                  </Badge>
+                  <div className="hidden space-x-1 lg:flex">
+                    {projectId.length > 2 ? (
+                      <Badge
+                        variant="secondary"
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {projectId.length} selected
+                      </Badge>
+                    ) : (
+                      projectOptions
+                        .filter((option: Project): boolean =>
+                          projectId.includes(option.$id)
+                        )
+                        .map(
+                          (option: Project): ReactElement => (
+                            <Badge
+                              variant="secondary"
+                              key={option.$id}
+                              className="rounded-sm px-1 font-normal"
+                            >
+                              <ProjectAvatar
+                                image={option.imageUrl}
+                                name={option.name}
+                                className="mr-2"
+                              />
+                              {option.name}
+                            </Badge>
+                          )
+                        )
+                    )}
                   </div>
                 </>
               )}
@@ -373,20 +487,18 @@ export const DataFilters: ({
             align="start"
           >
             <Command>
-              <CommandInput placeholder="Assignee" />
+              <CommandInput placeholder="Project" />
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
                   {projectOptions.map((option: Project): ReactElement => {
-                    const isSelected: boolean = projectId === option.$id;
+                    const isSelected: boolean =
+                      projectId?.includes(option.$id) ?? false;
                     return (
                       <CommandItem
                         key={option.$id}
                         onSelect={(): void => {
                           onProjectChange(option.$id);
-                          setFilters({
-                            projectId: option.$id,
-                          });
                         }}
                       >
                         <div
@@ -402,14 +514,13 @@ export const DataFilters: ({
                         <ProjectAvatar
                           image={option.imageUrl}
                           name={option.name}
-                          className="mr-2"
                         />
                         <span>{option.name}</span>
                       </CommandItem>
                     );
                   })}
                 </CommandGroup>
-                {projectId && (
+                {projectId && projectId.length > 0 && (
                   <>
                     <CommandSeparator />
                     <CommandGroup>
@@ -439,7 +550,10 @@ export const DataFilters: ({
         className="h-8 w-auto border-dashed font-semibold text-black"
         showBadge
       />
-      {(status || assigneeId || projectId || dueDate) && (
+      {((status && status.length > 0) ||
+        (assigneeId && assigneeId.length > 0) ||
+        (projectId && projectId.length > 0) ||
+        dueDate) && (
         <Button
           variant="ghost"
           onClick={(): void => {
