@@ -1,4 +1,4 @@
-import { DatePicker } from "@/components/date-picker";
+import { DatePickerFilters } from "@/components/date-picker-filters";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -430,9 +430,8 @@ export const DataFilters: ({
           </PopoverContent>
         </Popover>
       )}
-      <DatePicker
+      <DatePickerFilters
         placeholder="Due date"
-        className="h-8 w-full border-dashed lg:w-auto"
         value={dueDate ? new Date(dueDate) : undefined}
         onChange={(date: Date | undefined): Promise<URLSearchParams> =>
           setFilters({ dueDate: date ? date.toISOString() : null })
