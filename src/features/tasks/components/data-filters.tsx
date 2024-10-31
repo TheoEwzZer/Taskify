@@ -547,7 +547,7 @@ export const DataFilters: ({
         onChange={(date: Date | undefined): Promise<URLSearchParams> =>
           setFilters({ dueDate: date ? date.toISOString() : null })
         }
-        className="h-8 w-auto border-dashed font-semibold text-black"
+        className="h-8 w-auto justify-center border-dashed font-semibold text-black"
         showBadge
       />
       {((status && status.length > 0) ||
