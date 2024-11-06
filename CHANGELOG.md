@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.4.1](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.4.0...taskify-v1.4.1) (2024-11-06)
+
+
+### ♻️ Code Refactoring
+
+* extract nested ternary operation into an independent statement ([e8a8aad](https://github.com/TheoEwzZer/Taskify/commit/e8a8aadab164d1f985ef62eb45dd4eaea356a7ed))
+* move EditProfilModal import for better organization ([54e3301](https://github.com/TheoEwzZer/Taskify/commit/54e3301f5ef04a81c136fd325ac9811dd12ee4b3))
+* refactor assignee and project change handlers for clarity and consistency ([97959bf](https://github.com/TheoEwzZer/Taskify/commit/97959bffc2ff5ff90802e4a768f258fd019e917f))
+* simplify sidebar open state handling and cookie management ([17202b8](https://github.com/TheoEwzZer/Taskify/commit/17202b8f6f3ea2f07dbb5b7aabf802df8a97dfe2))
+
+
+### 💄 Styles
+
+* migrate icons to lucide instead of radix-ui ([21aa282](https://github.com/TheoEwzZer/Taskify/commit/21aa282164397d3ea364730f02df99693ad6cf96))
+
+
+### 📦 Dependencies
+
+* remove @radix-ui/react-icons dependency from package.json ([bdf01eb](https://github.com/TheoEwzZer/Taskify/commit/bdf01eb731416faefb682b6cd5c6cd87f0ccd929))
+* update lucide-react to version 0.454.0 ([2e3bd2e](https://github.com/TheoEwzZer/Taskify/commit/2e3bd2eb73e5da00cdb241f73c6f5c35cfdced22))
+
 ## [1.4.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.3.0...taskify-v1.4.0) (2024-10-31)
 
 
