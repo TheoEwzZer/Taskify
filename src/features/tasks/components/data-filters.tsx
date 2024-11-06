@@ -108,12 +108,11 @@ export const DataFilters: ({
     );
   };
 
-  const onAssigneeChange: (value: string) => void = (value) => {
-    if (value === "all") {
+  const onAssigneeChange: (newAssigneeId: string) => void = (newAssigneeId) => {
+    if (newAssigneeId === "all") {
       setFilters({ assigneeId: null });
       return;
     }
-    const newAssigneeId = value as string;
     setFilters(
       (
         prev: Values<{
@@ -140,12 +139,11 @@ export const DataFilters: ({
     );
   };
 
-  const onProjectChange: (value: string) => void = (value) => {
-    if (value === "all") {
+  const onProjectChange: (newProjectId: string) => void = (newProjectId) => {
+    if (newProjectId === "all") {
       setFilters({ projectId: null });
       return;
     }
-    const newProjectId = value as string;
     setFilters(
       (
         prev: Values<{
