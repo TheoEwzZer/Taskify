@@ -11,6 +11,18 @@ import { z } from "zod";
 import { createTaskSchema } from "../schemas";
 import { Task, TaskStatus } from "../types";
 
+const transformValue: <T>(val: T | T[] | null | undefined) => T[] | null = (
+  val
+) => {
+  if (Array.isArray(val)) {
+    return val;
+  } else if (val) {
+    return [val];
+  } else {
+    return null;
+  }
+};
+
 const app = new Hono()
   .delete("/:taskId", sessionMiddleware, async (c) => {
     const user: Models.User<Models.Preferences> = c.get("user");
@@ -51,26 +63,15 @@ const app = new Hono()
         projectId: z
           .union([z.string(), z.array(z.string())])
           .nullish()
-          .transform(
-            (val: string | string[] | null | undefined): string[] | null =>
-              Array.isArray(val) ? val : val ? [val] : null
-          ),
+          .transform(transformValue),
         assigneeId: z
           .union([z.string(), z.array(z.string())])
           .nullish()
-          .transform(
-            (val: string | string[] | null | undefined): string[] | null =>
-              Array.isArray(val) ? val : val ? [val] : null
-          ),
+          .transform(transformValue),
         status: z
           .union([z.nativeEnum(TaskStatus), z.array(z.nativeEnum(TaskStatus))])
           .nullish()
-          .transform(
-            (
-              val: TaskStatus | TaskStatus[] | null | undefined
-            ): TaskStatus[] | null =>
-              Array.isArray(val) ? val : val ? [val] : null
-          ),
+          .transform(transformValue),
         dueDate: z.string().nullish(),
         onlyAssigned: z.string().nullish(),
       })
