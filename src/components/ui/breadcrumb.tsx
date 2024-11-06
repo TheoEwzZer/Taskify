@@ -1,8 +1,8 @@
-import { ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { ChevronRight, MoreHorizontal } from "lucide-react";
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
@@ -95,7 +95,7 @@ const BreadcrumbSeparator = ({
     className={className}
     {...props}
   >
-    {children ?? <ChevronRightIcon />}
+    {children ?? <ChevronRight />}
   </li>
 );
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
@@ -110,7 +110,7 @@ const BreadcrumbEllipsis = ({
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <DotsHorizontalIcon className="h-4 w-4" />
+    <MoreHorizontal className="h-4 w-4" />
     <span className="sr-only">More</span>
   </span>
 );
