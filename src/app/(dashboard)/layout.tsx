@@ -1,4 +1,3 @@
-import { EditProfilModal } from "@/features/profil/components/edit-profil-modal";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -7,6 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { EditProfilModal } from "@/features/profil/components/edit-profil-modal";
 import { CreateProjectModal } from "@/features/projects/components/create-project-modal";
 import { CreateTaskModal } from "@/features/tasks/components/create-task-modal";
 import { EditTaskModal } from "@/features/tasks/components/edit-task-modal";
