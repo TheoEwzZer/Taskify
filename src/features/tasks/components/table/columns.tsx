@@ -2,9 +2,11 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { snakeCaseToTitleCase } from "@/lib/utils";
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { MoreVertical, XIcon } from "lucide-react";
 import { ReactElement } from "react";
@@ -24,6 +26,32 @@ const dateSort: (rowA: any, rowB: any, columnId: string) => number = (
 };
 
 export const columns: ColumnDef<Task>[] = [
+  {
+    id: "select",
+    header: ({ table }: HeaderContext<Task, unknown>): ReactElement => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: CheckedState): void =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }: CellContext<Task, unknown>): ReactElement => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: CheckedState): void =>
+          row.toggleSelected(!!value)
+        }
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     enableHiding: false,

@@ -1,8 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Table } from "@tanstack/react-table";
+import { useConfirm } from "@/hooks/use-confirm";
+import { Row, Table } from "@tanstack/react-table";
+import { TrashIcon } from "lucide-react";
 import { ChangeEvent, ReactElement } from "react";
+import { useBulkDeleteTasks } from "../../api/use-bulk-delete-tasks";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -12,8 +16,33 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: Readonly<DataTableToolbarProps<TData>>): ReactElement {
+  const [ConfimDialog, confirm] = useConfirm(
+    "Remove selected tasks",
+    "This action cannot be undone.",
+    "destructive"
+  );
+  const { mutate, isPending } = useBulkDeleteTasks();
+
+  const onDelete: () => Promise<void> = async () => {
+    const ok: unknown = await confirm();
+
+    if (!ok) {
+      return;
+    }
+
+    const selectedRows: Row<TData>[] = table.getSelectedRowModel().rows;
+    const tasksToDelete: { param: { taskId: string } }[] = selectedRows.map(
+      (row: Row<TData>) => ({
+        param: { taskId: (row.original as { $id: string }).$id },
+      })
+    );
+
+    mutate(tasksToDelete);
+  };
+
   return (
     <div className="flex items-center justify-between">
+      <ConfimDialog />
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter tasks..."
@@ -23,6 +52,16 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        {table.getSelectedRowModel().rows.length > 0 && (
+          <Button
+            variant="destructive"
+            onClick={onDelete}
+            disabled={isPending}
+          >
+            <TrashIcon className="stroke-2" />
+            Delete Selected
+          </Button>
+        )}
       </div>
       <DataTableViewOptions table={table} />
     </div>
