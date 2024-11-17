@@ -12,6 +12,9 @@ export const createProjectSchema = z.object({
       .optional(),
   ]),
   workspaceId: z.string(),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
+  assigneeIds: z.array(z.string().trim().max(50)).optional(),
 });
 
 export const updateProjectSchema = z.object({
@@ -30,4 +33,7 @@ export const updateProjectSchema = z.object({
       )
       .optional(),
   ]),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
+  assigneeIds: z.array(z.string().trim().max(50)).optional(),
 });

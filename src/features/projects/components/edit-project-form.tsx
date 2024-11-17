@@ -1,9 +1,18 @@
 "use client";
 
+import { DatePicker } from "@/components/date-picker";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -13,13 +22,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { MemberAvatar } from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeftIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, CheckIcon, ImageIcon, UserIcon } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ReactElement, RefObject, useRef } from "react";
+import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useConfirm } from "../../../hooks/use-confirm";
@@ -31,14 +47,17 @@ import { Project } from "../types";
 interface EditProjectFormProps {
   onCancel?: () => void;
   initialValues: Project;
+  memberOptions: Member[];
 }
 
 export const EditProjectForm: ({
   onCancel,
   initialValues,
+  memberOptions,
 }: EditProjectFormProps) => ReactElement = ({
   onCancel,
   initialValues,
+  memberOptions,
 }: EditProjectFormProps) => {
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useUpdateProject();
@@ -52,6 +71,23 @@ export const EditProjectForm: ({
   );
 
   const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const buttonRef: RefObject<HTMLButtonElement> =
+    useRef<HTMLButtonElement>(null);
+  const [buttonWidth, setButtonWidth] = useState<number>(0);
+
+  const updateButtonWidth = () => {
+    if (buttonRef.current) {
+      setButtonWidth(buttonRef.current.offsetWidth);
+    }
+  };
+
+  useEffect(() => {
+    updateButtonWidth();
+    window.addEventListener("resize", updateButtonWidth);
+    return () => {
+      window.removeEventListener("resize", updateButtonWidth);
+    };
+  }, []);
 
   const form: UseFormReturn<
     z.infer<typeof updateProjectSchema>,
@@ -61,9 +97,28 @@ export const EditProjectForm: ({
     resolver: zodResolver(updateProjectSchema),
     defaultValues: {
       ...initialValues,
+      startDate: initialValues.startDate
+        ? new Date(initialValues.startDate)
+        : undefined,
+      endDate: initialValues.endDate
+        ? new Date(initialValues.endDate)
+        : undefined,
       image: initialValues.imageUrl ?? "",
+      assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
     },
   });
+
+  const handleAssigneeChange = (assigneeId: string): void => {
+    const currentAssignees: string[] = form.getValues("assigneeIds") || [];
+    if (currentAssignees.includes(assigneeId)) {
+      form.setValue(
+        "assigneeIds",
+        currentAssignees.filter((id: string): boolean => id !== assigneeId)
+      );
+    } else {
+      form.setValue("assigneeIds", [...currentAssignees, assigneeId]);
+    }
+  };
 
   const handleDelete: () => Promise<void> = async () => {
     const ok: unknown = await confirmDelete();
@@ -90,7 +145,7 @@ export const EditProjectForm: ({
       image: values.image instanceof File ? values.image : "",
     };
 
-    mutate({ form: finalValues, param: { projectId: initialValues.$id } });
+    mutate({ json: finalValues, param: { projectId: initialValues.$id } });
   };
 
   const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
@@ -145,6 +200,105 @@ export const EditProjectForm: ({
                           placeholder="Enter project name"
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="startDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Start Date</FormLabel>
+                      <FormControl>
+                        <DatePicker {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>End Date</FormLabel>
+                      <FormControl>
+                        <DatePicker {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="assigneeIds"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Assignees</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            ref={buttonRef}
+                            variant="outline"
+                            size="sm"
+                            className="h-12 justify-start font-normal text-muted-foreground"
+                          >
+                            {field.value && field.value.length > 0 ? (
+                              <div className="flex items-center gap-x-2">
+                                <UserIcon className="h-4 w-4" />
+                                <span>{field.value.length} Assignees</span>
+                              </div>
+                            ) : (
+                              "Select Assignees"
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="p-0"
+                          align="start"
+                          style={{ width: buttonWidth }}
+                        >
+                          <Command>
+                            <CommandInput placeholder="Assignees" />
+                            <CommandList>
+                              <CommandEmpty>No results found.</CommandEmpty>
+                              <CommandGroup>
+                                {memberOptions.map(
+                                  (option: Member): ReactElement => {
+                                    const isSelected: boolean = field.value
+                                      ? field.value.includes(option.$id)
+                                      : false;
+                                    return (
+                                      <CommandItem
+                                        key={option.$id}
+                                        onSelect={(): void => {
+                                          handleAssigneeChange(option.$id);
+                                        }}
+                                      >
+                                        <div
+                                          className={cn(
+                                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                            isSelected
+                                              ? "bg-primary text-primary-foreground"
+                                              : "opacity-50 [&_svg]:invisible"
+                                          )}
+                                        >
+                                          <CheckIcon
+                                            className={cn("h-4 w-4")}
+                                          />
+                                        </div>
+                                        <MemberAvatar member={option} />
+                                        <span>{option.name}</span>
+                                      </CommandItem>
+                                    );
+                                  }
+                                )}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}

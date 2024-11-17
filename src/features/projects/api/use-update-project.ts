@@ -27,12 +27,12 @@ export const useUpdateProject: () => UseMutationResult<
 > = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async ({ form, param }) => {
+    mutationFn: async ({ json, param }) => {
       const response:
         | ClientResponse<{ error: string }, 401 | 404, "json">
         | ClientResponse<ResponseType, StatusCode, "json"> =
         await client.api.projects[":projectId"]["$patch"]({
-          form,
+          json,
           param,
         });
 

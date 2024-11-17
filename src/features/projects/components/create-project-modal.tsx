@@ -3,7 +3,7 @@
 import { ResponsiveModal } from "@/components/responsive-modal";
 import { ReactElement } from "react";
 import { useCreateProjectModal } from "../hooks/use-create-project-modal";
-import { CreateProjectForm } from "./create-project-form";
+import { CreateProjectFormWrapper } from "./create-project-form-wrapper";
 
 export const CreateProjectModal: () => ReactElement = () => {
   const { isOpen, setIsOpen, close } = useCreateProjectModal();
@@ -13,7 +13,7 @@ export const CreateProjectModal: () => ReactElement = () => {
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <CreateProjectForm onCancel={close} />
+      <CreateProjectFormWrapper onCancel={close} />
     </ResponsiveModal>
   );
 };

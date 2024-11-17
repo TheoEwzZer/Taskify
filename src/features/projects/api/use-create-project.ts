@@ -21,11 +21,11 @@ export const useCreateProject: () => UseMutationResult<
 > = () => {
   const queryClient = useQueryClient();
   return useMutation<ResponseType, Error, RequestType>({
-    mutationFn: async ({ form }) => {
+    mutationFn: async ({ json }) => {
       const response:
         | ClientResponse<{ error: string }, 401, "json">
         | ClientResponse<ResponseType, StatusCode, "json"> =
-        await client.api.projects.$post({ form });
+        await client.api.projects.$post({ json });
 
       if (!response.ok) {
         throw new Error("Failed to create project");

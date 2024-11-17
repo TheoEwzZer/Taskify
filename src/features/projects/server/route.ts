@@ -15,13 +15,14 @@ const app = new Hono()
   .post(
     "/",
     sessionMiddleware,
-    zValidator("form", createProjectSchema),
+    zValidator("json", createProjectSchema),
     async (c) => {
       const databases = c.get("databases");
       const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { name, image, workspaceId } = c.req.valid("form");
+      const { name, image, workspaceId, startDate, endDate, assigneeIds } =
+        c.req.valid("json");
 
       const member: Member = await getMember({
         databases,
@@ -60,6 +61,9 @@ const app = new Hono()
           name,
           imageUrl: uploadedImageUrl,
           workspaceId,
+          startDate,
+          assigneeIds,
+          endDate,
         }
       );
 
@@ -129,7 +133,7 @@ const app = new Hono()
   })
   .patch(
     "/:projectId",
-    zValidator("form", updateProjectSchema),
+    zValidator("json", updateProjectSchema),
     sessionMiddleware,
     async (c) => {
       const databases = c.get("databases");
@@ -137,7 +141,8 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
 
       const { projectId } = c.req.param();
-      const { name, image } = c.req.valid("form");
+      const { name, image, startDate, endDate, assigneeIds } =
+        c.req.valid("json");
 
       const existingProject: Project = await databases.getDocument<Project>(
         DATABASE_ID,
@@ -184,7 +189,10 @@ const app = new Hono()
         projectId,
         {
           name,
+          startDate,
+          endDate,
           imageUrl: uploadedImageUrl,
+          assigneeIds,
         }
       );
 
