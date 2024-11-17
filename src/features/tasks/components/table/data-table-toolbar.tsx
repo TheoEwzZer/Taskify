@@ -57,6 +57,7 @@ export function DataTableToolbar<TData>({
             variant="destructive"
             onClick={onDelete}
             disabled={isPending}
+            size="sm"
           >
             <TrashIcon className="stroke-2" />
             Delete Selected
