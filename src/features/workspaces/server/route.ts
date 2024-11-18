@@ -205,7 +205,10 @@ const app = new Hono()
     });
 
     if (!member || member.role !== MemberRole.ADMIN) {
-      return c.json({ error: "Unauthorized" }, 401);
+      return c.json(
+        { error: "Unauthorized beacuse you are not an admin" },
+        401
+      );
     }
 
     const tasks: Models.DocumentList<Task> =
