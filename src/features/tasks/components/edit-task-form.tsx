@@ -5,6 +5,14 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
   Form,
   FormControl,
   FormField,
@@ -14,10 +22,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
-  SelectSeparator,
   SelectTrigger,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,8 +41,8 @@ import { Project } from "@/features/projects/types";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
-import { XIcon } from "lucide-react";
-import { ReactElement } from "react";
+import { CheckIcon, UserIcon } from "lucide-react";
+import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useUpdateTask } from "../api/use-update-task";
@@ -59,6 +71,24 @@ export const EditTaskForm: ({
   const projectId: string = useProjectId();
   const { mutate, isPending } = useUpdateTask();
 
+  const buttonRef: RefObject<HTMLButtonElement> =
+    useRef<HTMLButtonElement>(null);
+  const [buttonWidth, setButtonWidth] = useState<number>(0);
+
+  const updateButtonWidth = () => {
+    if (buttonRef.current) {
+      setButtonWidth(buttonRef.current.offsetWidth);
+    }
+  };
+
+  useEffect(() => {
+    updateButtonWidth();
+    window.addEventListener("resize", updateButtonWidth);
+    return () => {
+      window.removeEventListener("resize", updateButtonWidth);
+    };
+  }, []);
+
   const form: UseFormReturn<
     z.infer<typeof editTaskSchema>,
     any,
@@ -72,7 +102,7 @@ export const EditTaskForm: ({
       dueDate: initialValues.dueDate
         ? new Date(initialValues.dueDate)
         : undefined,
-      assigneeId: initialValues.assigneeId ?? "none",
+      assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
     },
   });
 
@@ -88,6 +118,18 @@ export const EditTaskForm: ({
         },
       }
     );
+  };
+
+  const handleAssigneeChange = (assigneeId: string): void => {
+    const currentAssignees: string[] = form.getValues("assigneeIds") || [];
+    if (currentAssignees.includes(assigneeId)) {
+      form.setValue(
+        "assigneeIds",
+        currentAssignees.filter((id: string): boolean => id !== assigneeId)
+      );
+    } else {
+      form.setValue("assigneeIds", [...currentAssignees, assigneeId]);
+    }
   };
 
   return (
@@ -133,46 +175,72 @@ export const EditTaskForm: ({
               />
               <FormField
                 control={form.control}
-                name="assigneeId"
+                name="assigneeIds"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Assignee</FormLabel>
-                    <Select
-                      defaultValue={field.value ?? "none"}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select assignee" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <FormMessage />
-                      <SelectContent>
-                        <SelectItem value="none">
-                          <div className="flex items-center gap-x-2">
-                            <XIcon className="size-6 rounded-full border border-neutral-300 transition" />
-                            Unassigned
-                          </div>
-                        </SelectItem>
-                        <SelectSeparator />
-                        {memberOptions.map(
-                          (member: Member): ReactElement => (
-                            <SelectItem
-                              key={member.$id}
-                              value={member.$id}
-                            >
-                              <div className="flex items-center gap-x-2">
-                                <MemberAvatar
-                                  member={member}
-                                  className="size-6"
-                                />
-                                {member.name}
-                              </div>
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Assignees</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          ref={buttonRef}
+                          variant="outline"
+                          size="sm"
+                          className="h-12 justify-start font-normal text-muted-foreground"
+                        >
+                          {field.value && field.value.length > 0 ? (
+                            <div className="flex items-center gap-x-2">
+                              <UserIcon className="h-4 w-4" />
+                              <span>{field.value.length} Assignees</span>
+                            </div>
+                          ) : (
+                            "Select Assignees"
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="p-0"
+                        align="start"
+                        style={{ width: buttonWidth }}
+                      >
+                        <Command>
+                          <CommandInput placeholder="Assignees" />
+                          <CommandList>
+                            <CommandEmpty>No results found.</CommandEmpty>
+                            <CommandGroup>
+                              {memberOptions.map(
+                                (option: Member): ReactElement => {
+                                  const isSelected: boolean = field.value
+                                    ? field.value.includes(option.$id)
+                                    : false;
+                                  return (
+                                    <CommandItem
+                                      key={option.$id}
+                                      onSelect={(): void => {
+                                        handleAssigneeChange(option.$id);
+                                      }}
+                                    >
+                                      <div
+                                        className={cn(
+                                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                          isSelected
+                                            ? "bg-primary text-primary-foreground"
+                                            : "opacity-50 [&_svg]:invisible"
+                                        )}
+                                      >
+                                        <CheckIcon className={cn("h-4 w-4")} />
+                                      </div>
+                                      <MemberAvatar member={option} />
+                                      <span>{option.name}</span>
+                                    </CommandItem>
+                                  );
+                                }
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

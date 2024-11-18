@@ -359,14 +359,14 @@ const app = new Hono()
 
     const thisWeekAssignedTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
-      Query.equal("assigneeId", member.$id),
+      Query.contains("assigneeIds", member.$id),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
     ]);
 
     const lastWeekAssignedTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("workspaceId", workspaceId),
-      Query.equal("assigneeId", member.$id),
+      Query.contains("assigneeIds", member.$id),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
     ]);

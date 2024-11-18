@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CheckedState } from "@radix-ui/react-checkbox";
@@ -103,9 +104,9 @@ export const columns: ColumnDef<Task>[] = [
       />
     ),
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
-      const { assignee } = row.original;
+      const { assignees } = row.original;
 
-      if (!assignee) {
+      if (!assignees || assignees.length === 0) {
         return (
           <div className="flex items-center gap-x-2 text-sm font-medium">
             <XIcon className="size-6 rounded-full border border-neutral-300 transition" />
@@ -115,13 +116,22 @@ export const columns: ColumnDef<Task>[] = [
       }
 
       return (
-        <div className="flex items-center gap-x-2 text-sm font-medium">
-          <MemberAvatar
-            className="size-6"
-            fallbackClassName="text-xs"
-            member={assignee}
-          />
-          <p className="line-clamp-1">{assignee.name}</p>
+        <div className="flex flex-col items-start gap-y-2 text-sm font-medium">
+          {assignees.map(
+            (assignee: Member): ReactElement => (
+              <div
+                key={assignee.$id}
+                className="flex items-center gap-x-2"
+              >
+                <MemberAvatar
+                  className="size-6"
+                  fallbackClassName="text-xs"
+                  member={assignee}
+                />
+                <p className="line-clamp-1">{assignee.name}</p>
+              </div>
+            )
+          )}
         </div>
       );
     },

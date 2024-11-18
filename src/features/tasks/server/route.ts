@@ -114,9 +114,9 @@ const app = new Hono()
       }
 
       if (onlyAssigned && onlyAssigned == "true") {
-        query.push(Query.equal("assigneeId", member.$id));
+        query.push(Query.contains("assigneeIds", member.$id));
       } else if (assigneeId && assigneeId.length > 0) {
-        query.push(Query.contains("assigneeId", assigneeId));
+        query.push(Query.contains("assigneeIds", assigneeId));
       }
 
       if (dueDate) {
@@ -130,7 +130,7 @@ const app = new Hono()
         (task: Task): string => task.projectId
       );
       const assigneeIds: string[] = tasks.documents
-        .map((task: Task): string | undefined => task.assigneeId)
+        .flatMap((task: Task): string[] => task.assigneeIds)
         .filter(
           (id: string | undefined): id is string =>
             id !== undefined && id !== null && id !== "none"
@@ -170,14 +170,23 @@ const app = new Hono()
           (project: Project): boolean => project.$id === task.projectId
         );
 
-        const assignee: Member | undefined = assignees.find(
-          (assignee: Member): boolean => assignee.$id === task.assigneeId
-        );
+        const taskAssignees: Member[] = task.assigneeIds
+          ? task.assigneeIds
+              .map((assigneeId: string): Member | undefined => {
+                return assignees.find(
+                  (assignee: Member): boolean => assignee.$id === assigneeId
+                );
+              })
+              .filter(
+                (assignee: Member | undefined): assignee is Member =>
+                  assignee !== undefined
+              )
+          : [];
 
         return {
           ...task,
           project,
-          assignee,
+          assignees: taskAssignees,
         };
       });
 
@@ -202,7 +211,7 @@ const app = new Hono()
         workspaceId,
         projectId,
         dueDate,
-        assigneeId,
+        assigneeIds,
         description,
       } = c.req.valid("json");
 
@@ -239,7 +248,7 @@ const app = new Hono()
           workspaceId,
           projectId,
           dueDate,
-          assigneeId,
+          assigneeIds,
           position: newPosition,
           description,
         }
@@ -255,7 +264,7 @@ const app = new Hono()
     async (c) => {
       const user: Models.User<Models.Preferences> = c.get("user");
       const databases = c.get("databases");
-      const { name, status, description, projectId, dueDate, assigneeId } =
+      const { name, status, description, projectId, dueDate, assigneeIds } =
         c.req.valid("json");
       const { taskId } = c.req.param();
 
@@ -284,7 +293,7 @@ const app = new Hono()
           status,
           projectId,
           dueDate,
-          assigneeId,
+          assigneeIds,
           description,
         }
       );
