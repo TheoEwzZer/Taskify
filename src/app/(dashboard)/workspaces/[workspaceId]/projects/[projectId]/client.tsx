@@ -106,7 +106,7 @@ export const ProjectIdClient: () => ReactElement = () => {
               (assignee: Member): ReactElement => (
                 <div
                   key={assignee.$id}
-                  className="flex items-center gap-x-2 rounded-lg bg-gray-100 p-2"
+                  className="flex items-center gap-x-2"
                 >
                   <MemberAvatar
                     member={assignee}
