@@ -333,36 +333,45 @@ const app = new Hono()
       task.projectId
     );
 
-    let assignee: Member | undefined = undefined;
-
-    if (task.assigneeId && task.assigneeId !== "none") {
-      try {
+    const assignees: Member[] = await Promise.all(
+      task.assigneeIds.map(async (assigneeId: string) => {
         const member: Member = await databases.getDocument<Member>(
           DATABASE_ID,
           MEMBERS_ID,
-          task.assigneeId
+          assigneeId
         );
 
         const user: Models.User<Models.Preferences> = await users.get(
           member.userId
         );
 
-        assignee = {
+        return {
           ...member,
           name: user.name || user.email,
           email: user.email,
           avatar: user.prefs?.avatar,
         };
-      } catch (error) {
-        console.error("Failed to retrieve assignee:", error);
-      }
-    }
+      })
+    );
+
+    const taskAssignees: Member[] = task.assigneeIds
+      ? task.assigneeIds
+          .map((assigneeId: string): Member | undefined => {
+            return assignees.find(
+              (assignee: Member): boolean => assignee.$id === assigneeId
+            );
+          })
+          .filter(
+            (assignee: Member | undefined): assignee is Member =>
+              assignee !== undefined
+          )
+      : [];
 
     return c.json({
       data: {
         ...task,
         project,
-        assignee,
+        assignees: taskAssignees,
       },
     });
   })
