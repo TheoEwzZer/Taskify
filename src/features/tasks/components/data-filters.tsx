@@ -40,7 +40,7 @@ import { ReactElement, ReactNode } from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
 
-interface TaskStatusOption {
+export interface TaskStatusOption {
   value: TaskStatus;
   label: string;
   icon: ReactNode;
@@ -50,6 +50,34 @@ interface DataFiltersProps {
   hideProjectFilter?: boolean;
   hideAssigneeFilter?: boolean;
 }
+
+export const taskOptions: TaskStatusOption[] = [
+  {
+    value: TaskStatus.BACKLOG,
+    label: "Backlog",
+    icon: <CircleDashedIcon className="size-[18px] text-pink-400" />,
+  },
+  {
+    value: TaskStatus.TODO,
+    label: "Todo",
+    icon: <CircleIcon className="size-[18px] text-red-400" />,
+  },
+  {
+    value: TaskStatus.IN_PROGRESS,
+    label: "In progress",
+    icon: <CircleDotDashedIcon className="size-[18px] text-yellow-400" />,
+  },
+  {
+    value: TaskStatus.IN_REVIEW,
+    label: "In review",
+    icon: <CircleDotIcon className="size-[18px] text-blue-400" />,
+  },
+  {
+    value: TaskStatus.DONE,
+    label: "Done",
+    icon: <CircleCheckIcon className="size-[18px] text-emerald-400" />,
+  },
+];
 
 export const DataFilters: ({
   hideProjectFilter,
@@ -173,34 +201,6 @@ export const DataFilters: ({
   if (isLoading) {
     return null;
   }
-
-  const taskOptions: TaskStatusOption[] = [
-    {
-      value: TaskStatus.BACKLOG,
-      label: "Backlog",
-      icon: <CircleDashedIcon className="size-[18px] text-pink-400" />,
-    },
-    {
-      value: TaskStatus.TODO,
-      label: "Todo",
-      icon: <CircleIcon className="size-[18px] text-red-400" />,
-    },
-    {
-      value: TaskStatus.IN_PROGRESS,
-      label: "In progress",
-      icon: <CircleDotDashedIcon className="size-[18px] text-yellow-400" />,
-    },
-    {
-      value: TaskStatus.IN_REVIEW,
-      label: "In review",
-      icon: <CircleDotIcon className="size-[18px] text-blue-400" />,
-    },
-    {
-      value: TaskStatus.DONE,
-      label: "Done",
-      icon: <CircleCheckIcon className="size-[18px] text-emerald-400" />,
-    },
-  ];
 
   return (
     <div className="flex flex-col gap-2 lg:flex-row">

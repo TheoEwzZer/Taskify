@@ -4,6 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   MemberAvatar,
   MemberAvatarOther,
 } from "@/features/members/components/members-avatar";
@@ -13,8 +26,10 @@ import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { MoreVertical, XIcon } from "lucide-react";
-import { ReactElement } from "react";
-import { Task } from "../../types";
+import { ReactElement, useState } from "react";
+import { useUpdateTask } from "../../api/use-update-task";
+import { Task, TaskStatus } from "../../types";
+import { taskOptions, TaskStatusOption } from "../data-filters";
 import { TaskActions } from "../task-actions";
 import { TaskDate } from "../task-date";
 import { DataTableColumnHeader } from "./data-table-column-header";
@@ -27,6 +42,70 @@ const dateSort: (rowA: any, rowB: any, columnId: string) => number = (
   const dateA = new Date(rowA.original[columnId]);
   const dateB = new Date(rowB.original[columnId]);
   return dateA.getTime() - dateB.getTime();
+};
+
+const StatusCell = ({
+  row,
+}: {
+  row: CellContext<Task, unknown>["row"];
+}): ReactElement => {
+  const { status, $id } = row.original;
+  const [open, setOpen] = useState(false);
+  const { mutate } = useUpdateTask();
+
+  const onStatusChange = (value: TaskStatus): void => {
+    mutate({
+      json: {
+        status: value,
+      },
+      param: { taskId: $id },
+    });
+  };
+
+  return (
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <PopoverTrigger asChild>
+        <div>
+          <Badge
+            variant={status}
+            className="cursor-pointer"
+          >
+            {snakeCaseToTitleCase(status)}
+          </Badge>
+        </div>
+      </PopoverTrigger>
+      <PopoverContent
+        className="p-0"
+        align="start"
+      >
+        <Command>
+          <CommandInput placeholder="Status" />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup>
+              {taskOptions.map((option: TaskStatusOption): ReactElement => {
+                return (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={(): void => {
+                      onStatusChange(option.value);
+                      setOpen(false);
+                    }}
+                  >
+                    {option.icon}
+                    <span>{option.label}</span>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 };
 
 export const columns: ColumnDef<Task>[] = [
@@ -180,11 +259,9 @@ export const columns: ColumnDef<Task>[] = [
         title="Status"
       />
     ),
-    cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
-      const { status } = row.original;
-
-      return <Badge variant={status}>{snakeCaseToTitleCase(status)}</Badge>;
-    },
+    cell: ({ row }: CellContext<Task, unknown>): ReactElement => (
+      <StatusCell row={row} />
+    ),
   },
   {
     id: "actions",
