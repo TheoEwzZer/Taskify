@@ -5,9 +5,28 @@ import { PageLoader } from "@/components/page-loader";
 import { useGetWorkspaceInfo } from "@/features/workspaces/api/use-get-workspace-info";
 import { JoinWorkspaceForm } from "@/features/workspaces/components/join-workspace-form";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { ReactElement } from "react";
+import { redirect, usePathname } from "next/navigation";
+import { Models } from "node-appwrite";
+import { ReactElement, useEffect } from "react";
 
-export const WorkspaceIdJoinClient: () => ReactElement = () => {
+interface WorkspaceIdJoinClientProps {
+  user: Models.User<Models.Preferences> | null;
+}
+
+export const WorkspaceIdJoinClient: ({
+  user,
+}: WorkspaceIdJoinClientProps) => ReactElement = ({
+  user,
+}: WorkspaceIdJoinClientProps) => {
+  const pathname: string = usePathname();
+
+  useEffect(() => {
+    if (!user) {
+      document.cookie = `redirectUrl=${pathname}; path=/;`;
+      redirect("/sign-in");
+    }
+  }, [user, pathname]);
+
   const workspaceId: string = useWorkspaceId();
   const { data, isLoading } = useGetWorkspaceInfo({ workspaceId });
 
