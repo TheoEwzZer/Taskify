@@ -251,7 +251,8 @@ export const EditWorkspaceForm: ({
             <h3 className="font-bold">Danger Zone</h3>
             <p className="text-sm text-muted-foreground">
               Deleting a workspace is irreversible and will remove all
-              associated data.
+              associated data. If you are not an admin, you will only leave the
+              workspace.
             </p>
             <DottedSeparator className="py-7" />
             <Button
@@ -262,7 +263,7 @@ export const EditWorkspaceForm: ({
               disabled={isPending || isDeletingWorkspace}
               onClick={handleDelete}
             >
-              Delete Workspace
+              Delete or Leave Workspace
             </Button>
           </div>
         </CardContent>

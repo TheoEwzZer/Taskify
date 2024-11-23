@@ -204,41 +204,43 @@ const app = new Hono()
       userId: user.$id,
     });
 
-    if (!member || member.role !== MemberRole.ADMIN) {
-      return c.json(
-        { error: "Unauthorized beacuse you are not an admin" },
-        401
-      );
+    if (!member) {
+      return c.json({ error: "Member not found" }, 404);
     }
 
-    const tasks: Models.DocumentList<Task> =
-      await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
-        Query.equal("workspaceId", workspaceId),
-      ]);
+    if (member.role === MemberRole.ADMIN) {
+      const tasks: Models.DocumentList<Task> =
+        await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
+          Query.equal("workspaceId", workspaceId),
+        ]);
 
-    for (const task of tasks.documents) {
-      await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id);
-    }
+      for (const task of tasks.documents) {
+        await databases.deleteDocument(DATABASE_ID, TASKS_ID, task.$id);
+      }
 
-    const members: Models.DocumentList<Member> =
-      await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
-        Query.equal("workspaceId", workspaceId),
-      ]);
+      const members: Models.DocumentList<Member> =
+        await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
+          Query.equal("workspaceId", workspaceId),
+        ]);
 
-    for (const member of members.documents) {
+      for (const member of members.documents) {
+        await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id);
+      }
+
+      const projects: Models.DocumentList<Workspace> =
+        await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
+          Query.equal("workspaceId", workspaceId),
+        ]);
+
+      for (const project of projects.documents) {
+        await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, project.$id);
+      }
+
+      await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
+    } else {
+      console.log("Deleting member");
       await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id);
     }
-
-    const projects: Models.DocumentList<Workspace> =
-      await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
-        Query.equal("workspaceId", workspaceId),
-      ]);
-
-    for (const project of projects.documents) {
-      await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, project.$id);
-    }
-
-    await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
 
     return c.json({ data: { $id: workspaceId } });
   })
