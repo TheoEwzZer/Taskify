@@ -2,6 +2,7 @@ import { DottedSeparator } from "@/components/dotted-separator";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { PencilIcon } from "lucide-react";
 import { ReactElement } from "react";
@@ -34,13 +35,28 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
         </div>
         <DottedSeparator className="my-4" />
         <div className="flex flex-col gap-y-4">
-          {task.assignee && (
-            <OverviewProperty label="Assignee">
-              <MemberAvatar
-                member={task.assignee}
-                className="size-6"
-              />
-              <p className="text-sm font-medium">{task.assignee.name}</p>
+          {task.assignees && task.assignees.length > 0 && (
+            <OverviewProperty label="Assignees">
+              <div className="flex items-center">
+                {task.assignees.map(
+                  (assignee: Member, index: number): ReactElement => (
+                    <div
+                      key={assignee.$id}
+                      className="relative"
+                      style={{
+                        marginLeft: index !== 0 ? "-5px" : "0",
+                        zIndex: task.assignees.length - index,
+                      }}
+                    >
+                      <MemberAvatar
+                        member={assignee}
+                        className="mt-0 size-8"
+                        fallbackClassName="text-[10px]"
+                      />
+                    </div>
+                  )
+                )}
+              </div>
             </OverviewProperty>
           )}
           <OverviewProperty label="Due Date">

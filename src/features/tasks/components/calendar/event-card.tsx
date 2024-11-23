@@ -1,4 +1,7 @@
-import { MemberAvatar } from "@/features/members/components/members-avatar";
+import {
+  MemberAvatar,
+  MemberAvatarOther,
+} from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Project } from "@/features/projects/types";
@@ -12,7 +15,7 @@ import { TaskStatus } from "../../types";
 interface EventCardProps {
   title: string;
   project: Project | undefined;
-  assignee: Member | undefined;
+  assignees: Member[];
   status: TaskStatus;
   id: string;
 }
@@ -28,13 +31,13 @@ const statusColorMap: Record<TaskStatus, string> = {
 export const EventCard: ({
   title,
   project,
-  assignee,
+  assignees,
   status,
   id,
 }: EventCardProps) => ReactElement = ({
   title,
   project,
-  assignee,
+  assignees,
   status,
   id,
 }) => {
@@ -69,7 +72,46 @@ export const EventCard: ({
       >
         <p>{title}</p>
         <div className="flex items-center gap-x-1">
-          {assignee && <MemberAvatar member={assignee} />}
+          <div className="flex items-center">
+            {assignees.length > 0 && (
+              <div className="flex items-center gap-x-1">
+                {assignees.slice(0, 4).map(
+                  (assignee: Member, index: number): ReactElement => (
+                    <div
+                      key={assignee.$id}
+                      className="relative"
+                      style={{
+                        marginLeft: index !== 0 ? "-10px" : "0",
+                        zIndex: assignees.length - index,
+                      }}
+                    >
+                      <MemberAvatar
+                        member={assignee}
+                        className="size-6"
+                        fallbackClassName="text-[10px]"
+                      />
+                    </div>
+                  )
+                )}
+                {assignees.length > 4 && (
+                  <div
+                    className="relative"
+                    style={{
+                      marginLeft: "-10px",
+                      zIndex: 0,
+                    }}
+                  >
+                    <MemberAvatarOther
+                      members={assignees}
+                      maxMembers={4}
+                      className="mt-1 size-6"
+                      fallbackClassName="text-[10px]"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           {project && (
             <>
               <div className="size-1 rounded-full bg-neutral-300" />

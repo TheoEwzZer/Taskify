@@ -1,5 +1,9 @@
 import { DottedSeparator } from "@/components/dotted-separator";
-import { MemberAvatar } from "@/features/members/components/members-avatar";
+import {
+  MemberAvatar,
+  MemberAvatarOther,
+} from "@/features/members/components/members-avatar";
+import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { MoreHorizontal } from "lucide-react";
 import { ReactElement } from "react";
@@ -27,12 +31,44 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
       </div>
       <DottedSeparator />
       <div className="flex items-center gap-x-1.5">
-        {task.assignee && (
+        {task.assignees?.length > 0 && (
           <>
-            <MemberAvatar
-              member={task.assignee}
-              fallbackClassName="text-[10px]"
-            />
+            <div className="flex items-center">
+              {task.assignees.slice(0, 2).map(
+                (assignee: Member, index: number): ReactElement => (
+                  <div
+                    key={assignee.$id}
+                    className="relative"
+                    style={{
+                      marginLeft: index !== 0 ? "-5px" : "0",
+                      zIndex: task.assignees.length - index,
+                    }}
+                  >
+                    <MemberAvatar
+                      member={assignee}
+                      className="size-6"
+                      fallbackClassName="text-[10px]"
+                    />
+                  </div>
+                )
+              )}
+              {task.assignees.length > 2 && (
+                <div
+                  className="relative"
+                  style={{
+                    marginLeft: "-5px",
+                    zIndex: 0,
+                  }}
+                >
+                  <MemberAvatarOther
+                    members={task.assignees}
+                    maxMembers={2}
+                    className="mt-0 size-6"
+                    fallbackClassName="text-[10px]"
+                  />
+                </div>
+              )}
+            </div>
             <div className="size-1 rounded-full bg-neutral-300" />
           </>
         )}

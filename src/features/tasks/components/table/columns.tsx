@@ -3,7 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MemberAvatar } from "@/features/members/components/members-avatar";
+import {
+  MemberAvatar,
+  MemberAvatarOther,
+} from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { snakeCaseToTitleCase } from "@/lib/utils";
@@ -116,21 +119,39 @@ export const columns: ColumnDef<Task>[] = [
       }
 
       return (
-        <div className="flex flex-col items-start gap-y-2 text-sm font-medium">
-          {assignees.map(
-            (assignee: Member): ReactElement => (
+        <div className="flex items-start gap-y-2 text-sm font-medium">
+          {assignees.slice(0, 4).map(
+            (assignee: Member, index: number): ReactElement => (
               <div
                 key={assignee.$id}
-                className="flex items-center gap-x-2"
+                className="relative"
+                style={{
+                  marginLeft: index !== 0 ? "-5px" : "0",
+                  zIndex: assignees.length - index,
+                }}
               >
                 <MemberAvatar
-                  className="size-6"
-                  fallbackClassName="text-xs"
                   member={assignee}
+                  className="size-6"
                 />
-                <p className="line-clamp-1">{assignee.name}</p>
               </div>
             )
+          )}
+          {assignees.length > 4 && (
+            <div
+              className="relative"
+              style={{
+                marginLeft: "-5px",
+                zIndex: 0,
+              }}
+            >
+              <MemberAvatarOther
+                members={assignees}
+                maxMembers={4}
+                className="mt-1.5 size-6"
+                fallbackClassName="text-[10px]"
+              />
+            </div>
           )}
         </div>
       );

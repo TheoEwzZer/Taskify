@@ -100,22 +100,27 @@ export const ProjectIdClient: () => ReactElement = () => {
       </div>
       <div>
         <h2 className="text-lg font-semibold">Assignees</h2>
-        <div className="mt-2 flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4">
           {assignees?.length ? (
-            assignees.map(
-              (assignee: Member): ReactElement => (
-                <div
-                  key={assignee.$id}
-                  className="flex items-center gap-x-2"
-                >
-                  <MemberAvatar
-                    member={assignee}
-                    className="size-8"
-                  />
-                  <span className="text-sm font-medium">{assignee.name}</span>
-                </div>
-              )
-            )
+            <div className="flex items-center">
+              {assignees.map(
+                (assignee: Member, index: number): ReactElement => (
+                  <div
+                    key={assignee.$id}
+                    className="relative"
+                    style={{
+                      marginLeft: index !== 0 ? "-5px" : "0",
+                      zIndex: assignees.length - index,
+                    }}
+                  >
+                    <MemberAvatar
+                      member={assignee}
+                      className="size-8"
+                    />
+                  </div>
+                )
+              )}
+            </div>
           ) : (
             <p className="text-sm text-gray-500">No assignees</p>
           )}

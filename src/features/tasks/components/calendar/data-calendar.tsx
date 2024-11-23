@@ -45,7 +45,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
     end: Date;
     title: string;
     project: Project | undefined;
-    assignee: Member | undefined;
+    assignees: Member[];
     status: TaskStatus;
     id: string;
   }[] = data.map((task: Task) => ({
@@ -53,7 +53,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
     end: new Date(task.dueDate),
     title: task.name,
     project: task.project,
-    assignee: task.assignee,
+    assignees: task.assignees,
     status: task.status,
     id: task.$id,
   }));
@@ -93,7 +93,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
           <EventCard
             title={event.title}
             project={event.project}
-            assignee={event.assignee}
+            assignees={event.assignees}
             status={event.status}
             id={event.id}
           />
