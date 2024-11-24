@@ -74,7 +74,7 @@ export const UserButton = (): ReactElement | null => {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm font-medium text-neutral-900">
+            <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
               {user.name ?? "User"}
             </p>
             <p className="text-xs text-neutral-500">{email}</p>
@@ -82,7 +82,7 @@ export const UserButton = (): ReactElement | null => {
         </div>
         <DottedSeparator className="mb-1" />
         <DropdownMenuItem
-          onClick={() => open()}
+          onClick={(): Promise<URLSearchParams> => open()}
           className="h-10 cursor-pointer items-center justify-center font-medium"
         >
           <Edit className="h-4 w-4" />
