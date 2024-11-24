@@ -70,7 +70,8 @@ export const EditProjectForm: ({
     "destructive"
   );
 
-  const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const inputRef: RefObject<HTMLInputElement | null> =
+    useRef<HTMLInputElement>(null);
   const buttonRef: RefObject<HTMLButtonElement> =
     useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState<number>(0);

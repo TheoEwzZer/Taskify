@@ -43,7 +43,7 @@ export const InviteMembersCard: ({
     try {
       await navigator.clipboard.writeText(fullInviteLink);
       toast.success("Invite link copied to clipboard");
-    } catch (error) {
+    } catch {
       toast.error("Error copying invite link");
     }
   };

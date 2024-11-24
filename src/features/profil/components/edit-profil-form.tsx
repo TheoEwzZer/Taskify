@@ -38,7 +38,8 @@ export const EditProfilForm: ({
 }: EditProfilFormProps) => {
   const { mutate, isPending } = useUpdateProfil();
 
-  const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const inputRef: RefObject<HTMLInputElement | null> =
+    useRef<HTMLInputElement>(null);
 
   const form: UseFormReturn<
     z.infer<typeof editProfilSchema>,

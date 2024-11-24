@@ -59,8 +59,9 @@ export const CreateProjectForm: ({
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useCreateProject();
 
-  const inputRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
-  const buttonRef: RefObject<HTMLButtonElement> =
+  const inputRef: RefObject<HTMLInputElement | null> =
+    useRef<HTMLInputElement>(null);
+  const buttonRef: RefObject<HTMLButtonElement | null> =
     useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState<number>(0);
 
