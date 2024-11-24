@@ -229,7 +229,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {data.map(
             (member: Member): ReactElement => (
               <li key={member.$id}>
