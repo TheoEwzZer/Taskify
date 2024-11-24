@@ -1,8 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { Member } from "@/features/members/types";
-import { useGetProjects } from "@/features/projects/api/use-get-projects";
-import { Project } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
 import { ReactElement } from "react";
