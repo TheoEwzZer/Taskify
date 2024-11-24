@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.5.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.4.1...taskify-v1.5.0) (2024-11-23)
+
+
+### ✨ Features
+
+* add assignees to project ([c1fe0a1](https://github.com/TheoEwzZer/Taskify/commit/c1fe0a127d6ec9624d345e14ffed8d44ef012f9b))
+* add bulk delete functionality for tasks with confirmation dialog ([58cfecc](https://github.com/TheoEwzZer/Taskify/commit/58cfecc088f8c1170d075ff148a53ff748d0c01d))
+* add status popover for task status updates in table ([a8117d0](https://github.com/TheoEwzZer/Taskify/commit/a8117d08fef0fdbd1ac9739f74576bf3dee1cb8b))
+* display project assignees and their details in project view ([6a704aa](https://github.com/TheoEwzZer/Taskify/commit/6a704aa4b08c6b59d1a5d18a3244d7a9cffbc5f1))
+* implement redirect handling for unauthenticated users in workspace join flow ([9af1c42](https://github.com/TheoEwzZer/Taskify/commit/9af1c42f7020c4d9095a57ed655bfa3c1a062830))
+* refactor task model to support multiple assignees ([c43f062](https://github.com/TheoEwzZer/Taskify/commit/c43f0621e35deff4d7144622b2110580f8087cd0))
+* update task components to support multiple assignees ([903c9a7](https://github.com/TheoEwzZer/Taskify/commit/903c9a796fe1d92c45acac1b05ba37c6f6a352a6))
+* update workspace deletion logic to allow non-admin members to leave instead of deleting ([2050146](https://github.com/TheoEwzZer/Taskify/commit/2050146f0414ed47d5d2b83e5db51eb5d9089c91))
+
+
+### 🐛 Bug Fixes
+
+* adjust delete button size in data table toolbar ([29ab414](https://github.com/TheoEwzZer/Taskify/commit/29ab4147c9d6f6255bc663dc07a7f499c8f4a202))
+* improve unauthorized error message for non-admin users ([00324eb](https://github.com/TheoEwzZer/Taskify/commit/00324eb79e9e2a7c5bf6f82f1b388410cc29fd07))
+* support multiple assignees for tasks in the task route ([d0bcc01](https://github.com/TheoEwzZer/Taskify/commit/d0bcc01f6492ca048f79a7f3ed028cbde05499d2))
+* update delete workspace API response handling to include 404 status ([c2029ea](https://github.com/TheoEwzZer/Taskify/commit/c2029ead9cadbef355955ac04a94c6e56aa53ba3))
+
+
+### 💄 Styles
+
+* add margin to calendar icon in custom toolbar ([be64132](https://github.com/TheoEwzZer/Taskify/commit/be6413256ef94d38f3802d63f4eded1a67788ff0))
+* remove unnecessary background styling from assignee component ([ce12a93](https://github.com/TheoEwzZer/Taskify/commit/ce12a93823735bfa3764a220cd3ca9695d1b9b0d))
+
 ## [1.4.1](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.4.0...taskify-v1.4.1) (2024-11-06)
 
 
