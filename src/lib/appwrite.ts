@@ -13,7 +13,7 @@ export async function createSessionClient(): Promise<{
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-  const session: RequestCookie | undefined = cookies().get(AUTH_COOKIE);
+  const session: RequestCookie | undefined = (await cookies()).get(AUTH_COOKIE);
 
   if (!session?.value) {
     throw new Error("Unauthorized");

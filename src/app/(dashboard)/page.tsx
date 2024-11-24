@@ -14,7 +14,9 @@ export default async function Home(): Promise<ReactElement> {
     redirect("/sign-in");
   }
 
-  const redirectUrl: RequestCookie | undefined = cookies().get("redirectUrl");
+  const redirectUrl: RequestCookie | undefined = (await cookies()).get(
+    "redirectUrl"
+  );
   if (redirectUrl) {
     redirect(redirectUrl.value);
   }

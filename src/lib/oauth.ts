@@ -8,7 +8,7 @@ import { OAuthProvider } from "node-appwrite";
 export async function signUpWithGithub(): Promise<never> {
   const { account } = await createAdminClient();
 
-  const origin: string | null = headers().get("origin");
+  const origin: string | null = (await headers()).get("origin");
 
   const redirectUrl: string = await account.createOAuth2Token(
     OAuthProvider.Github,
@@ -22,7 +22,7 @@ export async function signUpWithGithub(): Promise<never> {
 export async function signUpWithGoogle(): Promise<never> {
   const { account } = await createAdminClient();
 
-  const origin: string | null = headers().get("origin");
+  const origin: string | null = (await headers()).get("origin");
 
   const redirectUrl: string = await account.createOAuth2Token(
     OAuthProvider.Google,
