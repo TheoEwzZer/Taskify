@@ -115,7 +115,7 @@ export const ProjectIdClient: () => ReactElement = () => {
                   >
                     <MemberAvatar
                       member={assignee}
-                      className="size-8"
+                      className="mb-1.5 size-8"
                     />
                   </div>
                 )
