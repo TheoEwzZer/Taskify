@@ -157,7 +157,7 @@ export const ProjectList: ({
 
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg border bg-white p-4">
+      <div className="rounded-lg border bg-background p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Projects ({total})</p>
           <Button
@@ -215,7 +215,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
 
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg border bg-white p-4">
+      <div className="rounded-lg border bg-background p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Members ({total})</p>
           <Button

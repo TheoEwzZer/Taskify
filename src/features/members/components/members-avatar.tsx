@@ -30,7 +30,7 @@ export const MemberAvatar: ({
         <TooltipTrigger>
           <Avatar
             className={cn(
-              "mt-1.5 size-5 rounded-full border border-neutral-300 transition",
+              "mt-1.5 size-5 rounded-full border border-neutral-300 transition dark:border-neutral-700",
               className
             )}
           >

@@ -347,18 +347,24 @@ export const DataFilters: ({
                           assigneeId.includes(option.$id)
                         )
                         .map(
-                          (option: Member): ReactElement => (
-                            <Badge
-                              variant="secondary"
+                          (option: Member, index: number): ReactElement => (
+                            <div
                               key={option.$id}
-                              className="rounded-sm px-1 font-normal"
+                              className="relative"
+                              style={{
+                                marginLeft: index !== 0 ? "-5px" : "0",
+                                zIndex:
+                                  memberOptions.filter(
+                                    (option: Member): boolean =>
+                                      assigneeId.includes(option.$id)
+                                  ).length - index,
+                              }}
                             >
                               <MemberAvatar
                                 member={option}
-                                className="mr-2"
+                                className="size-6"
                               />
-                              {option.name}
-                            </Badge>
+                            </div>
                           )
                         )
                     )}
@@ -396,7 +402,10 @@ export const DataFilters: ({
                         >
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
-                        <MemberAvatar member={option} />
+                        <MemberAvatar
+                          member={option}
+                          className="mb-1.5"
+                        />
                         <span>{option.name}</span>
                       </CommandItem>
                     );
@@ -540,12 +549,12 @@ export const DataFilters: ({
         </Popover>
       )}
       <DatePicker
-        placeholder="Due date"
+        placeholder="Due Date"
         value={dueDate ? new Date(dueDate) : undefined}
         onChange={(date: Date | undefined): Promise<URLSearchParams> =>
           setFilters({ dueDate: date ? date.toISOString() : null })
         }
-        className="h-8 w-auto justify-center border-dashed font-semibold text-black"
+        className="h-8 w-auto justify-center border-dashed font-semibold text-black dark:text-white"
         showBadge
       />
       {((status && status.length > 0) ||

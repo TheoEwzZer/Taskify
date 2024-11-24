@@ -1,6 +1,6 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ReactElement, ReactNode } from "react";
-import { Dialog, DialogContent } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { Drawer, DrawerContent } from "./ui/drawer";
 
 interface ResponsiveModalProps {
@@ -23,6 +23,7 @@ export const ResponsiveModal: (props: ResponsiveModalProps) => ReactElement = ({
         onOpenChange={onOpenChange}
       >
         <DialogContent className="hide-scrollbar max-h-[90vh] w-full overflow-y-auto border-none p-0 sm:max-w-lg">
+          <DialogTitle></DialogTitle>
           {children}
         </DialogContent>
       </Dialog>

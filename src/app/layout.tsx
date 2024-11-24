@@ -6,6 +6,7 @@ import { ReactElement } from "react";
 import "./globals.css";
 
 import { QueryProvider } from "@/components/query-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 
 const inter: NextFont = Inter({ subsets: ["latin"] });
@@ -28,8 +29,15 @@ export default function RootLayout({
           rel="icon"
           href="/icon.svg"
         />
-        <Toaster />
-        <QueryProvider>{children}</QueryProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Toaster />
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

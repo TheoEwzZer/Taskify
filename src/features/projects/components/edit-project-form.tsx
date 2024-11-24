@@ -72,7 +72,7 @@ export const EditProjectForm: ({
 
   const inputRef: RefObject<HTMLInputElement | null> =
     useRef<HTMLInputElement>(null);
-  const buttonRef: RefObject<HTMLButtonElement> =
+  const buttonRef: RefObject<HTMLButtonElement | null> =
     useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState<number>(0);
 

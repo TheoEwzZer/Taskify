@@ -1,8 +1,11 @@
+"use client";
+
 import { UserButton } from "@/features/auth/components/user-button";
 import { EditProfilModal } from "@/features/profil/components/edit-profil-modal";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 
 interface StandaloneLayoutProps {
   children: ReactNode;
@@ -13,18 +16,27 @@ const StandaloneLayout: ({
 }: StandaloneLayoutProps) => ReactElement = ({
   children,
 }: StandaloneLayoutProps) => {
+  const { resolvedTheme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState<string>("");
+
+  useEffect((): void => {
+    setLogoSrc(`/logo-${resolvedTheme === "dark" ? "dark" : "light"}.svg`);
+  }, [resolvedTheme]);
+
   return (
-    <main className="min-h-screen bg-neutral-100">
+    <main className="min-h-screen bg-neutral-100 dark:bg-neutral-900">
       <EditProfilModal />
       <div className="mx-auto max-w-screen-2xl p-4">
         <nav className="flex h-[73px] items-center justify-between">
           <Link href="/">
-            <Image
-              src="/logo.svg"
-              alt="Logo"
-              height={56}
-              width={152}
-            />
+            {logoSrc && (
+              <Image
+                src={logoSrc}
+                alt="Logo"
+                height={56}
+                width={152}
+              />
+            )}
           </Link>
           <UserButton />
         </nav>

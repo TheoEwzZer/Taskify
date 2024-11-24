@@ -49,7 +49,7 @@ export const KanbanColumnHeader: ({
         <h2 className="text-sm font-medium">{snakeCaseToTitleCase(board)}</h2>
         <Badge
           variant="secondary"
-          className="bg-neutral-200 text-sm hover:bg-neutral-200"
+          className="bg-neutral-200 text-sm hover:bg-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-900"
         >
           {taskCount}
         </Badge>

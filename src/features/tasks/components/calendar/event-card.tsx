@@ -66,7 +66,7 @@ export const EventCard: ({
         onKeyDown={handleKeyDown}
         tabIndex={0}
         className={cn(
-          "flex cursor-pointer flex-col gap-y-1.5 rounded-md border border-l-4 bg-white p-1.5 text-xs text-primary transition hover:opacity-75",
+          "flex cursor-pointer flex-col gap-y-1.5 rounded-md border border-l-4 bg-background p-1.5 text-xs text-primary transition hover:opacity-75",
           statusColorMap[status]
         )}
       >

@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
-import { ReactElement } from "react";
+import { useTheme } from "next-themes";
+import { ReactElement, useEffect, useState } from "react";
 
 interface DottedSeparatorProps {
   className?: string;
-  color?: string;
   height?: string;
   dotSize?: string;
   gapSize?: string;
@@ -12,20 +12,32 @@ interface DottedSeparatorProps {
 
 export const DottedSeparator: ({
   className,
-  color,
   height,
   dotSize,
   gapSize,
   direction,
-}: DottedSeparatorProps) => ReactElement = ({
+}: DottedSeparatorProps) => ReactElement | null = ({
   className = "",
-  color = "#d4d4d8",
   height = "2px",
   dotSize = "2px",
   gapSize = "6px",
   direction = "horizontal",
 }: DottedSeparatorProps) => {
   const isHorizontal: boolean = direction === "horizontal";
+  const { resolvedTheme } = useTheme();
+  const [color, setColor] = useState<"#303036" | "#d4d4d8" | null>(null);
+
+  useEffect((): void => {
+    if (resolvedTheme === "dark") {
+      setColor("#303036");
+    } else {
+      setColor("#d4d4d8");
+    }
+  }, [resolvedTheme]);
+
+  if (!color) {
+    return null;
+  }
 
   return (
     <div
