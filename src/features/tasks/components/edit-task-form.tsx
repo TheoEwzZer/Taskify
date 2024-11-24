@@ -71,7 +71,7 @@ export const EditTaskForm: ({
   const projectId: string = useProjectId();
   const { mutate, isPending } = useUpdateTask();
 
-  const buttonRef: RefObject<HTMLButtonElement> =
+  const buttonRef: RefObject<HTMLButtonElement | null> =
     useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState<number>(0);
 

@@ -72,7 +72,7 @@ export const CreateTaskForm: ({
   const { mutate, isPending } = useCreateTask();
   const [statusParam] = useQueryState("task-status");
 
-  const buttonRef: RefObject<HTMLButtonElement> =
+  const buttonRef: RefObject<HTMLButtonElement | null> =
     useRef<HTMLButtonElement>(null);
   const [buttonWidth, setButtonWidth] = useState<number>(0);
 
