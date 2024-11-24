@@ -24,7 +24,7 @@ const app = new Hono()
       const { name, image, workspaceId, startDate, endDate } =
         c.req.valid("json");
 
-      let assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
+      const assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
 
       const member: Member = await getMember({
         databases,
