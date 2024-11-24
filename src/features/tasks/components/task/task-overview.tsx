@@ -5,7 +5,7 @@ import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { PencilIcon } from "lucide-react";
-import { ReactElement } from "react";
+import { CSSProperties, ReactElement } from "react";
 import { useEditTaskModal } from "../../hooks/use-edit-task-modal";
 import { Task } from "../../types";
 import { TaskDate } from "../task-date";
@@ -42,11 +42,13 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
                   (assignee: Member, index: number): ReactElement => (
                     <div
                       key={assignee.$id}
-                      className="relative"
-                      style={{
-                        marginLeft: index !== 0 ? "-5px" : "0",
-                        zIndex: task.assignees.length - index,
-                      }}
+                      className="relative z-[--index] hover:z-[1000]"
+                      style={
+                        {
+                          marginLeft: index !== 0 ? "-5px" : "0",
+                          "--index": task.assignees.length - index,
+                        } as CSSProperties
+                      }
                     >
                       <MemberAvatar
                         member={assignee}

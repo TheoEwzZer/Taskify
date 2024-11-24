@@ -9,7 +9,7 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { ReactElement } from "react";
+import { CSSProperties, ReactElement } from "react";
 import { TaskStatus } from "../../types";
 
 interface EventCardProps {
@@ -79,11 +79,13 @@ export const EventCard: ({
                   (assignee: Member, index: number): ReactElement => (
                     <div
                       key={assignee.$id}
-                      className="relative"
-                      style={{
-                        marginLeft: index !== 0 ? "-10px" : "0",
-                        zIndex: assignees.length - index,
-                      }}
+                      className="relative z-[--index] hover:z-[1000]"
+                      style={
+                        {
+                          marginLeft: index !== 0 ? "-10px" : "0",
+                          "--index": assignees.length - index,
+                        } as CSSProperties
+                      }
                     >
                       <MemberAvatar
                         member={assignee}
@@ -94,13 +96,7 @@ export const EventCard: ({
                   )
                 )}
                 {assignees.length > 4 && (
-                  <div
-                    className="relative"
-                    style={{
-                      marginLeft: "-10px",
-                      zIndex: 0,
-                    }}
-                  >
+                  <div className="relative z-0 ml-[-10px] hover:z-[1000]">
                     <MemberAvatarOther
                       members={assignees}
                       maxMembers={4}

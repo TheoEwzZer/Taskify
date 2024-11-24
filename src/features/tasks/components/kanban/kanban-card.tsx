@@ -6,7 +6,7 @@ import {
 import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { MoreHorizontal } from "lucide-react";
-import { ReactElement } from "react";
+import { CSSProperties, ReactElement } from "react";
 import { Task } from "../../types";
 import { TaskActions } from "../task-actions";
 import { TaskDate } from "../task-date";
@@ -38,11 +38,13 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
                 (assignee: Member, index: number): ReactElement => (
                   <div
                     key={assignee.$id}
-                    className="relative"
-                    style={{
-                      marginLeft: index !== 0 ? "-5px" : "0",
-                      zIndex: task.assignees.length - index,
-                    }}
+                    className="relative z-[--index] hover:z-[1000]"
+                    style={
+                      {
+                        marginLeft: index !== 0 ? "-5px" : "0",
+                        "--index": task.assignees.length - index,
+                      } as CSSProperties
+                    }
                   >
                     <MemberAvatar
                       member={assignee}
@@ -53,13 +55,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
                 )
               )}
               {task.assignees.length > 2 && (
-                <div
-                  className="relative"
-                  style={{
-                    marginLeft: "-5px",
-                    zIndex: 0,
-                  }}
-                >
+                <div className="relative z-0 ml-[-5] hover:z-[1000]">
                   <MemberAvatarOther
                     members={task.assignees}
                     maxMembers={2}

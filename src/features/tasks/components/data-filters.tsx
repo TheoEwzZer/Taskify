@@ -36,7 +36,13 @@ import {
   UserIcon,
 } from "lucide-react";
 import { ParserBuilder, Values } from "nuqs";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import {
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
 
@@ -378,15 +384,17 @@ export const DataFilters: ({
                           (option: Member, index: number): ReactElement => (
                             <div
                               key={option.$id}
-                              className="relative"
-                              style={{
-                                marginLeft: index !== 0 ? "-5px" : "0",
-                                zIndex:
-                                  filteredMembers.filter(
-                                    (option: Member): boolean =>
-                                      assigneeId.includes(option.$id)
-                                  ).length - index,
-                              }}
+                              className="relative z-[--index] hover:z-[1000]"
+                              style={
+                                {
+                                  marginLeft: index !== 0 ? "-5px" : "0",
+                                  "--index":
+                                    filteredMembers.filter(
+                                      (option: Member): boolean =>
+                                        assigneeId.includes(option.$id)
+                                    ).length - index,
+                                } as CSSProperties
+                              }
                             >
                               <MemberAvatar
                                 member={option}

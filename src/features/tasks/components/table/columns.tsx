@@ -26,7 +26,7 @@ import { snakeCaseToTitleCase } from "@/lib/utils";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { CellContext, ColumnDef, HeaderContext } from "@tanstack/react-table";
 import { MoreVertical, XIcon } from "lucide-react";
-import { ReactElement, useState } from "react";
+import { CSSProperties, ReactElement, useState } from "react";
 import { useUpdateTask } from "../../api/use-update-task";
 import { Task, TaskStatus } from "../../types";
 import { taskOptions, TaskStatusOption } from "../data-filters";
@@ -203,11 +203,13 @@ export const columns: ColumnDef<Task>[] = [
             (assignee: Member, index: number): ReactElement => (
               <div
                 key={assignee.$id}
-                className="relative"
-                style={{
-                  marginLeft: index !== 0 ? "-5px" : "0",
-                  zIndex: assignees.length - index,
-                }}
+                className="relative z-[--index] hover:z-[1000]"
+                style={
+                  {
+                    marginLeft: index !== 0 ? "-5px" : "0",
+                    "--index": assignees.length - index,
+                  } as CSSProperties
+                }
               >
                 <MemberAvatar
                   member={assignee}
@@ -217,13 +219,7 @@ export const columns: ColumnDef<Task>[] = [
             )
           )}
           {assignees.length > 4 && (
-            <div
-              className="relative"
-              style={{
-                marginLeft: "-5px",
-                zIndex: 0,
-              }}
-            >
+            <div className="relative z-0 ml-[-5px] hover:z-[1000]">
               <MemberAvatarOther
                 members={assignees}
                 maxMembers={4}
