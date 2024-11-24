@@ -229,7 +229,10 @@ export const EditTaskForm: ({
                                       >
                                         <CheckIcon className={cn("h-4 w-4")} />
                                       </div>
-                                      <MemberAvatar member={option} />
+                                      <MemberAvatar
+                                        member={option}
+                                        className="mb-1.5"
+                                      />
                                       <span>{option.name}</span>
                                     </CommandItem>
                                   );
