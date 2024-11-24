@@ -71,6 +71,8 @@ export const CreateTaskForm: ({
   const projectId: string = useProjectId();
   const { mutate, isPending } = useCreateTask();
   const [statusParam] = useQueryState("task-status");
+  const [filteredMembers, setFilteredMembers] =
+    useState<Member[]>(memberOptions);
 
   const buttonRef: RefObject<HTMLButtonElement | null> =
     useRef<HTMLButtonElement>(null);
@@ -102,6 +104,29 @@ export const CreateTaskForm: ({
       status: (statusParam as TaskStatus) || undefined,
     },
   });
+
+  useEffect((): void => {
+    const selectedProjectId: string = form.watch("projectId") || projectId;
+    const selectedProject: Project | undefined = projectOptions.find(
+      (project: Project): boolean => project.$id === selectedProjectId
+    );
+
+    if (selectedProject) {
+      const assigneeIds: string[] = selectedProject.assigneeIds;
+      const filtered: Member[] = memberOptions.filter(
+        (member: Member): boolean => assigneeIds.includes(member.$id)
+      );
+      setFilteredMembers(filtered);
+
+      const currentAssigneeIds: string[] = form.getValues("assigneeIds") || [];
+      const updatedAssigneeIds: string[] = currentAssigneeIds.filter(
+        (id: string): boolean => assigneeIds.includes(id)
+      );
+      form.setValue("assigneeIds", updatedAssigneeIds);
+    } else {
+      setFilteredMembers(memberOptions);
+    }
+  }, [form.watch("projectId"), projectId, projectOptions, memberOptions]);
 
   const onSubmit: (values: z.infer<typeof createTaskSchema>) => void = (
     values: z.infer<typeof createTaskSchema>
@@ -204,7 +229,7 @@ export const CreateTaskForm: ({
                           <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
-                              {memberOptions.map(
+                              {filteredMembers.map(
                                 (option: Member): ReactElement => {
                                   const isSelected: boolean = field.value
                                     ? field.value.includes(option.$id)

@@ -111,6 +111,7 @@ export const TaskViewSwitcher: ({
         <DataFilters
           hideProjectFilter={hideProjectFilter}
           hideAssigneeFilter={hideAssigneeFilter}
+          currentProjectId={paramProjectId}
         />
         <DottedSeparator className="my-4" />
         {isLoadingTasks ? (

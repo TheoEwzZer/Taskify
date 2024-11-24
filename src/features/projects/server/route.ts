@@ -1,5 +1,5 @@
 import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID, TASKS_ID } from "@/config";
-import { Member } from "@/features/members/types";
+import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { Task, TaskStatus } from "@/features/tasks/types";
 import { sessionMiddleware } from "@/lib/session-middleware";
@@ -21,8 +21,10 @@ const app = new Hono()
       const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { name, image, workspaceId, startDate, endDate, assigneeIds } =
+      const { name, image, workspaceId, startDate, endDate } =
         c.req.valid("json");
+
+      let assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
 
       const member: Member = await getMember({
         databases,
@@ -51,6 +53,10 @@ const app = new Hono()
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
       } else {
         uploadedImageUrl = image;
+      }
+
+      if (!assigneeIds.includes(member.$id)) {
+        assigneeIds.push(member.$id);
       }
 
       const project: Project = await databases.createDocument<Project>(
@@ -94,13 +100,30 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
+      const isAdmin: boolean = member.role === MemberRole.ADMIN;
+
       const projects: Models.DocumentList<Project> =
         await databases.listDocuments<Project>(DATABASE_ID, PROJECTS_ID, [
           Query.equal("workspaceId", workspaceId),
           Query.orderDesc("$createdAt"),
         ]);
 
-      return c.json({ data: projects });
+      if (isAdmin) {
+        return c.json({ data: projects });
+      } else {
+        console.log(user.$id);
+        const accessibleProjects: Project[] = projects.documents.filter(
+          (project: Project): boolean =>
+            project.assigneeIds.includes(member.$id)
+        );
+
+        const accessibleProjectsList: Models.DocumentList<Project> = {
+          total: accessibleProjects.length,
+          documents: accessibleProjects,
+        };
+
+        return c.json({ data: accessibleProjectsList });
+      }
     }
   )
   .get("/:projectId", sessionMiddleware, async (c) => {
@@ -195,6 +218,36 @@ const app = new Hono()
           assigneeIds,
         }
       );
+
+      const newProject: Project = await databases.getDocument<Project>(
+        DATABASE_ID,
+        PROJECTS_ID,
+        projectId
+      );
+
+      const tasks: Models.DocumentList<Task> =
+        await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
+          Query.contains("projectId", projectId),
+        ]);
+
+      for (const task of tasks.documents) {
+        if (
+          task.assigneeIds.some(
+            (id: string): boolean => !newProject.assigneeIds.includes(id)
+          )
+        ) {
+          await databases.updateDocument<Task>(
+            DATABASE_ID,
+            TASKS_ID,
+            task.$id,
+            {
+              assigneeIds: task.assigneeIds.filter((id: string): boolean =>
+                newProject.assigneeIds.includes(id)
+              ),
+            }
+          );
+        }
+      }
 
       return c.json({ data: project });
     }

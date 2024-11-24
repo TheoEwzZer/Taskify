@@ -36,7 +36,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import { ParserBuilder, Values } from "nuqs";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTaskFilters } from "../hooks/use-task-filters";
 import { TaskStatus } from "../types";
 
@@ -49,6 +49,7 @@ export interface TaskStatusOption {
 interface DataFiltersProps {
   hideProjectFilter?: boolean;
   hideAssigneeFilter?: boolean;
+  currentProjectId: string | undefined;
 }
 
 export const taskOptions: TaskStatusOption[] = [
@@ -82,9 +83,11 @@ export const taskOptions: TaskStatusOption[] = [
 export const DataFilters: ({
   hideProjectFilter,
   hideAssigneeFilter,
+  currentProjectId,
 }: DataFiltersProps) => ReactElement | null = ({
   hideProjectFilter,
   hideAssigneeFilter,
+  currentProjectId,
 }: DataFiltersProps) => {
   const workspaceId: string = useWorkspaceId();
 
@@ -100,9 +103,34 @@ export const DataFilters: ({
   const projectOptions: Project[] | undefined = projects?.documents;
 
   const memberOptions: Member[] | undefined = members?.documents;
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>(
+    memberOptions ?? []
+  );
 
   const [{ status, assigneeId, projectId, dueDate }, setFilters] =
     useTaskFilters();
+
+  useEffect((): void => {
+    if (currentProjectId && memberOptions && projectOptions) {
+      const selectedProject: Project | undefined = projectOptions.find(
+        (project: Project): boolean => project.$id === currentProjectId
+      );
+
+      if (selectedProject) {
+        const assigneeIds: string[] = selectedProject.assigneeIds;
+        const filtered: Member[] = memberOptions.filter(
+          (member: Member): boolean => assigneeIds.includes(member.$id)
+        );
+        setFilteredMembers(filtered);
+      } else {
+        setFilteredMembers(memberOptions);
+      }
+    } else if (memberOptions) {
+      setFilteredMembers(memberOptions);
+    } else {
+      setFilteredMembers([]);
+    }
+  }, [projectId, projectOptions, memberOptions]);
 
   const onStatusChange: (value: string) => void = (value) => {
     if (value === "all") {
@@ -342,7 +370,7 @@ export const DataFilters: ({
                         {assigneeId.length} selected
                       </Badge>
                     ) : (
-                      memberOptions
+                      filteredMembers
                         .filter((option: Member): boolean =>
                           assigneeId.includes(option.$id)
                         )
@@ -354,7 +382,7 @@ export const DataFilters: ({
                               style={{
                                 marginLeft: index !== 0 ? "-5px" : "0",
                                 zIndex:
-                                  memberOptions.filter(
+                                  filteredMembers.filter(
                                     (option: Member): boolean =>
                                       assigneeId.includes(option.$id)
                                   ).length - index,
@@ -382,7 +410,7 @@ export const DataFilters: ({
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup>
-                  {memberOptions.map((option: Member): ReactElement => {
+                  {filteredMembers.map((option: Member): ReactElement => {
                     const isSelected: boolean =
                       assigneeId?.includes(option.$id) ?? false;
                     return (
