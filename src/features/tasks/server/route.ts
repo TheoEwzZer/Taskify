@@ -1,5 +1,5 @@
 import { DATABASE_ID, MEMBERS_ID, PROJECTS_ID, TASKS_ID } from "@/config";
-import { Member } from "@/features/members/types";
+import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { Project } from "@/features/projects/types";
 import { createAdminClient } from "@/lib/appwrite";
@@ -100,11 +100,31 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
+      const accessibleProjects: Models.DocumentList<Project> =
+        await databases.listDocuments<Project>(DATABASE_ID, PROJECTS_ID, [
+          Query.equal("workspaceId", workspaceId),
+          Query.contains("assigneeIds", member.$id),
+        ]);
+
+      const accessibleProjectIds: string[] = accessibleProjects.documents.map(
+        (project: Project): string => project.$id
+      );
+
+      const isAdmin: boolean = member.role === MemberRole.ADMIN;
+
+      if (!isAdmin && accessibleProjectIds.length === 0) {
+        return c.json({ data: { total: 0, documents: [] } });
+      }
+
       const query: string[] = [
         Query.equal("workspaceId", workspaceId),
         Query.orderDesc("$createdAt"),
         Query.limit(5000),
       ];
+
+      if (!isAdmin) {
+        query.push(Query.contains("projectId", accessibleProjectIds));
+      }
 
       if (projectId && projectId.length > 0) {
         query.push(Query.contains("projectId", projectId));
