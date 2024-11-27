@@ -26,6 +26,7 @@ const app = new Hono()
     const members: Models.DocumentList<Member> =
       await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
         Query.equal("userId", user.$id),
+        Query.limit(5000),
       ]);
 
     if (members.total === 0) {
@@ -40,6 +41,7 @@ const app = new Hono()
       await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
         Query.orderDesc("$createdAt"),
         Query.contains("$id", workspacesIds),
+        Query.limit(5000),
       ]);
 
     return c.json({ data: workspaces });
@@ -212,6 +214,7 @@ const app = new Hono()
       const tasks: Models.DocumentList<Task> =
         await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
           Query.equal("workspaceId", workspaceId),
+          Query.limit(5000),
         ]);
 
       for (const task of tasks.documents) {
@@ -221,6 +224,7 @@ const app = new Hono()
       const members: Models.DocumentList<Member> =
         await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
           Query.equal("workspaceId", workspaceId),
+          Query.limit(5000),
         ]);
 
       for (const member of members.documents) {
@@ -230,6 +234,7 @@ const app = new Hono()
       const projects: Models.DocumentList<Workspace> =
         await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
           Query.equal("workspaceId", workspaceId),
+          Query.limit(5000),
         ]);
 
       for (const project of projects.documents) {

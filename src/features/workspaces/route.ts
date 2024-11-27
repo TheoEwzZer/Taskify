@@ -32,6 +32,7 @@ const app = new Hono()
       const members: Models.DocumentList<Member> =
         await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
           Query.equal("workspaceId", workspaceId),
+          Query.limit(5000),
         ]);
 
       const populatedMembers: Member[] = await Promise.all(
@@ -74,6 +75,7 @@ const app = new Hono()
     const allMembersInWorkspace: Models.DocumentList<Member> =
       await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
         Query.equal("workspaceId", memberToDelete.workspaceId),
+        Query.limit(5000),
       ]);
 
     const member: Member = await getMember({
@@ -123,6 +125,7 @@ const app = new Hono()
       const allMembersInWorkspace: Models.DocumentList<Member> =
         await databases.listDocuments<Member>(DATABASE_ID, MEMBERS_ID, [
           Query.equal("workspaceId", memberToUpdate.workspaceId),
+          Query.limit(5000),
         ]);
 
       const member: Member = await getMember({

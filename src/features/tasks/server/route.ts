@@ -103,6 +103,7 @@ const app = new Hono()
       const query: string[] = [
         Query.equal("workspaceId", workspaceId),
         Query.orderDesc("$createdAt"),
+        Query.limit(5000),
       ];
 
       if (projectId && projectId.length > 0) {
@@ -140,14 +141,18 @@ const app = new Hono()
         await databases.listDocuments<Project>(
           DATABASE_ID,
           PROJECTS_ID,
-          projectIds.length > 0 ? [Query.contains("$id", projectIds)] : []
+          projectIds.length > 0
+            ? [Query.contains("$id", projectIds), Query.limit(5000)]
+            : [Query.limit(5000)]
         );
 
       const members: Models.DocumentList<Member> =
         await databases.listDocuments<Member>(
           DATABASE_ID,
           MEMBERS_ID,
-          assigneeIds.length > 0 ? [Query.contains("$id", assigneeIds)] : []
+          assigneeIds.length > 0
+            ? [Query.contains("$id", assigneeIds), Query.limit(5000)]
+            : [Query.limit(5000)]
         );
 
       const assignees: Member[] = await Promise.all(
@@ -407,6 +412,7 @@ const app = new Hono()
               }): string => task.$id
             )
           ),
+          Query.limit(5000),
         ]);
 
       const workspaceIds = new Set(

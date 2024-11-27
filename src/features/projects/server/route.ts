@@ -106,6 +106,7 @@ const app = new Hono()
         await databases.listDocuments<Project>(DATABASE_ID, PROJECTS_ID, [
           Query.equal("workspaceId", workspaceId),
           Query.orderDesc("$createdAt"),
+          Query.limit(5000),
         ]);
 
       if (isAdmin) {
@@ -228,6 +229,7 @@ const app = new Hono()
       const tasks: Models.DocumentList<Task> =
         await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
           Query.contains("projectId", projectId),
+          Query.limit(5000),
         ]);
 
       for (const task of tasks.documents) {
@@ -281,6 +283,7 @@ const app = new Hono()
     const tasks: Models.DocumentList<Task> =
       await databases.listDocuments<Task>(DATABASE_ID, TASKS_ID, [
         Query.equal("projectId", projectId),
+        Query.limit(5000),
       ]);
 
     for (const task of tasks.documents) {
@@ -337,12 +340,14 @@ const app = new Hono()
       Query.equal("projectId", projectId),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const lastWeekTasks: Models.DocumentList<Task> = await getTasks([
       Query.equal("projectId", projectId),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const taskCount: number = thisWeekTasks.total;
@@ -353,6 +358,7 @@ const app = new Hono()
       Query.contains("assigneeIds", member.$id),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const lastWeekAssignedTasks: Models.DocumentList<Task> = await getTasks([
@@ -360,6 +366,7 @@ const app = new Hono()
       Query.contains("assigneeIds", member.$id),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const assignedTaskCount: number = thisWeekAssignedTasks.total;
@@ -371,6 +378,7 @@ const app = new Hono()
       Query.notEqual("status", TaskStatus.DONE),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const lastWeekIncompleteTasks: Models.DocumentList<Task> = await getTasks([
@@ -378,6 +386,7 @@ const app = new Hono()
       Query.notEqual("status", TaskStatus.DONE),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const incompleteTaskCount: number = thisWeekIncompleteTasks.total;
@@ -389,6 +398,7 @@ const app = new Hono()
       Query.equal("status", TaskStatus.DONE),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const lastWeekCompletedTasks: Models.DocumentList<Task> = await getTasks([
@@ -396,6 +406,7 @@ const app = new Hono()
       Query.equal("status", TaskStatus.DONE),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const completedTaskCount: number = thisWeekCompletedTasks.total;
@@ -408,6 +419,7 @@ const app = new Hono()
       Query.lessThan("dueDate", new Date().toISOString()),
       Query.greaterThanEqual("$createdAt", thisWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", thisWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const lastWeekOverdueTasks: Models.DocumentList<Task> = await getTasks([
@@ -416,6 +428,7 @@ const app = new Hono()
       Query.lessThan("dueDate", new Date().toISOString()),
       Query.greaterThanEqual("$createdAt", lastWeekStart.toISOString()),
       Query.lessThanEqual("$createdAt", lastWeekEnd.toISOString()),
+      Query.limit(5000),
     ]);
 
     const overdueTaskCount: number = thisWeekOverdueTasks.total;
