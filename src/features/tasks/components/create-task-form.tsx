@@ -2,6 +2,7 @@
 
 import { DatePicker } from "@/components/date-picker";
 import { DottedSeparator } from "@/components/dotted-separator";
+import MenuBar from "@/components/menu-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -32,7 +33,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
@@ -42,6 +42,15 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
+import BulletList from "@tiptap/extension-bullet-list";
+import Document from "@tiptap/extension-document";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import Underline from "@tiptap/extension-underline";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { CheckIcon, UserIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
@@ -83,7 +92,6 @@ export const CreateTaskForm: ({
       setButtonWidth(buttonRef.current.offsetWidth);
     }
   };
-
   useEffect(() => {
     updateButtonWidth();
     window.addEventListener("resize", updateButtonWidth);
@@ -131,8 +139,12 @@ export const CreateTaskForm: ({
   const onSubmit: (values: z.infer<typeof createTaskSchema>) => void = (
     values: z.infer<typeof createTaskSchema>
   ) => {
+    const { description, ...restValues } = values;
+    const taskDescription: string | undefined = editor?.getHTML();
     mutate(
-      { json: { ...values, workspaceId } },
+      {
+        json: { ...restValues, description: taskDescription, workspaceId },
+      },
       {
         onSuccess: (): void => {
           form.reset();
@@ -153,6 +165,21 @@ export const CreateTaskForm: ({
       form.setValue("assigneeIds", [...currentAssignees, assigneeId]);
     }
   };
+
+  const editor: Editor | null = useEditor({
+    extensions: [
+      StarterKit,
+      Document,
+      Paragraph,
+      Text,
+      Underline,
+      BulletList,
+      OrderedList,
+      ListItem,
+    ],
+    content: form.watch("description") ?? "",
+    editable: true,
+  });
 
   return (
     <Card className="h-full w-full border-none shadow-none">
@@ -358,16 +385,15 @@ export const CreateTaskForm: ({
                 />
               )}
               <FormField
-                control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter Task description"
-                        className="resize-none"
-                        {...field}
+                    <MenuBar editor={editor} />
+                    <FormControl className="prose dark:prose-invert max-w-none">
+                      <EditorContent
+                        editor={editor}
+                        className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm"
                       />
                     </FormControl>
                     <FormMessage />

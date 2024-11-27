@@ -91,6 +91,10 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply mt-0;
+  }
 }
 
 .hide-scrollbar {

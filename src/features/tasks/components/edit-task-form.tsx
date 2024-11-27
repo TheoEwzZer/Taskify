@@ -2,6 +2,7 @@
 
 import { DatePicker } from "@/components/date-picker";
 import { DottedSeparator } from "@/components/dotted-separator";
+import MenuBar from "@/components/menu-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -32,7 +33,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
@@ -41,6 +41,15 @@ import { Project } from "@/features/projects/types";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectValue } from "@radix-ui/react-select";
+import BulletList from "@tiptap/extension-bullet-list";
+import Document from "@tiptap/extension-document";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import Underline from "@tiptap/extension-underline";
+import { Editor, EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { CheckIcon, UserIcon } from "lucide-react";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -134,8 +143,13 @@ export const EditTaskForm: ({
   const onSubmit: (values: z.infer<typeof editTaskSchema>) => void = (
     values: z.infer<typeof editTaskSchema>
   ) => {
+    const { description, ...restValues } = values;
+    const taskDescription: string | undefined = editor?.getHTML();
     mutate(
-      { json: values, param: { taskId: initialValues.$id } },
+      {
+        json: { ...restValues, description: taskDescription },
+        param: { taskId: initialValues.$id },
+      },
       {
         onSuccess: (): void => {
           form.reset();
@@ -156,6 +170,21 @@ export const EditTaskForm: ({
       form.setValue("assigneeIds", [...currentAssignees, assigneeId]);
     }
   };
+
+  const editor: Editor | null = useEditor({
+    extensions: [
+      StarterKit,
+      Document,
+      Paragraph,
+      Text,
+      Underline,
+      BulletList,
+      OrderedList,
+      ListItem,
+    ],
+    content: form.watch("description") ?? "",
+    editable: true,
+  });
 
   return (
     <Card className="h-full w-full border-none shadow-none">
@@ -361,16 +390,15 @@ export const EditTaskForm: ({
                 />
               )}
               <FormField
-                control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter Task description"
-                        className="resize-none"
-                        {...field}
+                    <MenuBar editor={editor} />
+                    <FormControl className="prose dark:prose-invert max-w-none">
+                      <EditorContent
+                        editor={editor}
+                        className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm"
                       />
                     </FormControl>
                     <FormMessage />
