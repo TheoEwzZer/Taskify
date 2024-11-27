@@ -66,7 +66,7 @@ export const TaskDescription: ({
           </Button>
         </div>
       ) : (
-        <div>
+        <div className="whitespace-pre-wrap">
           {task.description ?? (
             <span className="text-muted-foreground">No description set</span>
           )}
