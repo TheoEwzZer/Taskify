@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.6.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.5.0...taskify-v1.6.0) (2024-11-27)
+
+
+### ✨ Features
+
+* add dark mode ([62de09b](https://github.com/TheoEwzZer/Taskify/commit/62de09b030c1b8b4af05dc7f16828fbc59d02fe6))
+* add project authorization ([3b36389](https://github.com/TheoEwzZer/Taskify/commit/3b363894e5e6f55d7d4b205c52d3b4c7f559a96f))
+* add react-markdown for rendering task descriptions with markdown support ([bc885e0](https://github.com/TheoEwzZer/Taskify/commit/bc885e08e9401eb25827152e311e781cb66ff19e))
+* integrate Tiptap editor for enhanced task description formatting ([32cb6b4](https://github.com/TheoEwzZer/Taskify/commit/32cb6b428054270804f00f0ff24d92150dcf753b))
+
+
+### 🐛 Bug Fixes
+
+* add margin to MemberAvatar component in project and task forms ([0a55270](https://github.com/TheoEwzZer/Taskify/commit/0a552709be20922845077bbc94ac050fe8484c14))
+* add margin to MemberAvatar component in project details ([b23c136](https://github.com/TheoEwzZer/Taskify/commit/b23c13640b9e81df7a8571e2d153d1352c63b10a))
+* add whitespace handling to task description for better formatting ([6ab6f8a](https://github.com/TheoEwzZer/Taskify/commit/6ab6f8aa8cc38f2735ca6702feed2b088e2374f5))
+* implement project access control in home page based on member roles ([5245811](https://github.com/TheoEwzZer/Taskify/commit/5245811e9f25de9a6db8357fad7a9c9339c6edca))
+* remove extra grid column for MemberList component ([9e2c7bf](https://github.com/TheoEwzZer/Taskify/commit/9e2c7bff0257045fc876a7ef942c4533c2656335))
+* replace FetchEventLike with any in route handlers ([9ad15cc](https://github.com/TheoEwzZer/Taskify/commit/9ad15cc9fbdb947bd9aecc717f632d3a4aaba958))
+* update badge component colors for dark mode support ([5e25368](https://github.com/TheoEwzZer/Taskify/commit/5e253689edff5c27490ea144356051d197fac721))
+* update buttonRef type to allow null in task form components ([1b57c18](https://github.com/TheoEwzZer/Taskify/commit/1b57c18a1ff30fa72556981782eae064f92cf932))
+* update UserButton component for dark mode support ([b75f7c1](https://github.com/TheoEwzZer/Taskify/commit/b75f7c165b0acccf0b0e028ab73c7b38bce4b494))
+* upgrade limit to database queries for improved performance ([d18cdc0](https://github.com/TheoEwzZer/Taskify/commit/d18cdc01ae034fe16a8b23e1dc81073a09cd1742))
+
+
+### ♻️ Code Refactoring
+
+* change let to const for assigneeIds in project route ([fabec1b](https://github.com/TheoEwzZer/Taskify/commit/fabec1be639c7e29be793f6dd3a48e2a23a960bb))
+
+
+### 💄 Styles
+
+* move member avatar to frist plan when hover ([a758187](https://github.com/TheoEwzZer/Taskify/commit/a758187a3847b655f6bc13f7bff92f9639e6b9ff))
+
+
+### 📦 Dependencies
+
+* update hono to version 4.6.11 ([dc15520](https://github.com/TheoEwzZer/Taskify/commit/dc15520227b16ec21e5bc7c7b1ac36e1ab23594b))
+
 ## [1.5.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.4.1...taskify-v1.5.0) (2024-11-23)
 
 
