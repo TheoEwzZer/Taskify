@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PencilIcon, XIcon } from "lucide-react";
 import { ChangeEvent, ReactElement, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { useUpdateTask } from "../../api/use-update-task";
 import { Task } from "../../types";
 
@@ -67,7 +68,9 @@ export const TaskDescription: ({
         </div>
       ) : (
         <div className="whitespace-pre-wrap">
-          {task.description ?? (
+          {task.description ? (
+            <ReactMarkdown>{task.description}</ReactMarkdown>
+          ) : (
             <span className="text-muted-foreground">No description set</span>
           )}
         </div>
