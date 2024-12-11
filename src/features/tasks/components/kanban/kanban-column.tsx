@@ -26,7 +26,7 @@ export const KanbanColumn: ({
         <div
           {...provided.droppableProps}
           ref={provided.innerRef}
-          className="min-h-[200px] py-1.5"
+          className="h-full min-h-[200px] py-1.5"
         >
           {tasks.map(
             (task: Task, index: number): ReactElement => (
