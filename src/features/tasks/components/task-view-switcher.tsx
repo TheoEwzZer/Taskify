@@ -100,7 +100,7 @@ export const TaskViewSwitcher: ({
           </TabsList>
           <Button
             size="sm"
-            className="w-full lg:w-auto"
+            className="w-full text-white dark:text-black lg:w-auto"
             onClick={(): Promise<URLSearchParams> => open()}
           >
             <PlusIcon />
