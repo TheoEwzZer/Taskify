@@ -3,6 +3,7 @@
 import { Analytics } from "@/components/analytics";
 import { PageError } from "@/components/page-error";
 import { PageLoader } from "@/components/page-loader";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { MemberAvatar } from "@/features/members/components/members-avatar";
@@ -63,7 +64,12 @@ export const ProjectIdClient: () => ReactElement = () => {
             className="size-12"
           />
           <div className="flex flex-col">
-            <h1 className="text-2xl font-bold">{project.name}</h1>
+            <div className="flex gap-2">
+              <h1 className="text-2xl font-bold">{project.name}</h1>
+              {project.label && (
+                <Badge variant="secondary">{project.label}</Badge>
+              )}
+            </div>
             {project.startDate && project.endDate ? (
               <p className="text-sm text-gray-500">
                 {formatDate(project.startDate)} {" -> "}{" "}

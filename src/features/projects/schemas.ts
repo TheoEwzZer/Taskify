@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const createProjectSchema = z.object({
+  label: z.string().trim().min(1, "Label is required").max(128).optional(),
   name: z.string().trim().min(1, "Name is required").max(128),
   image: z.union([
     z.instanceof(File),
@@ -18,6 +19,7 @@ export const createProjectSchema = z.object({
 });
 
 export const updateProjectSchema = z.object({
+  label: z.string().trim().min(1, "Label is required").max(128).optional(),
   name: z
     .string()
     .trim()

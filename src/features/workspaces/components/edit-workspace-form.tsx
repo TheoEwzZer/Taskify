@@ -28,6 +28,7 @@ import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { updateWorkspaceSchema } from "../schemas";
 import { Workspace } from "../types";
 import { InviteMembersCard } from "./invite-members-card";
+import { WorkspaceLabels } from "./workspace-labels";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -64,6 +65,7 @@ export const EditWorkspaceForm: ({
     defaultValues: {
       ...initialValues,
       image: initialValues.imageUrl ?? "",
+      labels: Array.isArray(initialValues.labels) ? initialValues.labels : [],
     },
   });
 
@@ -90,8 +92,8 @@ export const EditWorkspaceForm: ({
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
+      labels: values.labels,
     };
-
     mutate({ form: finalValues, param: { workspaceId: initialValues.$id } });
   };
 
@@ -218,6 +220,24 @@ export const EditWorkspaceForm: ({
                         </div>
                       </div>
                     </div>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="labels"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Workspace Labels</FormLabel>
+                      <FormControl>
+                        <WorkspaceLabels
+                          labels={field.value}
+                          onChange={(newLabels: string[]): void =>
+                            field.onChange(newLabels)
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
               </div>

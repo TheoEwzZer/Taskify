@@ -32,7 +32,13 @@ import { Member } from "@/features/members/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, ImageIcon, UserIcon } from "lucide-react";
+import {
+  Check,
+  CheckIcon,
+  ChevronsUpDown,
+  ImageIcon,
+  UserIcon,
+} from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -46,14 +52,17 @@ import { Project } from "../types";
 interface CreateProjectFormProps {
   onCancel?: () => void;
   memberOptions: Member[];
+  labelOptions: string[];
 }
 
 export const CreateProjectForm: ({
   onCancel,
   memberOptions,
+  labelOptions,
 }: CreateProjectFormProps) => ReactElement = ({
   onCancel,
   memberOptions,
+  labelOptions,
 }: CreateProjectFormProps) => {
   const workspaceId: string = useWorkspaceId();
   const router: AppRouterInstance = useRouter();
@@ -253,6 +262,81 @@ export const CreateProjectForm: ({
                                     </CommandItem>
                                   );
                                 }
+                              )}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="label"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Label</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className={cn(
+                              "group relative h-12 w-auto justify-between",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value
+                              ? labelOptions.find(
+                                  (label: string): boolean =>
+                                    label === field.value
+                                )
+                              : "Select label"}
+                            <div className="flex items-center gap-2">
+                              <ChevronsUpDown className="opacity-50" />
+                            </div>
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-auto p-0"
+                        style={{ width: buttonWidth }}
+                      >
+                        <Command>
+                          <CommandInput
+                            placeholder="Search label..."
+                            className="h-9"
+                          />
+                          <CommandList>
+                            <CommandEmpty>No label found.</CommandEmpty>
+                            <CommandGroup>
+                              {labelOptions.map(
+                                (label: string): ReactElement => (
+                                  <CommandItem
+                                    value={label}
+                                    key={label}
+                                    onSelect={(): void => {
+                                      if (field.value === label) {
+                                        form.setValue("label", undefined);
+                                      } else {
+                                        form.setValue("label", label);
+                                      }
+                                    }}
+                                  >
+                                    {label}
+                                    <Check
+                                      className={cn(
+                                        "ml-auto",
+                                        label === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                  </CommandItem>
+                                )
                               )}
                             </CommandGroup>
                           </CommandList>

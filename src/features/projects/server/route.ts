@@ -21,7 +21,7 @@ const app = new Hono()
       const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { name, image, workspaceId, startDate, endDate } =
+      const { name, image, workspaceId, startDate, endDate, label } =
         c.req.valid("json");
 
       const assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
@@ -70,6 +70,7 @@ const app = new Hono()
           startDate,
           assigneeIds,
           endDate,
+          label,
         }
       );
 
@@ -165,7 +166,7 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
 
       const { projectId } = c.req.param();
-      const { name, image, startDate, endDate, assigneeIds } =
+      const { name, image, startDate, endDate, assigneeIds, label } =
         c.req.valid("json");
 
       const existingProject: Project = await databases.getDocument<Project>(
@@ -217,6 +218,7 @@ const app = new Hono()
           endDate,
           imageUrl: uploadedImageUrl,
           assigneeIds,
+          label,
         }
       );
 

@@ -2,11 +2,13 @@ import {
   DATABASE_ID,
   IMAGES_BUCKET_ID,
   MEMBERS_ID,
+  PROJECTS_ID,
   TASKS_ID,
   WORKSPACES_ID,
 } from "@/config";
 import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
+import { Project } from "@/features/projects/types";
 import { Task, TaskStatus } from "@/features/tasks/types";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { generateInviteCode } from "@/lib/utils";
@@ -72,6 +74,22 @@ const app = new Hono()
     }
 
     return c.json({ data: workspace });
+  })
+  .get("/:workspaceId/labels", sessionMiddleware, async (c) => {
+    const { workspaceId } = c.req.param();
+    const databases = c.get("databases");
+
+    const workspace: Workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    if (!workspace) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
+    return c.json({ data: { labels: workspace.labels } });
   })
   .get("/:workspaceId/info", sessionMiddleware, async (c) => {
     const { workspaceId } = c.req.param();
@@ -150,7 +168,7 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
 
       const { workspaceId } = c.req.param();
-      const { name, image } = c.req.valid("form");
+      const { name, labels, image } = c.req.valid("form");
 
       const member: Member = await getMember({
         databases,
@@ -187,6 +205,7 @@ const app = new Hono()
         workspaceId,
         {
           name,
+          labels,
           imageUrl: uploadedImageUrl,
         }
       );
@@ -231,19 +250,18 @@ const app = new Hono()
         await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id);
       }
 
-      const projects: Models.DocumentList<Workspace> =
-        await databases.listDocuments<Workspace>(DATABASE_ID, WORKSPACES_ID, [
+      const projects: Models.DocumentList<Project> =
+        await databases.listDocuments<Project>(DATABASE_ID, PROJECTS_ID, [
           Query.equal("workspaceId", workspaceId),
           Query.limit(5000),
         ]);
 
       for (const project of projects.documents) {
-        await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, project.$id);
+        await databases.deleteDocument(DATABASE_ID, PROJECTS_ID, project.$id);
       }
 
       await databases.deleteDocument(DATABASE_ID, WORKSPACES_ID, workspaceId);
     } else {
-      console.log("Deleting member");
       await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, member.$id);
     }
 

@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { useGetLabel } from "@/features/members/api/use-get-label";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { Member } from "@/features/members/types";
 import { Project } from "@/features/projects/types";
@@ -24,9 +25,15 @@ export const EditProjectFormWrapper: (
     workspaceId,
   });
 
+  const { data: labels, isLoading: isLoadingLabels } = useGetLabel({
+    workspaceId,
+  });
+
   const memberOptions: Member[] | undefined = members?.documents;
 
-  if (isLoading) {
+  const labelOptions: string[] | undefined = labels?.labels;
+
+  if (isLoading || isLoadingLabels) {
     return (
       <Card className="h-[714px] w-full border-none shadow-none">
         <CardContent className="flex h-full items-center justify-center">
@@ -36,13 +43,12 @@ export const EditProjectFormWrapper: (
     );
   }
 
-  console.log("initialValues", initialValues);
-
   return (
     <EditProjectForm
       onCancel={onCancel}
       initialValues={initialValues}
       memberOptions={memberOptions ?? []}
+      labelOptions={labelOptions ?? []}
     />
   );
 };

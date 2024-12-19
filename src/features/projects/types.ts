@@ -7,4 +7,5 @@ export type Project = Models.Document & {
   startDate: string | undefined;
   endDate: string | undefined;
   assigneeIds: string[];
+  label: string | undefined;
 };

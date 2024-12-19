@@ -20,6 +20,12 @@ export const updateWorkspaceSchema = z.object({
     .min(1, "Must be at least 1 character")
     .max(128)
     .optional(),
+  labels: z
+    .union([z.string(), z.array(z.string())])
+    .transform((labels: string | string[]): string[] =>
+      typeof labels === "string" ? [labels] : labels
+    )
+    .default([]),
   image: z.union([
     z.instanceof(File),
     z

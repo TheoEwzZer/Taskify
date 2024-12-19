@@ -31,7 +31,14 @@ import { MemberAvatar } from "@/features/members/components/members-avatar";
 import { Member } from "@/features/members/types";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeftIcon, CheckIcon, ImageIcon, UserIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  Check,
+  CheckIcon,
+  ChevronsUpDown,
+  ImageIcon,
+  UserIcon,
+} from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -48,21 +55,25 @@ interface EditProjectFormProps {
   onCancel?: () => void;
   initialValues: Project;
   memberOptions: Member[];
+  labelOptions: string[];
 }
 
 export const EditProjectForm: ({
   onCancel,
   initialValues,
   memberOptions,
+  labelOptions,
 }: EditProjectFormProps) => ReactElement = ({
   onCancel,
   initialValues,
   memberOptions,
+  labelOptions,
 }: EditProjectFormProps) => {
   const router: AppRouterInstance = useRouter();
   const { mutate, isPending } = useUpdateProject();
   const { mutate: deleteProject, isPending: isDeletingProject } =
     useDeleteProject();
+  const [currentLabel, setCurrentLabel] = useState<string>("");
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Project",
@@ -297,6 +308,81 @@ export const EditProjectForm: ({
                                       </CommandItem>
                                     );
                                   }
+                                )}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="label"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Label</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "group relative h-12 w-auto justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? labelOptions.find(
+                                    (label: string): boolean =>
+                                      label === field.value
+                                  )
+                                : "Select label"}
+                              <div className="flex items-center gap-2">
+                                <ChevronsUpDown className="opacity-50" />
+                              </div>
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto p-0"
+                          style={{ width: buttonWidth }}
+                        >
+                          <Command>
+                            <CommandInput
+                              placeholder="Search label..."
+                              className="h-9"
+                            />
+                            <CommandList>
+                              <CommandEmpty>No label found.</CommandEmpty>
+                              <CommandGroup>
+                                {labelOptions.map(
+                                  (label: string): ReactElement => (
+                                    <CommandItem
+                                      value={label}
+                                      key={label}
+                                      onSelect={(): void => {
+                                        if (field.value === label) {
+                                          form.setValue("label", undefined);
+                                        } else {
+                                          form.setValue("label", label);
+                                        }
+                                      }}
+                                    >
+                                      {label}
+                                      <Check
+                                        className={cn(
+                                          "ml-auto",
+                                          label === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  )
                                 )}
                               </CommandGroup>
                             </CommandList>
