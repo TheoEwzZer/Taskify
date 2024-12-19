@@ -1,5 +1,6 @@
 "use client";
 
+import { formatDate } from "@/app/(dashboard)/workspaces/[workspaceId]/projects/[projectId]/client";
 import { useDeleteProject } from "@/features/projects/api/use-delete-project";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
@@ -13,12 +14,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 import { RiAddCircleFill } from "react-icons/ri";
+import { Badge } from "./ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
 import {
   SidebarGroup,
   SidebarGroupAction,
@@ -110,52 +113,78 @@ export const Projects: () => ReactElement = () => {
               const isActive: boolean = pathname === href;
 
               return (
-                <SidebarMenuItem key={project.$id}>
-                  <SidebarMenuButton
-                    asChild
-                    className={cn(
-                      "flex h-8 cursor-pointer items-center gap-2.5 rounded-md text-neutral-500 transition hover:opacity-75",
-                      isActive &&
-                        "bg-background text-primary shadow-sm hover:opacity-100"
-                    )}
-                  >
-                    <Link href={href}>
-                      <ProjectAvatar
-                        image={project.imageUrl}
-                        name={project.name}
-                      />
-                      <span className="truncate">{project.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuAction>
-                        <MoreHorizontal />
-                      </SidebarMenuAction>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      side="right"
-                      align="start"
-                    >
-                      <DropdownMenuItem
+                <HoverCard key={project.$id}>
+                  <HoverCardTrigger>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
                         asChild
-                        disabled={isDeletingProject}
+                        className={cn(
+                          "flex h-8 cursor-pointer items-center gap-2.5 rounded-md text-neutral-500 transition hover:opacity-75",
+                          isActive &&
+                            "bg-background text-primary shadow-sm hover:opacity-100"
+                        )}
                       >
-                        <Link
-                          href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
-                        >
-                          Edit Project
+                        <Link href={href}>
+                          <ProjectAvatar
+                            image={project.imageUrl}
+                            name={project.name}
+                          />
+                          <span className="truncate">{project.name}</span>
                         </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={(): Promise<void> => handleDelete(project.$id)}
-                        disabled={isDeletingProject}
-                      >
-                        <span>Delete Project</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </SidebarMenuItem>
+                      </SidebarMenuButton>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <SidebarMenuAction>
+                            <MoreHorizontal />
+                          </SidebarMenuAction>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          side="right"
+                          align="start"
+                        >
+                          <DropdownMenuItem
+                            asChild
+                            disabled={isDeletingProject}
+                          >
+                            <Link
+                              href={`/workspaces/${workspaceId}/projects/${project.$id}/settings`}
+                            >
+                              Edit Project
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={(): Promise<void> =>
+                              handleDelete(project.$id)
+                            }
+                            disabled={isDeletingProject}
+                          >
+                            <span>Delete Project</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </SidebarMenuItem>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-[240px]">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-sm font-semibold">
+                          {project.name}
+                        </h4>
+                        {project.label && (
+                          <Badge variant="secondary">{project.label}</Badge>
+                        )}
+                      </div>
+                      <div className="flex items-center pt-2">
+                        <span className="text-xs text-muted-foreground">
+                          <p className="text-sm text-gray-500">
+                            {formatDate(project.startDate)} {" -> "}{" "}
+                            {formatDate(project.endDate)}
+                          </p>
+                        </span>
+                      </div>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               );
             })}
           </SidebarMenu>

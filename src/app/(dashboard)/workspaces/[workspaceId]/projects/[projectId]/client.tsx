@@ -18,7 +18,7 @@ import { PencilIcon } from "lucide-react";
 import Link from "next/link";
 import { CSSProperties, ReactElement } from "react";
 
-const formatDate = (dateString: string | undefined): string => {
+export const formatDate = (dateString: string | undefined): string => {
   if (!dateString) {
     return "Date not set";
   }
