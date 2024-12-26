@@ -56,6 +56,11 @@ export function WorkspaceLabels({
           onChange={(e: ChangeEvent<HTMLInputElement>): void =>
             setNewLabel(e.target.value)
           }
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>): void => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
           placeholder="Add new label"
         />
         <Button
