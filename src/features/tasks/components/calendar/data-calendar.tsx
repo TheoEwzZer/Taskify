@@ -98,7 +98,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
             id={event.id}
           />
         ),
-        toolbar: (): ReactElement => (
+        toolbar: (props) => (
           <CustomToolbar
             onNavigate={handleNavigate}
             date={value}

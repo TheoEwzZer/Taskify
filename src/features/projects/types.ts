@@ -8,10 +8,12 @@ export type Project = Models.Document & {
   endDate: string | undefined;
   assigneeIds: string[];
   label: string | undefined;
-  dates: {
-    title: string;
-    date: string;
-  }[];
+  dates: DatesString[];
+};
+
+export type DatesString = {
+  title: string;
+  date: string;
 };
 
 export type ProjectDates = Models.Document & {

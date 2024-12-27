@@ -49,7 +49,7 @@ import { useConfirm } from "../../../hooks/use-confirm";
 import { useDeleteProject } from "../api/use-delete-project";
 import { useUpdateProject } from "../api/use-update-project";
 import { updateProjectSchema } from "../schemas";
-import { DateItem, Project, ProjectDates } from "../types";
+import { DateItem, DatesString, Project } from "../types";
 import { ProjectDatesComp } from "./project-dates";
 
 interface EditProjectFormProps {
@@ -119,7 +119,7 @@ export const EditProjectForm: ({
       assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
       dates:
         initialValues.dates?.map(
-          (date: ProjectDates): DateItem => ({
+          (date: DatesString): DateItem => ({
             ...date,
             date: new Date(date.date),
           })

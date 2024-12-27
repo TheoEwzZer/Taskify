@@ -12,7 +12,7 @@ import { useGetProject } from "@/features/projects/api/use-get-project";
 import { useGetProjectAnalytics } from "@/features/projects/api/use-get-project-analytics";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
-import { ProjectDates } from "@/features/projects/types";
+import { DatesString } from "@/features/projects/types";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 import { format } from "date-fns";
 import { PencilIcon } from "lucide-react";
@@ -140,7 +140,7 @@ export const ProjectIdClient: () => ReactElement = () => {
           <h2 className="text-end text-lg font-semibold">Important Dates</h2>
           <div className="flex flex-wrap justify-end gap-2">
             {project.dates?.map(
-              (date: ProjectDates): ReactElement => (
+              (date: DatesString): ReactElement => (
                 <Badge
                   key={`${date.title}-${formatDate(date.date)}`}
                   variant="secondary"
