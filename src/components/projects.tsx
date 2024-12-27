@@ -211,22 +211,24 @@ export const Projects: () => ReactElement = () => {
                           </p>
                         </span>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <h4 className="text-sm font-semibold">
-                          Important Dates
-                        </h4>
-                        {project.dates?.map(
-                          (date: DatesString): ReactElement => (
-                            <Badge
-                              key={`${date.title}-${new Date(date.date).toISOString()}`}
-                              variant="secondary"
-                            >
-                              {date.title} -{" "}
-                              {format(new Date(date.date), "dd/MM/yyyy")}
-                            </Badge>
-                          )
-                        )}
-                      </div>
+                      {project.dates?.length > 0 && (
+                        <div className="flex flex-col gap-1">
+                          <h4 className="text-sm font-semibold">
+                            Important Dates
+                          </h4>
+                          {project.dates?.map(
+                            (date: DatesString): ReactElement => (
+                              <Badge
+                                key={`${date.title}-${new Date(date.date).toISOString()}`}
+                                variant="secondary"
+                              >
+                                {date.title} -{" "}
+                                {format(new Date(date.date), "dd/MM/yyyy")}
+                              </Badge>
+                            )
+                          )}
+                        </div>
+                      )}
                     </div>
                   </HoverCardContent>
                 </HoverCard>

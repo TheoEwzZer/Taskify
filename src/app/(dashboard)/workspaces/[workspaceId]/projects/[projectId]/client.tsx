@@ -136,21 +136,23 @@ export const ProjectIdClient: () => ReactElement = () => {
             )}
           </div>
         </div>
-        <div>
-          <h2 className="text-end text-lg font-semibold">Important Dates</h2>
-          <div className="flex flex-wrap justify-end gap-2">
-            {project.dates?.map(
-              (date: DatesString): ReactElement => (
-                <Badge
-                  key={`${date.title}-${formatDate(date.date)}`}
-                  variant="secondary"
-                >
-                  {date.title} - {format(new Date(date.date), "PPP")}
-                </Badge>
-              )
-            )}
+        {project.dates?.length > 0 && (
+          <div>
+            <h2 className="text-end text-lg font-semibold">Important Dates</h2>
+            <div className="flex flex-wrap justify-end gap-2">
+              {project.dates?.map(
+                (date: DatesString): ReactElement => (
+                  <Badge
+                    key={`${date.title}-${formatDate(date.date)}`}
+                    variant="secondary"
+                  >
+                    {date.title} - {format(new Date(date.date), "PPP")}
+                  </Badge>
+                )
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {analytics && <Analytics data={analytics} />}
       <TaskViewSwitcher hideProjectFilter />
