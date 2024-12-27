@@ -390,7 +390,7 @@ export const CreateTaskForm: ({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <MenuBar editor={editor} />
-                    <FormControl className="prose dark:prose-invert max-w-none">
+                    <FormControl className="prose max-w-none dark:prose-invert">
                       <EditorContent
                         editor={editor}
                         className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm"
