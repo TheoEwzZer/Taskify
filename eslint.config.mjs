@@ -58,9 +58,11 @@ export default [
       "eol-last": ["error", "always"],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",
-      "@typescript-eslint/no-unused-expressions": "off", // Désactiver la règle problématique
+      "@typescript-eslint/no-unused-expressions": "off",
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "import/no-anonymous-default-export": "off",
     },
   },
 ];
