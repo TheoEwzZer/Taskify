@@ -136,7 +136,7 @@ export const DataFilters: ({
     } else {
       setFilteredMembers([]);
     }
-  }, [projectId, projectOptions, memberOptions]);
+  }, [projectId, projectOptions, memberOptions, currentProjectId]);
 
   const onStatusChange: (value: string) => void = (value) => {
     if (value === "all") {
