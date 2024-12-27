@@ -1,4 +1,10 @@
-import { DATABASE_ID, IMAGES_BUCKET_ID, PROJECTS_ID, TASKS_ID } from "@/config";
+import {
+  DATABASE_ID,
+  DATES_ID,
+  IMAGES_BUCKET_ID,
+  PROJECTS_ID,
+  TASKS_ID,
+} from "@/config";
 import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { Task, TaskStatus } from "@/features/tasks/types";
@@ -9,7 +15,7 @@ import { Hono } from "hono";
 import { ID, Models, Query } from "node-appwrite";
 import { z } from "zod";
 import { createProjectSchema, updateProjectSchema } from "../schemas";
-import { Project } from "../types";
+import { DateItem, Project, ProjectDates } from "../types";
 
 const app = new Hono()
   .post(
@@ -21,7 +27,7 @@ const app = new Hono()
       const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { name, image, workspaceId, startDate, endDate, label } =
+      const { name, image, workspaceId, startDate, endDate, label, dates } =
         c.req.valid("json");
 
       const assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
@@ -74,6 +80,16 @@ const app = new Hono()
         }
       );
 
+      if (dates) {
+        for (const date of dates) {
+          await databases.createDocument(DATABASE_ID, DATES_ID, ID.unique(), {
+            projectId: project.$id,
+            title: date.title,
+            date: date.date.toISOString(),
+          });
+        }
+      }
+
       return c.json({ data: project });
     }
   )
@@ -113,7 +129,6 @@ const app = new Hono()
       if (isAdmin) {
         return c.json({ data: projects });
       } else {
-        console.log(user.$id);
         const accessibleProjects: Project[] = projects.documents.filter(
           (project: Project): boolean =>
             project.assigneeIds.includes(member.$id)
@@ -154,7 +169,25 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    return c.json({ data: project });
+    const dates: Models.DocumentList<ProjectDates> =
+      await databases.listDocuments<ProjectDates>(DATABASE_ID, DATES_ID, [
+        Query.equal("projectId", projectId),
+      ]);
+
+    const simplifiedDates: {
+      date: string | Date;
+      title: string;
+    }[] = dates.documents.map(({ date, title }: ProjectDates) => ({
+      date,
+      title,
+    }));
+
+    return c.json({
+      data: {
+        ...project,
+        dates: simplifiedDates,
+      },
+    });
   })
   .patch(
     "/:projectId",
@@ -166,7 +199,7 @@ const app = new Hono()
       const user: Models.User<Models.Preferences> = c.get("user");
 
       const { projectId } = c.req.param();
-      const { name, image, startDate, endDate, assigneeIds, label } =
+      const { name, image, startDate, endDate, assigneeIds, label, dates } =
         c.req.valid("json");
 
       const existingProject: Project = await databases.getDocument<Project>(
@@ -253,6 +286,49 @@ const app = new Hono()
         }
       }
 
+      const existingDates: Models.DocumentList<ProjectDates> =
+        await databases.listDocuments<ProjectDates>(DATABASE_ID, DATES_ID, [
+          Query.equal("projectId", projectId),
+        ]);
+
+      const normalizeDate: (dateString: string) => string = (dateString) =>
+        new Date(dateString).toISOString();
+
+      const existingDateKeys = new Set(
+        existingDates.documents.map(
+          (date: ProjectDates): string =>
+            `${date.title}-${normalizeDate(date.date)}`
+        )
+      );
+
+      const newDateKeys = new Set(
+        (dates || []).map(
+          (date: DateItem): string => `${date.title}-${date.date.toISOString()}`
+        )
+      );
+
+      const datesToDelete: ProjectDates[] = existingDates.documents.filter(
+        (date: ProjectDates): boolean =>
+          !newDateKeys.has(`${date.title}-${normalizeDate(date.date)}`)
+      );
+
+      const datesToAdd: ProjectDates[] = (dates || []).filter(
+        (date: DateItem): boolean =>
+          !existingDateKeys.has(`${date.title}-${date.date.toISOString()}`)
+      );
+
+      for (const dateDoc of datesToDelete) {
+        await databases.deleteDocument(DATABASE_ID, DATES_ID, dateDoc.$id);
+      }
+
+      for (const date of datesToAdd) {
+        await databases.createDocument(DATABASE_ID, DATES_ID, ID.unique(), {
+          projectId,
+          title: date.title,
+          date: normalizeDate(date.date),
+        });
+      }
+
       return c.json({ data: project });
     }
   )
@@ -280,6 +356,16 @@ const app = new Hono()
 
     if (!member) {
       return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const projectDates: Models.DocumentList<ProjectDates> =
+      await databases.listDocuments<ProjectDates>(DATABASE_ID, DATES_ID, [
+        Query.equal("projectId", projectId),
+        Query.limit(5000),
+      ]);
+
+    for (const date of projectDates.documents) {
+      await databases.deleteDocument(DATABASE_ID, DATES_ID, date.$id);
     }
 
     const tasks: Models.DocumentList<Task> =

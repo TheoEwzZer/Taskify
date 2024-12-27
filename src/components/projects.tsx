@@ -1,14 +1,14 @@
 "use client";
 
-import { formatDate } from "@/app/(dashboard)/workspaces/[workspaceId]/projects/[projectId]/client";
 import { useDeleteProject } from "@/features/projects/api/use-delete-project";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
-import { Project } from "@/features/projects/types";
+import { Project, ProjectDates } from "@/features/projects/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useConfirm } from "@/hooks/use-confirm";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -177,10 +177,55 @@ export const Projects: () => ReactElement = () => {
                       <div className="flex items-center pt-2">
                         <span className="text-xs text-muted-foreground">
                           <p className="text-sm text-gray-500">
-                            {formatDate(project.startDate)} {" -> "}{" "}
-                            {formatDate(project.endDate)}
+                            {project.startDate && !project.endDate && (
+                              <>
+                                Started on{" "}
+                                {format(
+                                  new Date(project.startDate),
+                                  "dd/MM/yyyy"
+                                )}
+                              </>
+                            )}
+                            {!project.startDate && project.endDate && (
+                              <>
+                                Ends on{" "}
+                                {format(
+                                  new Date(project.endDate),
+                                  "dd/MM/yyyy"
+                                )}
+                              </>
+                            )}
+                            {project.startDate && project.endDate && (
+                              <>
+                                {format(
+                                  new Date(project.startDate),
+                                  "dd/MM/yyyy"
+                                )}{" "}
+                                {" -> "}{" "}
+                                {format(
+                                  new Date(project.endDate),
+                                  "dd/MM/yyyy"
+                                )}
+                              </>
+                            )}
                           </p>
                         </span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <h4 className="text-sm font-semibold">
+                          Important Dates
+                        </h4>
+                        {project.dates?.map(
+                          (date: ProjectDates): ReactElement => (
+                            <Badge
+                              key={`${date.title}-${new Date(date.date).toISOString()}`}
+                              variant="secondary"
+                            >
+                              {date.title} -{" "}
+                              {format(new Date(date.date), "dd/MM/yyyy")}
+                            </Badge>
+                          )
+                        )}
                       </div>
                     </div>
                   </HoverCardContent>

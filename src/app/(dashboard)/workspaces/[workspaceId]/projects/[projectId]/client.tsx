@@ -12,6 +12,7 @@ import { useGetProject } from "@/features/projects/api/use-get-project";
 import { useGetProjectAnalytics } from "@/features/projects/api/use-get-project-analytics";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
+import { ProjectDates } from "@/features/projects/types";
 import { TaskViewSwitcher } from "@/features/tasks/components/task-view-switcher";
 import { format } from "date-fns";
 import { PencilIcon } from "lucide-react";
@@ -104,34 +105,51 @@ export const ProjectIdClient: () => ReactElement = () => {
           </Link>
         </Button>
       </div>
-      <div>
-        <h2 className="text-lg font-semibold">Assignees</h2>
-        <div className="flex flex-wrap gap-4">
-          {assignees?.length ? (
-            <div className="flex items-center">
-              {assignees.map(
-                (assignee: Member, index: number): ReactElement => (
-                  <div
-                    key={assignee.$id}
-                    className="relative z-[--index] hover:z-[1000]"
-                    style={
-                      {
-                        marginLeft: index !== 0 ? "-5px" : "0",
-                        "--index": assignees.length - index,
-                      } as CSSProperties
-                    }
-                  >
-                    <MemberAvatar
-                      member={assignee}
-                      className="mb-1.5 size-8"
-                    />
-                  </div>
-                )
-              )}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-500">No assignees</p>
-          )}
+      <div className="flex flex-row justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold">Assignees</h2>
+          <div className="flex flex-wrap gap-4">
+            {assignees?.length ? (
+              <div className="flex items-center">
+                {assignees.map(
+                  (assignee: Member, index: number): ReactElement => (
+                    <div
+                      key={assignee.$id}
+                      className="relative z-[--index] hover:z-[1000]"
+                      style={
+                        {
+                          marginLeft: index !== 0 ? "-5px" : "0",
+                          "--index": assignees.length - index,
+                        } as CSSProperties
+                      }
+                    >
+                      <MemberAvatar
+                        member={assignee}
+                        className="mb-1.5 size-8"
+                      />
+                    </div>
+                  )
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No assignees</p>
+            )}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-end text-lg font-semibold">Important Dates</h2>
+          <div className="flex flex-wrap justify-end gap-2">
+            {project.dates?.map(
+              (date: ProjectDates): ReactElement => (
+                <Badge
+                  key={`${date.title}-${formatDate(date.date)}`}
+                  variant="secondary"
+                >
+                  {date.title} - {format(new Date(date.date), "PPP")}
+                </Badge>
+              )
+            )}
+          </div>
         </div>
       </div>
       {analytics && <Analytics data={analytics} />}

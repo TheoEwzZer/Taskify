@@ -47,7 +47,8 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useCreateProject } from "../api/use-create-project";
 import { createProjectSchema } from "../schemas";
-import { Project } from "../types";
+import { DateItem, Project } from "../types";
+import { ProjectDatesComp } from "./project-dates";
 
 interface CreateProjectFormProps {
   onCancel?: () => void;
@@ -97,6 +98,7 @@ export const CreateProjectForm: ({
     defaultValues: {
       name: "",
       assigneeIds: [],
+      dates: [],
     },
   });
 
@@ -343,6 +345,24 @@ export const CreateProjectForm: ({
                         </Command>
                       </PopoverContent>
                     </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dates"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Important Dates</FormLabel>
+                    <FormControl>
+                      <ProjectDatesComp
+                        dates={field.value}
+                        onChange={(newDates: DateItem[] | undefined): void =>
+                          field.onChange(newDates)
+                        }
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

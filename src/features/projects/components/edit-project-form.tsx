@@ -49,7 +49,8 @@ import { useConfirm } from "../../../hooks/use-confirm";
 import { useDeleteProject } from "../api/use-delete-project";
 import { useUpdateProject } from "../api/use-update-project";
 import { updateProjectSchema } from "../schemas";
-import { Project } from "../types";
+import { DateItem, Project, ProjectDates } from "../types";
+import { ProjectDatesComp } from "./project-dates";
 
 interface EditProjectFormProps {
   onCancel?: () => void;
@@ -73,7 +74,6 @@ export const EditProjectForm: ({
   const { mutate, isPending } = useUpdateProject();
   const { mutate: deleteProject, isPending: isDeletingProject } =
     useDeleteProject();
-  const [currentLabel, setCurrentLabel] = useState<string>("");
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Project",
@@ -117,6 +117,13 @@ export const EditProjectForm: ({
         : undefined,
       image: initialValues.imageUrl ?? "",
       assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
+      dates:
+        initialValues.dates?.map(
+          (date: ProjectDates): DateItem => ({
+            ...date,
+            date: new Date(date.date),
+          })
+        ) || [],
     },
   });
 
@@ -389,6 +396,24 @@ export const EditProjectForm: ({
                           </Command>
                         </PopoverContent>
                       </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="dates"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Important Dates</FormLabel>
+                      <FormControl>
+                        <ProjectDatesComp
+                          dates={field.value}
+                          onChange={(newDates: DateItem[] | undefined): void =>
+                            field.onChange(newDates)
+                          }
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

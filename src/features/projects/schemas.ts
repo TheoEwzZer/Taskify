@@ -16,6 +16,21 @@ export const createProjectSchema = z.object({
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
   assigneeIds: z.array(z.string().trim().max(50)).optional(),
+  dates: z
+    .union([
+      z.object({
+        title: z.string().trim().min(1, "Title is required").max(128),
+        date: z.coerce.date(),
+      }),
+      z.array(
+        z.object({
+          title: z.string().trim().min(1, "Title is required").max(128),
+          date: z.coerce.date(),
+        })
+      ),
+    ])
+    .transform((dates: any): any => (Array.isArray(dates) ? dates : [dates]))
+    .optional(),
 });
 
 export const updateProjectSchema = z.object({
@@ -38,4 +53,19 @@ export const updateProjectSchema = z.object({
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
   assigneeIds: z.array(z.string().trim().max(50)).optional(),
+  dates: z
+    .union([
+      z.object({
+        title: z.string().trim().min(1, "Title is required").max(128),
+        date: z.coerce.date(),
+      }),
+      z.array(
+        z.object({
+          title: z.string().trim().min(1, "Title is required").max(128),
+          date: z.coerce.date(),
+        })
+      ),
+    ])
+    .transform((dates: any): any => (Array.isArray(dates) ? dates : [dates]))
+    .optional(),
 });
