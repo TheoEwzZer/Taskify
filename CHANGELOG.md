@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.6.1](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.6.0...taskify-v1.6.1) (2024-12-27)
+
+
+### 🐛 Bug Fixes
+
+* add currentProjectId to dependencies for accurate filtering updates ([730916f](https://github.com/TheoEwzZer/Taskify/commit/730916fb92bfc06b80a0b91597bd61655bc06276))
+* adjust height styling for Kanban column component ([80403b7](https://github.com/TheoEwzZer/Taskify/commit/80403b7a4301634efbc55ca76e6f7b89a0298d71))
+* conditionally render important dates section for better UX ([fb588b5](https://github.com/TheoEwzZer/Taskify/commit/fb588b5283212e103929d9364b3ca08afadc5215))
+* replace ProjectDates type with DatesString for improved type consistency ([5478093](https://github.com/TheoEwzZer/Taskify/commit/5478093a8ca937cf741d1f1f00885589d9b6c71f))
+
 ## [1.6.0](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.5.0...taskify-v1.6.0) (2024-11-27)
 
 
