@@ -374,7 +374,7 @@ export const EditProjectForm: ({
                                       key={label}
                                       onSelect={(): void => {
                                         if (field.value === label) {
-                                          form.setValue("label", undefined);
+                                          form.setValue("label", null);
                                         } else {
                                           form.setValue("label", label);
                                         }
