@@ -116,6 +116,7 @@ export const EditProjectForm: ({
         ? new Date(initialValues.endDate)
         : undefined,
       image: initialValues.imageUrl ?? "",
+      label: initialValues.label ?? null,
       assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
       dates:
         initialValues.dates?.map(
