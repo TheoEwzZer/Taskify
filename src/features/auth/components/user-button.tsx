@@ -42,7 +42,7 @@ export const UserButton = (): ReactElement | null => {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger className="relative outline-none">
+      <DropdownMenuTrigger className="relative outline-hidden">
         <Avatar className="size-10 border border-neutral-300 transition hover:opacity-75">
           {avatar && avatar != "none" && (
             <AvatarImage

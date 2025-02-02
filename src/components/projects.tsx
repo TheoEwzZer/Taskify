@@ -121,7 +121,7 @@ export const Projects: () => ReactElement = () => {
                         className={cn(
                           "flex h-8 cursor-pointer items-center gap-2.5 rounded-md text-neutral-500 transition hover:opacity-75",
                           isActive &&
-                            "bg-background text-primary shadow-sm hover:opacity-100"
+                            "bg-background text-primary shadow-xs hover:opacity-100"
                         )}
                       >
                         <Link href={href}>

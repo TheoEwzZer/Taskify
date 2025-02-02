@@ -90,7 +90,7 @@ export const Navigation: () => ReactElement = () => {
                   className={cn(
                     "flex w-full items-center gap-2.5 rounded-md py-2.5 font-medium text-neutral-500 transition hover:text-primary",
                     isActive &&
-                      "bg-background text-primary shadow-sm hover:opacity-100"
+                      "bg-background text-primary shadow-xs hover:opacity-100"
                   )}
                 >
                   <Link

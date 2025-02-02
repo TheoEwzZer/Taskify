@@ -203,7 +203,7 @@ export const columns: ColumnDef<Task>[] = [
             (assignee: Member, index: number): ReactElement => (
               <div
                 key={assignee.$id}
-                className="relative z-[--index] hover:z-[1000]"
+                className="relative z-(--index) hover:z-1000"
                 style={
                   {
                     marginLeft: index !== 0 ? "-5px" : "0",
@@ -219,7 +219,7 @@ export const columns: ColumnDef<Task>[] = [
             )
           )}
           {assignees.length > 4 && (
-            <div className="relative z-0 ml-[-5px] hover:z-[1000]">
+            <div className="relative z-0 ml-[-5px] hover:z-1000">
               <MemberAvatarOther
                 members={assignees}
                 maxMembers={4}

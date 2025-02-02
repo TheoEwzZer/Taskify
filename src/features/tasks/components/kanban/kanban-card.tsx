@@ -19,7 +19,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
   task,
 }) => {
   return (
-    <div className="mb-1.5 space-y-3 rounded bg-background p-2.5 shadow-sm">
+    <div className="mb-1.5 space-y-3 rounded bg-background p-2.5 shadow-xs">
       <div className="flex items-start justify-between gap-x-2">
         <p className="line-clamp-2 text-sm">{task.name}</p>
         <TaskActions
@@ -38,7 +38,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
                 (assignee: Member, index: number): ReactElement => (
                   <div
                     key={assignee.$id}
-                    className="relative z-[--index] hover:z-[1000]"
+                    className="relative z-(--index) hover:z-1000"
                     style={
                       {
                         marginLeft: index !== 0 ? "-5px" : "0",
@@ -55,7 +55,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
                 )
               )}
               {task.assignees.length > 2 && (
-                <div className="relative z-0 ml-[-5] hover:z-[1000]">
+                <div className="relative z-0 ml-[-5] hover:z-1000">
                   <MemberAvatarOther
                     members={task.assignees}
                     maxMembers={2}

@@ -384,7 +384,7 @@ export const DataFilters: ({
                           (option: Member, index: number): ReactElement => (
                             <div
                               key={option.$id}
-                              className="relative z-[--index] hover:z-[1000]"
+                              className="relative z-(--index) hover:z-1000"
                               style={
                                 {
                                   marginLeft: index !== 0 ? "-5px" : "0",

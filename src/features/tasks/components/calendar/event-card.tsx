@@ -79,7 +79,7 @@ export const EventCard: ({
                   (assignee: Member, index: number): ReactElement => (
                     <div
                       key={assignee.$id}
-                      className="relative z-[--index] hover:z-[1000]"
+                      className="relative z-(--index) hover:z-1000"
                       style={
                         {
                           marginLeft: index !== 0 ? "-10px" : "0",
@@ -96,7 +96,7 @@ export const EventCard: ({
                   )
                 )}
                 {assignees.length > 4 && (
-                  <div className="relative z-0 ml-[-10px] hover:z-[1000]">
+                  <div className="relative z-0 ml-[-10px] hover:z-1000">
                     <MemberAvatarOther
                       members={assignees}
                       maxMembers={4}

@@ -26,7 +26,7 @@ const StandaloneLayout: ({
   return (
     <main className="min-h-screen bg-neutral-100 dark:bg-neutral-900">
       <EditProfilModal />
-      <div className="mx-auto max-w-screen-2xl p-4">
+      <div className="mx-auto max-w-(--breakpoint-2xl) p-4">
         <nav className="flex h-[73px] items-center justify-between">
           <Link href="/">
             {logoSrc && (

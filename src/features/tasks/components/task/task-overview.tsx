@@ -42,7 +42,7 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
                   (assignee: Member, index: number): ReactElement => (
                     <div
                       key={assignee.$id}
-                      className="relative z-[--index] hover:z-[1000]"
+                      className="relative z-(--index) hover:z-1000"
                       style={
                         {
                           marginLeft: index !== 0 ? "-5px" : "0",

@@ -393,7 +393,7 @@ export const CreateTaskForm: ({
                     <FormControl className="prose max-w-none dark:prose-invert">
                       <EditorContent
                         editor={editor}
-                        className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm"
+                        className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs"
                       />
                     </FormControl>
                     <FormMessage />
