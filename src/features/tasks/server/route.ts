@@ -36,7 +36,7 @@ const app = new Hono()
     );
 
     if (!task) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Task not found" }, 404);
     }
 
     const member: Member = await getMember({
@@ -339,7 +339,7 @@ const app = new Hono()
     );
 
     if (!task) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Task not found" }, 404);
     }
 
     const currentMember: Member = await getMember({

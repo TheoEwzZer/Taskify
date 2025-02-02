@@ -70,7 +70,7 @@ const app = new Hono()
     );
 
     if (!workspace) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Workspace not found" }, 404);
     }
 
     return c.json({ data: workspace });
@@ -86,7 +86,7 @@ const app = new Hono()
     );
 
     if (!workspace) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Workspace not found" }, 404);
     }
 
     return c.json({ data: { labels: workspace.labels } });
@@ -102,7 +102,7 @@ const app = new Hono()
     );
 
     if (!workspace) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Workspace not found" }, 404);
     }
 
     return c.json({ data: { name: workspace.name } });
@@ -326,7 +326,7 @@ const app = new Hono()
       );
 
       if (!workspace) {
-        return c.json({ error: "Not found" }, 404);
+        return c.json({ error: "Workspace not found" }, 404);
       }
 
       if (workspace.inviteCode !== code) {

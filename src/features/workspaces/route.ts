@@ -69,7 +69,7 @@ const app = new Hono()
     );
 
     if (!memberToDelete) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Member not found" }, 404);
     }
 
     const allMembersInWorkspace: Models.DocumentList<Member> =
@@ -119,7 +119,7 @@ const app = new Hono()
       );
 
       if (!memberToUpdate) {
-        return c.json({ error: "Not found" }, 404);
+        return c.json({ error: "Member not found" }, 404);
       }
 
       const allMembersInWorkspace: Models.DocumentList<Member> =

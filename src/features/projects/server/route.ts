@@ -129,7 +129,7 @@ const app = new Hono()
     );
 
     if (!project) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Project not found" }, 404);
     }
 
     const member: Member = await getMember({
@@ -181,7 +181,7 @@ const app = new Hono()
       );
 
       if (!existingProject) {
-        return c.json({ error: "Not found" }, 404);
+        return c.json({ error: "Project not found" }, 404);
       }
 
       const member: Member = await getMember({
@@ -297,7 +297,7 @@ const app = new Hono()
     );
 
     if (!existingProject) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Project not found" }, 404);
     }
 
     const member: Member = await getMember({
@@ -347,7 +347,7 @@ const app = new Hono()
     );
 
     if (!project) {
-      return c.json({ error: "Not found" }, 404);
+      return c.json({ error: "Project not found" }, 404);
     }
 
     const member: Member = await getMember({
