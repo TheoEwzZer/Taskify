@@ -511,7 +511,6 @@ export const DataFilters: ({
                               className="rounded-sm px-1 font-normal"
                             >
                               <ProjectAvatar
-                                image={option.imageUrl}
                                 name={option.name}
                                 className="mr-2"
                               />
@@ -555,7 +554,6 @@ export const DataFilters: ({
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
                         <ProjectAvatar
-                          image={option.imageUrl}
                           name={option.name}
                         />
                         <span>{option.name}</span>
