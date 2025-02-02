@@ -19,6 +19,8 @@ export const WorkspaceIdSettingsClient: () => ReactElement = () => {
     return <PageError message="Failed to fetch workspace" />;
   }
 
+  data.$id = workspaceId;
+
   return (
     <div className="w-full lg:max-w-2xl">
       <EditWorkspaceForm initialValues={data} />
