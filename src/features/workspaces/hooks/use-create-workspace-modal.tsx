@@ -4,17 +4,17 @@ export const useCreateWorkspaceModal: () => {
   isOpen: boolean;
   open: () => Promise<URLSearchParams>;
   close: () => Promise<URLSearchParams>;
-  setIsOpen: <Shallow>(
+  setIsOpen: (
     value: boolean | ((old: boolean) => boolean | null) | null,
-    options?: Options<Shallow> | undefined
+    options?: Options | undefined
   ) => Promise<URLSearchParams>;
 } = (): {
   isOpen: boolean;
   open: () => Promise<URLSearchParams>;
   close: () => Promise<URLSearchParams>;
-  setIsOpen: <Shallow>(
+  setIsOpen: (
     value: boolean | ((old: boolean) => boolean | null) | null,
-    options?: Options<Shallow> | undefined
+    options?: Options | undefined
   ) => Promise<URLSearchParams>;
 } => {
   const [isOpen, setIsOpen] = useQueryState(
