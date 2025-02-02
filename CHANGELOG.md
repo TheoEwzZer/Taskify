@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.6.2](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.6.1...taskify-v1.6.2) (2025-02-02)
+
+
+### 🐛 Bug Fixes
+
+* assign workspaceId to data object in settings client ([28a95ad](https://github.com/TheoEwzZer/Taskify/commit/28a95adc350d8efcd30ab5aecd945d7f42f7dd17))
+* change default border color to currentColor to make Tailwind less opinionated and match browser defaults ([2de5059](https://github.com/TheoEwzZer/Taskify/commit/2de5059b2dbbf28bdf1751f44f03607b2d82da29))
+* change label field from undefined to null for consistency in project forms ([f14834a](https://github.com/TheoEwzZer/Taskify/commit/f14834a029eb5e8908590ccf53534e15341348c3))
+* fix some bugs ([296a305](https://github.com/TheoEwzZer/Taskify/commit/296a305c434d32daea524819982e8c70f4b3ef5e))
+* fix tailwind v4 ([93af764](https://github.com/TheoEwzZer/Taskify/commit/93af764895976864f1074c7b097177995e8fbd57))
+* handle optional dueDate in calendar component to prevent errors ([6090d1f](https://github.com/TheoEwzZer/Taskify/commit/6090d1fb016f17eaa3e5e7e016061659b9aa3412))
+* handle optional dueDate in task components and schemas ([2450c08](https://github.com/TheoEwzZer/Taskify/commit/2450c08a5d9eea4542af3905c79bf9f39aee2798))
+* prevent displaying 'null' label in project components ([52e76a1](https://github.com/TheoEwzZer/Taskify/commit/52e76a12f5ab575c8296bb8540cffc0a7b7366fb))
+* remove darkMode configuration from Tailwind CSS ([6cc0073](https://github.com/TheoEwzZer/Taskify/commit/6cc0073ad5044284014bad828f6aa5a743a28d80))
+* remove unused imageUrl prop from ProjectAvatar in data filters ([b499148](https://github.com/TheoEwzZer/Taskify/commit/b499148343384faaf26aca8d34d4e505a22ab69f))
+* simplify conditional rendering for project dates display ([4427bc3](https://github.com/TheoEwzZer/Taskify/commit/4427bc3b9edcb97f536bee1d23785a6048b6443d))
+* update label field to be nullable in project schemas for better flexibility ([80b61f6](https://github.com/TheoEwzZer/Taskify/commit/80b61f6ccb59ae018213d288965ac57d4b9abfa1))
+* using `cursor: pointer` by default ([e34e45d](https://github.com/TheoEwzZer/Taskify/commit/e34e45d62935bf6280d91102e0847704e812aa45))
+
+
+### ♻️ Code Refactoring
+
+* improve error messages for not found cases in projects, tasks, and workspaces ([2698095](https://github.com/TheoEwzZer/Taskify/commit/26980951a89dae48aa734e6d9d53164c757834d8))
+* reorder class names for consistency across components ([f88b6da](https://github.com/TheoEwzZer/Taskify/commit/f88b6da785e502e9bf0bddbcacd63cf8c76f7106))
+
+
+### 💄 Styles
+
+* keep just dark mode ([9ac96aa](https://github.com/TheoEwzZer/Taskify/commit/9ac96aa21fe02247c4c2c91f4cf8030fb2eb2591))
+
+
+### 📦 Dependencies
+
+* update dependencies with major update and update code ([b6a0899](https://github.com/TheoEwzZer/Taskify/commit/b6a0899093700ac97a23971784bd20a9fc69e67a))
+* upgrade dependencies (minor and patch) ([705d349](https://github.com/TheoEwzZer/Taskify/commit/705d34954b5a0960b8f42eb473221f8e817c294b))
+* upgrade Tailwind to v4 ([df46321](https://github.com/TheoEwzZer/Taskify/commit/df463219dca0a545a797988e351d9e917c2735ba))
+
 ## [1.6.1](https://github.com/TheoEwzZer/Taskify/compare/taskify-v1.6.0...taskify-v1.6.1) (2024-12-27)
 
 ### 🐛 Bug Fixes
