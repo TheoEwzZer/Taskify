@@ -174,43 +174,45 @@ export const Projects: () => ReactElement = () => {
                           <Badge variant="secondary">{project.label}</Badge>
                         )}
                       </div>
-                      <div className="flex items-center pt-2">
-                        <span className="text-muted-foreground text-xs">
-                          <p className="text-sm text-gray-500">
-                            {project.startDate && !project.endDate && (
-                              <>
-                                Started on{" "}
-                                {format(
-                                  new Date(project.startDate),
-                                  "dd/MM/yyyy"
-                                )}
-                              </>
-                            )}
-                            {!project.startDate && project.endDate && (
-                              <>
-                                Ends on{" "}
-                                {format(
-                                  new Date(project.endDate),
-                                  "dd/MM/yyyy"
-                                )}
-                              </>
-                            )}
-                            {project.startDate && project.endDate && (
-                              <>
-                                {format(
-                                  new Date(project.startDate),
-                                  "dd/MM/yyyy"
-                                )}{" "}
-                                {" -> "}{" "}
-                                {format(
-                                  new Date(project.endDate),
-                                  "dd/MM/yyyy"
-                                )}
-                              </>
-                            )}
-                          </p>
-                        </span>
-                      </div>
+                      {(project.startDate || project.endDate) && (
+                        <div className="flex items-center pt-2">
+                          <span className="text-muted-foreground text-xs">
+                            <p className="text-sm text-gray-500">
+                              {project.startDate && !project.endDate && (
+                                <>
+                                  Started on{" "}
+                                  {format(
+                                    new Date(project.startDate),
+                                    "dd/MM/yyyy"
+                                  )}
+                                </>
+                              )}
+                              {!project.startDate && project.endDate && (
+                                <>
+                                  Ends on{" "}
+                                  {format(
+                                    new Date(project.endDate),
+                                    "dd/MM/yyyy"
+                                  )}
+                                </>
+                              )}
+                              {project.startDate && project.endDate && (
+                                <>
+                                  {format(
+                                    new Date(project.startDate),
+                                    "dd/MM/yyyy"
+                                  )}{" "}
+                                  {" -> "}{" "}
+                                  {format(
+                                    new Date(project.endDate),
+                                    "dd/MM/yyyy"
+                                  )}
+                                </>
+                              )}
+                            </p>
+                          </span>
+                        </div>
+                      )}
                       {project.dates?.length > 0 && (
                         <div className="flex flex-col gap-1">
                           <h4 className="text-sm font-semibold">
