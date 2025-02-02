@@ -40,9 +40,9 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="bg-neutral-200 p-1 hover:bg-neutral-200 active:bg-neutral-200 data-[state=open]:text-sidebar-accent-foreground dark:bg-neutral-800 dark:hover:bg-neutral-800 dark:active:bg-neutral-800"
+              className="data-[state=open]:text-sidebar-accent-foreground bg-neutral-200 p-1 hover:bg-neutral-200 active:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-800 dark:active:bg-neutral-800"
             >
-              <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-primary/10 text-sidebar-primary-foreground">
+              <div className="bg-primary/10 text-sidebar-primary-foreground flex aspect-square size-10 items-center justify-center rounded-lg">
                 {currentWorkspace && (
                   <WorkspaceAvatar
                     name={currentWorkspace.name}
@@ -64,7 +64,7 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
             side="bottom"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
+            <DropdownMenuLabel className="text-muted-foreground text-xs">
               Workspaces
             </DropdownMenuLabel>
             {workspaces?.documents.map(
@@ -89,10 +89,10 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
               className="cursor-pointer gap-2 p-2"
               onClick={open}
             >
-              <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+              <div className="bg-background flex size-6 items-center justify-center rounded-md border">
                 <Plus className="size-5 text-neutral-500 transition" />
               </div>
-              <div className="font-medium text-muted-foreground">
+              <div className="text-muted-foreground font-medium">
                 Create Workspace
               </div>
             </DropdownMenuItem>

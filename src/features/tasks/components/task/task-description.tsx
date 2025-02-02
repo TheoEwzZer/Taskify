@@ -68,7 +68,7 @@ export const TaskDescription = ({ task }: { task: Task }): ReactElement => {
         </Button>
       </div>
       <DottedSeparator className="my-4" />
-      <div className="prose max-w-none dark:prose-invert">
+      <div className="prose dark:prose-invert max-w-none">
         {isEditing && <MenuBar editor={editor} />}
         <EditorContent
           editor={editor}
@@ -77,7 +77,7 @@ export const TaskDescription = ({ task }: { task: Task }): ReactElement => {
         {isEditing && (
           <Button
             size="sm"
-            className="ml-auto mt-4 w-fit"
+            className="mt-4 ml-auto w-fit"
             onClick={handleSave}
           >
             {isPending ? "Saving..." : "Save Changes"}

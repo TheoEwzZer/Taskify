@@ -56,7 +56,7 @@ export const ProjectIdClient: () => ReactElement = () => {
   );
 
   return (
-    <div className="flex flex-col gap-y-6 rounded-lg bg-background p-6 shadow-md">
+    <div className="bg-background flex flex-col gap-y-6 rounded-lg p-6 shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-x-4">
           <ProjectAvatar

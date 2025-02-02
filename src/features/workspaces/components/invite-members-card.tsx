@@ -55,7 +55,7 @@ export const InviteMembersCard: ({
         <CardContent className="p-7">
           <div className="flex flex-col">
             <h3 className="font-bold">Invite Members</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Use the invite link to add members to your workspace.
             </p>
             <div className="mt-4">
@@ -75,7 +75,7 @@ export const InviteMembersCard: ({
             </div>
             <DottedSeparator className="py-7" />
             <Button
-              className="ml-auto mt-6 w-fit"
+              className="mt-6 ml-auto w-fit"
               size="sm"
               variant="destructive"
               type="button"

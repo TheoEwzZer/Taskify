@@ -178,7 +178,7 @@ export const EditWorkspaceForm: ({
                         )}
                         <div className="flex flex-col">
                           <p className="text-sm">Workspace Icon</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground text-sm">
                             JPG, PNG, SVG or JPEG, max 1MB
                           </p>
                           <input
@@ -270,14 +270,14 @@ export const EditWorkspaceForm: ({
         <CardContent className="p-7">
           <div className="flex flex-col">
             <h3 className="font-bold">Danger Zone</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Deleting a workspace is irreversible and will remove all
               associated data. If you are not an admin, you will only leave the
               workspace.
             </p>
             <DottedSeparator className="py-7" />
             <Button
-              className="ml-auto mt-6 w-fit"
+              className="mt-6 ml-auto w-fit"
               size="sm"
               variant="destructive"
               type="button"

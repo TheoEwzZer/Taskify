@@ -98,7 +98,7 @@ export const Memberslist: () => ReactElement = () => {
                 />
                 <div className="flex flex-col">
                   <p className="text-sm font-medium">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {member.email}
                   </p>
                 </div>
@@ -109,7 +109,7 @@ export const Memberslist: () => ReactElement = () => {
                       variant="secondary"
                       size="icon"
                     >
-                      <MoreVerticalIcon className="size-4 text-muted-foreground" />
+                      <MoreVerticalIcon className="text-muted-foreground size-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent

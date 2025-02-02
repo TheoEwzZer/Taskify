@@ -2,7 +2,6 @@
 
 @config '../../../../../tailwind.config.ts';
 
-
 @utility text-balance {
   text-wrap: balance;
 }

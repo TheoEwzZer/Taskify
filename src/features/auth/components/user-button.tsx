@@ -23,7 +23,7 @@ export const UserButton = (): ReactElement | null => {
   if (isLoading) {
     return (
       <div className="flex size-10 items-center justify-center rounded-full border border-neutral-300 bg-neutral-200">
-        <Loader className="size-4 animate-spin text-muted-foreground" />
+        <Loader className="text-muted-foreground size-4 animate-spin" />
       </div>
     );
   }

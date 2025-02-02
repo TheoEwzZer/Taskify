@@ -89,7 +89,7 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
 
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg bg-muted p-4">
+      <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Tasks ({total})</p>
           <Button
@@ -114,7 +114,7 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
                       <div className="flex items-center gap-x-2">
                         <p>{task.project?.name}</p>
                         <div className="size-1 rounded-full bg-neutral-300" />
-                        <div className="flex items-center text-sm text-muted-foreground">
+                        <div className="text-muted-foreground flex items-center text-sm">
                           <CalendarIcon className="mr-1 size-3" />
                           <span className="line-clamp-6">
                             {formatDistanceToNow(new Date(task.dueDate))}
@@ -127,7 +127,7 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
               </li>
             )
           )}
-          <li className="hidden text-center text-sm text-muted-foreground first-of-type:block">
+          <li className="text-muted-foreground hidden text-center text-sm first-of-type:block">
             No tasks found
           </li>
         </ul>
@@ -157,7 +157,7 @@ export const ProjectList: ({
 
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg border bg-background p-4">
+      <div className="bg-background rounded-lg border p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Projects ({total})</p>
           <Button
@@ -193,7 +193,7 @@ export const ProjectList: ({
               </li>
             )
           )}
-          <li className="hidden text-center text-sm text-muted-foreground first-of-type:block">
+          <li className="text-muted-foreground hidden text-center text-sm first-of-type:block">
             No projects found
           </li>
         </ul>
@@ -215,7 +215,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
 
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg border bg-background p-4">
+      <div className="bg-background rounded-lg border p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Members ({total})</p>
           <Button
@@ -244,7 +244,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
                       <p className="line-clamp-1 text-lg font-medium">
                         {member.name}
                       </p>
-                      <p className="line-clamp-1 text-sm text-muted-foreground">
+                      <p className="text-muted-foreground line-clamp-1 text-sm">
                         {member.email}
                       </p>
                     </div>
@@ -253,7 +253,7 @@ export const MemberList: ({ data, total }: MemberListProps) => ReactElement = ({
               </li>
             )
           )}
-          <li className="hidden text-center text-sm text-muted-foreground first-of-type:block">
+          <li className="text-muted-foreground hidden text-center text-sm first-of-type:block">
             No members found
           </li>
         </ul>

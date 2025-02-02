@@ -15,7 +15,7 @@ export const KanbanColumn: ({
 }: KanbanColumnProps) => ReactElement = ({ board, tasks }) => (
   <div
     key={board}
-    className="mx-2 min-w-[200px] flex-1 rounded-md bg-muted p-1.5"
+    className="bg-muted mx-2 min-w-[200px] flex-1 rounded-md p-1.5"
   >
     <KanbanColumnHeader
       board={board}

@@ -212,7 +212,7 @@ export const CreateProjectForm: ({
                           ref={buttonRef}
                           variant="outline"
                           size="sm"
-                          className="h-12 justify-start font-normal text-muted-foreground"
+                          className="text-muted-foreground h-12 justify-start font-normal"
                         >
                           {field.value && field.value.length > 0 ? (
                             <div className="flex items-center gap-x-2">
@@ -248,7 +248,7 @@ export const CreateProjectForm: ({
                                     >
                                       <div
                                         className={cn(
-                                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                          "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                                           isSelected
                                             ? "bg-primary text-primary-foreground"
                                             : "opacity-50 [&_svg]:invisible"
@@ -395,7 +395,7 @@ export const CreateProjectForm: ({
                       )}
                       <div className="flex flex-col">
                         <p className="text-sm">Project Icon</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           JPG, PNG, SVG or JPEG, max 1MB
                         </p>
                         <input

@@ -70,7 +70,7 @@ export const Projects: () => ReactElement = () => {
   if (isLoading) {
     return (
       <SidebarGroup>
-        <SidebarGroupLabel className="text-xs uppercase text-neutral-500">
+        <SidebarGroupLabel className="text-xs text-neutral-500 uppercase">
           Projects
         </SidebarGroupLabel>
         <SidebarGroupAction title="Add Project">
@@ -96,7 +96,7 @@ export const Projects: () => ReactElement = () => {
     <>
       <DeleteDialog />
       <SidebarGroup>
-        <SidebarGroupLabel className="text-xs uppercase text-neutral-500">
+        <SidebarGroupLabel className="text-xs text-neutral-500 uppercase">
           Projects
         </SidebarGroupLabel>
         <SidebarGroupAction
@@ -175,7 +175,7 @@ export const Projects: () => ReactElement = () => {
                         )}
                       </div>
                       <div className="flex items-center pt-2">
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-muted-foreground text-xs">
                           <p className="text-sm text-gray-500">
                             {project.startDate && !project.endDate && (
                               <>

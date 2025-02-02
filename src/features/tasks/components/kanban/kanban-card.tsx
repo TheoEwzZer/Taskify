@@ -19,7 +19,7 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
   task,
 }) => {
   return (
-    <div className="mb-1.5 space-y-3 rounded bg-background p-2.5 shadow-xs">
+    <div className="bg-background mb-1.5 space-y-3 rounded p-2.5 shadow-xs">
       <div className="flex items-start justify-between gap-x-2">
         <p className="line-clamp-2 text-sm">{task.name}</p>
         <TaskActions

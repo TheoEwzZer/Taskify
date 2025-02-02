@@ -78,7 +78,7 @@ export const TaskBreadcrumbs: ({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
-            <ChevronRightIcon className="size-4 text-muted-foreground lg:size-5" />
+            <ChevronRightIcon className="text-muted-foreground size-4 lg:size-5" />
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbPage>{task.name}</BreadcrumbPage>

@@ -8,7 +8,7 @@ export const Analytics: ({
   data,
 }: ProjectAnalyticsResponseType) => ReactElement = ({ data }) => {
   return (
-    <ScrollArea className="w-full shrink-0 whitespace-nowrap rounded-lg border">
+    <ScrollArea className="w-full shrink-0 rounded-lg border whitespace-nowrap">
       <div className="flex w-full flex-row">
         <div className="flex flex-1 items-center">
           <AnalyticsCard

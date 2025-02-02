@@ -8,8 +8,8 @@ import { ReactElement } from "react";
 const ErrorPage: () => ReactElement = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-y-2">
-      <AlertTriangle className="size-6 text-muted-foreground" />
-      <p className="text-sm text-muted-foreground">Someting went wrong</p>
+      <AlertTriangle className="text-muted-foreground size-6" />
+      <p className="text-muted-foreground text-sm">Someting went wrong</p>
       <Button
         variant="secondary"
         size="sm"

@@ -239,7 +239,7 @@ export const EditTaskForm: ({
                           ref={buttonRef}
                           variant="outline"
                           size="sm"
-                          className="h-12 justify-start font-normal text-muted-foreground"
+                          className="text-muted-foreground h-12 justify-start font-normal"
                         >
                           {field.value && field.value.length > 0 ? (
                             <div className="flex items-center gap-x-2">
@@ -275,7 +275,7 @@ export const EditTaskForm: ({
                                     >
                                       <div
                                         className={cn(
-                                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                          "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                                           isSelected
                                             ? "bg-primary text-primary-foreground"
                                             : "opacity-50 [&_svg]:invisible"
@@ -395,10 +395,10 @@ export const EditTaskForm: ({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <MenuBar editor={editor} />
-                    <FormControl className="prose max-w-none dark:prose-invert">
+                    <FormControl className="prose dark:prose-invert max-w-none">
                       <EditorContent
                         editor={editor}
-                        className="rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs"
+                        className="border-input rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs"
                       />
                     </FormControl>
                     <FormMessage />

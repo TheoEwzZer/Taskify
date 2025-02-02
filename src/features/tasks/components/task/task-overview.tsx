@@ -21,7 +21,7 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
   const { open } = useEditTaskModal();
   return (
     <div className="col-span-1 flex flex-col gap-y-4">
-      <div className="rounded-lg bg-muted p-4">
+      <div className="bg-muted rounded-lg p-4">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Overview</p>
           <Button

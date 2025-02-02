@@ -139,7 +139,7 @@ export const CreateWorkspaceForm: ({
                       )}
                       <div className="flex flex-col">
                         <p className="text-sm">Workspace Icon</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           JPG, PNG, SVG or JPEG, max 1MB
                         </p>
                         <input

@@ -88,7 +88,7 @@ export const Navigation: () => ReactElement = () => {
                 <SidebarMenuButton
                   asChild
                   className={cn(
-                    "flex w-full items-center gap-2.5 rounded-md py-2.5 font-medium text-neutral-500 transition hover:text-primary",
+                    "hover:text-primary flex w-full items-center gap-2.5 rounded-md py-2.5 font-medium text-neutral-500 transition",
                     isActive &&
                       "bg-background text-primary shadow-xs hover:opacity-100"
                   )}
