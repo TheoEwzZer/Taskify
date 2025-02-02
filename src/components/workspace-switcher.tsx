@@ -40,7 +40,7 @@ export const WorkspaceSwitcher: () => ReactElement = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:text-sidebar-accent-foreground bg-neutral-200 p-1 hover:bg-neutral-200 active:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-800 dark:active:bg-neutral-800"
+              className="data-[state=open]:text-sidebar-accent-foreground bg-neutral-800 hover:bg-neutral-800 active:bg-neutral-800"
             >
               <div className="bg-primary/10 text-sidebar-primary-foreground flex aspect-square size-10 items-center justify-center rounded-lg">
                 {currentWorkspace && (

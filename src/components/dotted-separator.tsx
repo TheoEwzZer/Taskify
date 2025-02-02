@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 
 interface DottedSeparatorProps {
   className?: string;
@@ -24,20 +23,6 @@ export const DottedSeparator: ({
   direction = "horizontal",
 }: DottedSeparatorProps) => {
   const isHorizontal: boolean = direction === "horizontal";
-  const { resolvedTheme } = useTheme();
-  const [color, setColor] = useState<"#303036" | "#d4d4d8" | null>(null);
-
-  useEffect((): void => {
-    if (resolvedTheme === "dark") {
-      setColor("#303036");
-    } else {
-      setColor("#d4d4d8");
-    }
-  }, [resolvedTheme]);
-
-  if (!color) {
-    return null;
-  }
 
   return (
     <div
@@ -53,7 +38,8 @@ export const DottedSeparator: ({
         style={{
           width: isHorizontal ? "100%" : height,
           height: isHorizontal ? height : "100%",
-          backgroundImage: `radial-gradient(circle, ${color} 25%, transparent 25%)`,
+          backgroundImage:
+            "radial-gradient(circle, #303036 25%, transparent 25%)",
           backgroundSize: isHorizontal
             ? `${parseInt(dotSize) + parseInt(gapSize)}px ${height}`
             : `${height} ${parseInt(dotSize) + parseInt(gapSize)}px`,

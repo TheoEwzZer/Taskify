@@ -68,7 +68,7 @@ export const TaskDescription = ({ task }: { task: Task }): ReactElement => {
         </Button>
       </div>
       <DottedSeparator className="my-4" />
-      <div className="prose dark:prose-invert max-w-none">
+      <div className="prose-invert max-w-none">
         {isEditing && <MenuBar editor={editor} />}
         <EditorContent
           editor={editor}

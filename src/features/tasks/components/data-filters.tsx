@@ -553,9 +553,7 @@ export const DataFilters: ({
                         >
                           <CheckIcon className={cn("h-4 w-4")} />
                         </div>
-                        <ProjectAvatar
-                          name={option.name}
-                        />
+                        <ProjectAvatar name={option.name} />
                         <span>{option.name}</span>
                       </CommandItem>
                     );
@@ -588,7 +586,7 @@ export const DataFilters: ({
         onChange={(date: Date | undefined): Promise<URLSearchParams> =>
           setFilters({ dueDate: date ? date.toISOString() : null })
         }
-        className="h-8 w-auto justify-center border-dashed font-semibold text-black dark:text-white"
+        className="h-8 w-auto justify-center border-dashed font-semibold text-white"
         showBadge
       />
       {((status && status.length > 0) ||

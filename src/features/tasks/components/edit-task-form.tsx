@@ -394,7 +394,7 @@ export const EditTaskForm: ({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <MenuBar editor={editor} />
-                    <FormControl className="prose dark:prose-invert max-w-none">
+                    <FormControl className="prose-invert max-w-none">
                       <EditorContent
                         editor={editor}
                         className="border-input rounded-md border bg-transparent px-3 py-2 text-sm shadow-xs"

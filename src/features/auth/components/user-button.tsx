@@ -74,7 +74,7 @@ export const UserButton = (): ReactElement | null => {
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-center justify-center">
-            <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+            <p className="text-sm font-medium text-neutral-100">
               {user.name ?? "User"}
             </p>
             <p className="text-xs text-neutral-500">{email}</p>
