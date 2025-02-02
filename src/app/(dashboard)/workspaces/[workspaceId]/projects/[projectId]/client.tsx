@@ -66,7 +66,7 @@ export const ProjectIdClient: () => ReactElement = () => {
           <div className="flex flex-col">
             <div className="flex gap-2">
               <h1 className="text-2xl font-bold">{project.name}</h1>
-              {project.label && (
+              {project.label && project.label !== "null" && (
                 <Badge variant="secondary">{project.label}</Badge>
               )}
             </div>

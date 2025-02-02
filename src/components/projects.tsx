@@ -125,9 +125,7 @@ export const Projects: () => ReactElement = () => {
                         )}
                       >
                         <Link href={href}>
-                          <ProjectAvatar
-                            name={project.name}
-                          />
+                          <ProjectAvatar name={project.name} />
                           <span className="truncate">{project.name}</span>
                         </Link>
                       </SidebarMenuButton>
@@ -169,7 +167,7 @@ export const Projects: () => ReactElement = () => {
                         <h4 className="text-sm font-semibold">
                           {project.name}
                         </h4>
-                        {project.label && (
+                        {project.label && project.label !== "null" && (
                           <Badge variant="secondary">{project.label}</Badge>
                         )}
                       </div>
