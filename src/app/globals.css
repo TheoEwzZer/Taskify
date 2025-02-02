@@ -23,6 +23,10 @@
 }
 
 @layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
