@@ -37,7 +37,7 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
   data,
 }) => {
   const [value, setValue] = useState<Date>(
-    data.length ? new Date(data[0].dueDate) : new Date()
+    data.length && data[0].dueDate ? new Date(data[0].dueDate) : new Date()
   );
 
   const events: {
@@ -48,15 +48,17 @@ export const DataCalendar: ({ data }: DataCalendarProps) => ReactElement = ({
     assignees: Member[];
     status: TaskStatus;
     id: string;
-  }[] = data.map((task: Task) => ({
-    start: new Date(task.dueDate),
-    end: new Date(task.dueDate),
-    title: task.name,
-    project: task.project,
-    assignees: task.assignees,
-    status: task.status,
-    id: task.$id,
-  }));
+  }[] = data
+    .filter((task: Task): boolean => task.dueDate !== null)
+    .map((task: Task) => ({
+      start: task.dueDate ? new Date(task.dueDate) : new Date(),
+      end: task.dueDate ? new Date(task.dueDate) : new Date(),
+      title: task.name,
+      project: task.project,
+      assignees: task.assignees,
+      status: task.status,
+      id: task.$id,
+    }));
 
   const handleNavigate: (action: "PREV" | "NEXT" | "TODAY") => void = (
     action
