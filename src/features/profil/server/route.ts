@@ -22,7 +22,7 @@ const app = new Hono().patch(
         await account.updateName(name);
       }
       if (avatar) {
-        let uploadedImageUrl: string | undefined;
+        let uploadedImageUrl: string | null | undefined;
         if (avatar instanceof File) {
           const file = await storage.createFile(
             IMAGES_BUCKET_ID,
@@ -43,6 +43,8 @@ const app = new Hono().patch(
               400
             );
           }
+        } else if (avatar === undefined) {
+          uploadedImageUrl = null;
         } else {
           uploadedImageUrl = avatar;
         }

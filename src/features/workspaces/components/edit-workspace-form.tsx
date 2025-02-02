@@ -197,7 +197,7 @@ export const EditWorkspaceForm: ({
                               className="mt-2 w-fit"
                               disabled={isPending}
                               onClick={() => {
-                                field.onChange(null);
+                                field.onChange("");
                                 if (inputRef.current) {
                                   inputRef.current.value = "";
                                 }

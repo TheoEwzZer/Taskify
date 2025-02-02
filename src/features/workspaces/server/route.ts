@@ -118,7 +118,7 @@ const app = new Hono()
 
       const { name, image } = c.req.valid("form");
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null | undefined;
 
       if (image instanceof File) {
         const file = await storage.createFile(
@@ -133,6 +133,8 @@ const app = new Hono()
         );
 
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+      } else if (image === undefined) {
+        uploadedImageUrl = null;
       } else {
         uploadedImageUrl = image;
       }
@@ -180,7 +182,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
+      let uploadedImageUrl: string | null | undefined;
 
       if (image instanceof File) {
         const file = await storage.createFile(
@@ -195,6 +197,8 @@ const app = new Hono()
         );
 
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+      } else if (image === undefined) {
+        uploadedImageUrl = null;
       } else {
         uploadedImageUrl = image;
       }

@@ -2,7 +2,6 @@
 
 import { DatePicker } from "@/components/date-picker";
 import { DottedSeparator } from "@/components/dotted-separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -36,11 +35,9 @@ import {
   Check,
   CheckIcon,
   ChevronsUpDown,
-  ImageIcon,
   UserIcon,
 } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -115,7 +112,6 @@ export const EditProjectForm: ({
       endDate: initialValues.endDate
         ? new Date(initialValues.endDate)
         : undefined,
-      image: initialValues.imageUrl ?? "",
       label: initialValues.label ?? null,
       assigneeIds: initialValues.assigneeIds.map((id: string): string => id),
       dates:
@@ -160,22 +156,7 @@ export const EditProjectForm: ({
   const onSubmit: (values: z.infer<typeof updateProjectSchema>) => void = (
     values: z.infer<typeof updateProjectSchema>
   ) => {
-    const finalValues = {
-      ...values,
-      image: values.image instanceof File ? values.image : "",
-    };
-
-    mutate({ json: finalValues, param: { projectId: initialValues.$id } });
-  };
-
-  const handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file: File | undefined = e.target.files?.[0];
-
-    if (file) {
-      form.setValue("image", file);
-    }
+    mutate({ json: values, param: { projectId: initialValues.$id } });
   };
 
   return (
@@ -417,78 +398,6 @@ export const EditProjectForm: ({
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <div className="flex flex-col gap-y-2">
-                      <div className="flex items-center gap-x-5">
-                        {field.value ? (
-                          <div className="relative size-[72px] overflow-hidden rounded-md">
-                            <Image
-                              alt="Project Image"
-                              fill
-                              className="object-cover"
-                              src={
-                                field.value instanceof File
-                                  ? URL.createObjectURL(field.value)
-                                  : field.value
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <Avatar className="size-[72px]">
-                            <AvatarFallback>
-                              <ImageIcon className="size-[36px] text-neutral-400" />
-                            </AvatarFallback>
-                          </Avatar>
-                        )}
-                        <div className="flex flex-col">
-                          <p className="text-sm">Project Icon</p>
-                          <p className="text-muted-foreground text-sm">
-                            JPG, PNG, SVG or JPEG, max 1MB
-                          </p>
-                          <input
-                            className="hidden"
-                            accept=".jpg, .png, .svg, .jpeg"
-                            ref={inputRef}
-                            disabled={isPending}
-                            onChange={handleImageChange}
-                            type="file"
-                          />
-                          {field.value ? (
-                            <Button
-                              type="button"
-                              size="xs"
-                              variant="destructive"
-                              className="mt-2 w-fit"
-                              disabled={isPending}
-                              onClick={() => {
-                                field.onChange(null);
-                                if (inputRef.current) {
-                                  inputRef.current.value = "";
-                                }
-                              }}
-                            >
-                              Remove Image
-                            </Button>
-                          ) : (
-                            <Button
-                              type="button"
-                              size="xs"
-                              variant="teritary"
-                              className="mt-2 w-fit"
-                              disabled={isPending}
-                              onClick={(): void => inputRef.current?.click()}
-                            >
-                              Change Image
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
                   )}
                 />
               </div>

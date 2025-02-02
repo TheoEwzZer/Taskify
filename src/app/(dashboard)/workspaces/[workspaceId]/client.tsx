@@ -117,7 +117,9 @@ export const TaskList: ({ data, total }: TaskListProps) => ReactElement = ({
                         <div className="text-muted-foreground flex items-center text-sm">
                           <CalendarIcon className="mr-1 size-3" />
                           <span className="line-clamp-6">
-                            {formatDistanceToNow(new Date(task.dueDate))}
+                            {task.dueDate
+                              ? formatDistanceToNow(new Date(task.dueDate))
+                              : "No due date"}
                           </span>
                         </div>
                       </div>
@@ -182,7 +184,6 @@ export const ProjectList: ({
                         className="size-12"
                         fallbackClassName="text-lg"
                         name={project.name}
-                        image={project.imageUrl}
                       />
                       <p className="truncate text-lg font-medium">
                         {project.name}

@@ -370,7 +370,6 @@ export const CreateTaskForm: ({
                                 <div className="flex items-center gap-x-2">
                                   <ProjectAvatar
                                     name={project.name}
-                                    image={project.imageUrl}
                                     className="size-6"
                                   />
                                   {project.name}

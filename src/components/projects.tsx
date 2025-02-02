@@ -126,7 +126,6 @@ export const Projects: () => ReactElement = () => {
                       >
                         <Link href={href}>
                           <ProjectAvatar
-                            image={project.imageUrl}
                             name={project.name}
                           />
                           <span className="truncate">{project.name}</span>

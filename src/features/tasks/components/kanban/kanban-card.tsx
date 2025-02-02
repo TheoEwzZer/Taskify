@@ -82,7 +82,6 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
           <>
             <ProjectAvatar
               name={task.project.name}
-              image={task.project.imageUrl}
               fallbackClassName="text-[10px]"
             />
             <span className="text-xs font-medium">{task.project.name}</span>

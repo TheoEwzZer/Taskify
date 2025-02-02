@@ -61,7 +61,6 @@ export const ProjectIdClient: () => ReactElement = () => {
         <div className="flex items-center gap-x-4">
           <ProjectAvatar
             name={project.name}
-            image={project.imageUrl}
             className="size-12"
           />
           <div className="flex flex-col">

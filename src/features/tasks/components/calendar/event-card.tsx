@@ -113,7 +113,6 @@ export const EventCard: ({
               <div className="size-1 rounded-full bg-neutral-300" />
               <ProjectAvatar
                 name={project?.name}
-                image={project?.imageUrl}
               />
             </>
           )}

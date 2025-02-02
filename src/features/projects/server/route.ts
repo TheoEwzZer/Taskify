@@ -1,10 +1,4 @@
-import {
-  DATABASE_ID,
-  DATES_ID,
-  IMAGES_BUCKET_ID,
-  PROJECTS_ID,
-  TASKS_ID,
-} from "@/config";
+import { DATABASE_ID, DATES_ID, PROJECTS_ID, TASKS_ID } from "@/config";
 import { Member, MemberRole } from "@/features/members/types";
 import { getMember } from "@/features/members/util";
 import { Task, TaskStatus } from "@/features/tasks/types";
@@ -24,10 +18,9 @@ const app = new Hono()
     zValidator("json", createProjectSchema),
     async (c) => {
       const databases = c.get("databases");
-      const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
-      const { name, image, workspaceId, startDate, endDate, label, dates } =
+      const { name, workspaceId, startDate, endDate, label, dates } =
         c.req.valid("json");
 
       const assigneeIds: string[] = c.req.valid("json").assigneeIds || [];
@@ -42,25 +35,6 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
-
-      if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
-
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
-
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
-      } else {
-        uploadedImageUrl = image;
-      }
-
       if (!assigneeIds.includes(member.$id)) {
         assigneeIds.push(member.$id);
       }
@@ -71,7 +45,6 @@ const app = new Hono()
         ID.unique(),
         {
           name,
-          imageUrl: uploadedImageUrl,
           workspaceId,
           startDate,
           assigneeIds,
@@ -195,11 +168,10 @@ const app = new Hono()
     sessionMiddleware,
     async (c) => {
       const databases = c.get("databases");
-      const storage = c.get("storage");
       const user: Models.User<Models.Preferences> = c.get("user");
 
       const { projectId } = c.req.param();
-      const { name, image, startDate, endDate, assigneeIds, label, dates } =
+      const { name, startDate, endDate, assigneeIds, label, dates } =
         c.req.valid("json");
 
       const existingProject: Project = await databases.getDocument<Project>(
@@ -222,25 +194,6 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      let uploadedImageUrl: string | undefined;
-
-      if (image instanceof File) {
-        const file = await storage.createFile(
-          IMAGES_BUCKET_ID,
-          ID.unique(),
-          image
-        );
-
-        const arrayBuffer = await storage.getFilePreview(
-          IMAGES_BUCKET_ID,
-          file.$id
-        );
-
-        uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
-      } else {
-        uploadedImageUrl = image;
-      }
-
       const project: Project = await databases.updateDocument<Project>(
         DATABASE_ID,
         PROJECTS_ID,
@@ -249,7 +202,6 @@ const app = new Hono()
           name,
           startDate,
           endDate,
-          imageUrl: uploadedImageUrl,
           assigneeIds,
           label,
         }
