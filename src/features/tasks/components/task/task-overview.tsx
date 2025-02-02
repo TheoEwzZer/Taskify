@@ -62,10 +62,14 @@ export const TaskOverview: ({ task }: TaskOverviewProps) => ReactElement = ({
             </OverviewProperty>
           )}
           <OverviewProperty label="Due Date">
-            <TaskDate
-              value={task.dueDate}
-              className="text-sm font-medium"
-            />
+            {task.dueDate ? (
+              <TaskDate
+                value={task.dueDate}
+                className="text-sm font-medium"
+              />
+            ) : (
+              <span className="text-muted-foreground">No due date</span>
+            )}
           </OverviewProperty>
           <OverviewProperty label="Status">
             <Badge variant={task.status}>

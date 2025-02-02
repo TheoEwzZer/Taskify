@@ -65,13 +65,17 @@ export const KanbanCard: ({ task }: KanbanCardProps) => ReactElement = ({
                 </div>
               )}
             </div>
-            <div className="size-1 rounded-full bg-neutral-300" />
+            {task.dueDate && (
+              <div className="size-1 rounded-full bg-neutral-300" />
+            )}
           </>
         )}
-        <TaskDate
-          value={task.dueDate}
-          className="text-xs"
-        />
+        {task.dueDate && (
+          <TaskDate
+            value={task.dueDate}
+            className="text-xs"
+          />
+        )}
       </div>
       <div className="flex items-center gap-x-1.5">
         {task.project && (

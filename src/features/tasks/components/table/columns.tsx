@@ -243,6 +243,10 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }: CellContext<Task, unknown>): ReactElement => {
       const { dueDate } = row.original;
 
+      if (!dueDate) {
+        return <p className="text-muted-foreground">No Due Date</p>;
+      }
+
       return <TaskDate value={dueDate} />;
     },
     sortingFn: dateSort,
